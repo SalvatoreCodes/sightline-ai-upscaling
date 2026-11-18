@@ -70,3 +70,16 @@
 | `144p` | **`Pink shirt`** | **15** | `9` | `3.03 ms` | `00:00.0, 00:01.5, 00:01.8, 00:05.5, 00:14.7, 00:16.5` |
 | `VIRAT_0102` | **`Black pants`** | **71** | `13` | `2.75 ms` | `00:00.0, 00:00.0, 00:00.0, 00:00.0, 00:01.0, 00:01.0` |
 | `VIRAT_0100` | **`Blue jacket`** | **3** | `2` | `1.36 ms` | `00:19.0, 00:21.0, 00:22.0` |
+
+---
+
+## 5. What Is Needed to Improve the Model (`Intel_CCTV_Person_Bicycle_Car.mp4` Audit & Roadmap)
+
+An audit of overhead parking-lot footage (`Intel_CCTV_Person_Bicycle_Car.mp4`, `768×432`, `12.0 FPS`, `17` indexed sightings in `Intel_CCTV_Person_Bi_scan.json`) showed that `FasterRCNN-ResNet50-FPN-V2` detects the pedestrian at `Frame 35 (00:02.9)` with `1.00` confidence (`49×99 px`), yet `stride=24` (`2.0s` spacing at `12 FPS`) skipped intermediate frames and distant overhead crops (`26×42 px`–`35×80 px` at `F312`–`F576`) suffered gray asphalt background bleed and foreshortened attribute noise (`Safety Vest`, `Tank Top`, `Work Overalls`, `Dress / Skirt`).
+
+### Key Upgrades Required (See Full Details in `Sightline_Model_Improvement_Roadmap.md`)
+1. **FPS-Adaptive Dense Sampling + IoU/ByteTrack Interpolation:** Use time-normalized stride (`max(3, round(fps * 0.4))` ≈ every `0.4s` instead of fixed `24` frames) and tracklet interpolation so moving pedestrians are boxed on every frame.
+2. **Person Silhouette Masking Before CIELAB Color Extraction:** Mask out asphalt, walls, and railings (`Mask R-CNN` / GrabCut contour) before computing color histograms on `26–60 px` crops.
+3. **Small-Crop SR Trigger (`< 64 px` Height) + Pose-Guided Cropping (`YOLO11m-pose`):** Run `2× RealESRGAN_x2plus` on small distant figures regardless of source resolution and align upper/lower clothing ROIs to shoulder, hip, and knee keypoints.
+4. **Pedestrian Attribute Recognition (PAR) Training Data + Finer VLM Backbone:** Fine-tune on multi-angle CCTV datasets (**PA-100K**, **PETA**, **RAPv2**) and upgrade from `TinyCLIP-ViT-61M-32` (`224px`, `32px` patches) to **`SigLIP-384` (`patch14`/`patch16`)** alongside Retinex lighting/white-balance normalization.
+5. **Close-Match Fallback UI (`Implemented`):** When an exact search has `0` matches, `ClothingSearchDB.search()` now returns top color/type neighbor suggestions (`close_matches`) with the prompt *"No exact match found — you might be thinking of this:"*.

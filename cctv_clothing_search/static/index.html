@@ -488,6 +488,24 @@
       color: var(--muted);
       font-size: 13px;
     }
+    .fallback-banner {
+      padding: 9px 11px;
+      background: rgba(245, 158, 11, 0.10);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 7px;
+      color: #FCD34D;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .reason-badge {
+      font-size: 10px;
+      color: #FCD34D;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.30);
+      padding: 0 5px;
+      border-radius: 4px;
+    }
 
     @media (max-width: 960px) {
       body { height: auto; overflow: auto; }
@@ -580,6 +598,7 @@
       quality: 'latest',
       sort: 'time',
       matches: [],
+      isFallback: false,
       selectedIdx: -1,
       durationSec: 110.9,
       debounceTimer: null
@@ -666,9 +685,17 @@
       });
       const res = await fetch(`/api/search?${params.toString()}`);
       const data = await res.json();
-      state.matches = data.matches || [];
+      const closeMatches = data.close_matches || [];
+      if ((data.matches || []).length === 0 && closeMatches.length > 0) {
+        state.isFallback = true;
+        state.matches = closeMatches;
+        matchTitleEl.textContent = `Matches (0) · ${closeMatches.length} close`;
+      } else {
+        state.isFallback = false;
+        state.matches = data.matches || [];
+        matchTitleEl.textContent = `Matches (${data.match_count})`;
+      }
       state.durationSec = data.duration_sec || state.durationSec;
-      matchTitleEl.textContent = `Matches (${data.match_count})`;
       querySpeedEl.textContent = `${data.unique_timestamp_events} moments · ${data.query_ms} ms`;
 
       renderMatches();
@@ -698,12 +725,19 @@
         listEl.appendChild(empty);
         return;
       }
+      if (state.isFallback) {
+        const banner = document.createElement('div');
+        banner.className = 'fallback-banner';
+        banner.textContent = 'No exact match found — you might be thinking of this:';
+        listEl.appendChild(banner);
+      }
       const frag = document.createDocumentFragment();
       state.matches.forEach((m, idx) => {
         const card = document.createElement('button');
         card.className = 'match-card' + (idx === state.selectedIdx ? ' selected' : '');
         card.dataset.idx = idx;
         const humanHtml = `<span class="human-badge">Human ${Math.round(m.human_conf ?? 95)}%</span>`;
+        const reasonHtml = (state.isFallback && m.similarity_reason) ? `<span class="reason-badge">${m.similarity_reason}</span>` : '';
         card.innerHTML = `
           <img class="thumb" src="data:image/jpeg;base64,${m.thumb_b64}" alt="" loading="lazy" />
           <div class="card-mid">
@@ -712,6 +746,7 @@
               <span class="frame-badge">F${m.frame_idx}</span>
               <span class="zone-badge">${zoneLabel(m.zone)}</span>
               ${humanHtml}
+              ${reasonHtml}
             </div>
             <div class="garment-line">
               <span class="swatch" style="background:${m.color_hex}"></span>

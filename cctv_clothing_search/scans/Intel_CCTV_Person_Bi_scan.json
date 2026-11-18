@@ -1,0 +1,511 @@
+{
+  "video": {
+    "video_quality": "Intel_CCTV_Person_Bi",
+    "video_filename": "Intel_CCTV_Person_Bicycle_Car.mp4",
+    "width": 768,
+    "height": 432,
+    "fps": 12.0,
+    "total_frames": 647,
+    "duration_sec": 53.92,
+    "indexed_frames": 27,
+    "scan_ms": 11390.5,
+    "updated_at": 1795035060.9202874
+  },
+  "summary": {
+    "total_detections": 17,
+    "colors": {
+      "Light Grey": 6,
+      "Dark Grey": 6,
+      "Navy Blue": 3,
+      "White": 1,
+      "Black": 1
+    },
+    "clothing_types": {
+      "Trousers / Pants": 5,
+      "Sweater": 3,
+      "Work Overalls": 3,
+      "Dress / Skirt": 2,
+      "Tank Top": 2,
+      "Denim Jeans": 1,
+      "Safety Vest": 1
+    }
+  },
+  "detections": [
+    {
+      "timestamp_str": "00:02.0",
+      "timestamp_sec": 2.0,
+      "frame_idx": 24,
+      "person_num": 1,
+      "human_conf": 97.0,
+      "zone": "upper",
+      "short_color": "Navy Blue",
+      "clothing_color": "navy blue",
+      "color_hex": "#1E3A8A",
+      "short_type": "Sweater",
+      "clothing_type": "sweater / knitwear",
+      "color_conf": 53.3,
+      "type_conf": 30.5,
+      "joint_conf": 41.9,
+      "person_box_norm": [
+        0.6784,
+        0.7536,
+        0.7545,
+        0.9952
+      ],
+      "sub_box_norm": [
+        0.6967,
+        0.8019,
+        0.7362,
+        0.8793
+      ]
+    },
+    {
+      "timestamp_str": "00:04.0",
+      "timestamp_sec": 4.0,
+      "frame_idx": 48,
+      "person_num": 1,
+      "human_conf": 94.4,
+      "zone": "upper",
+      "short_color": "Navy Blue",
+      "clothing_color": "navy blue",
+      "color_hex": "#1E3A8A",
+      "short_type": "Sweater",
+      "clothing_type": "sweater / knitwear",
+      "color_conf": 66.4,
+      "type_conf": 23.7,
+      "joint_conf": 45.0,
+      "person_box_norm": [
+        0.7634,
+        0.4653,
+        0.8345,
+        0.6858
+      ],
+      "sub_box_norm": [
+        0.7805,
+        0.5094,
+        0.8175,
+        0.58
+      ]
+    },
+    {
+      "timestamp_str": "00:04.0",
+      "timestamp_sec": 4.0,
+      "frame_idx": 48,
+      "person_num": 1,
+      "human_conf": 94.4,
+      "zone": "lower",
+      "short_color": "Light Grey",
+      "clothing_color": "light grey / silver",
+      "color_hex": "#94A3B8",
+      "short_type": "Trousers / Pants",
+      "clothing_type": "trousers / pants",
+      "color_conf": 73.7,
+      "type_conf": 24.2,
+      "joint_conf": 49.0,
+      "person_box_norm": [
+        0.7634,
+        0.4653,
+        0.8345,
+        0.6858
+      ],
+      "sub_box_norm": [
+        0.7819,
+        0.591,
+        0.816,
+        0.6461
+      ]
+    },
+    {
+      "timestamp_str": "00:06.0",
+      "timestamp_sec": 6.0,
+      "frame_idx": 72,
+      "person_num": 1,
+      "human_conf": 95.8,
+      "zone": "upper",
+      "short_color": "Navy Blue",
+      "clothing_color": "navy blue",
+      "color_hex": "#1E3A8A",
+      "short_type": "Sweater",
+      "clothing_type": "sweater / knitwear",
+      "color_conf": 43.0,
+      "type_conf": 18.3,
+      "joint_conf": 30.7,
+      "person_box_norm": [
+        0.9052,
+        0.3051,
+        0.9731,
+        0.5121
+      ],
+      "sub_box_norm": [
+        0.9215,
+        0.3465,
+        0.9568,
+        0.4127
+      ]
+    },
+    {
+      "timestamp_str": "00:06.0",
+      "timestamp_sec": 6.0,
+      "frame_idx": 72,
+      "person_num": 1,
+      "human_conf": 95.8,
+      "zone": "lower",
+      "short_color": "Light Grey",
+      "clothing_color": "light grey / silver",
+      "color_hex": "#94A3B8",
+      "short_type": "Denim Jeans",
+      "clothing_type": "blue denim jeans",
+      "color_conf": 62.2,
+      "type_conf": 22.2,
+      "joint_conf": 42.2,
+      "person_box_norm": [
+        0.9052,
+        0.3051,
+        0.9731,
+        0.5121
+      ],
+      "sub_box_norm": [
+        0.9228,
+        0.4231,
+        0.9554,
+        0.4748
+      ]
+    },
+    {
+      "timestamp_str": "00:26.0",
+      "timestamp_sec": 26.0,
+      "frame_idx": 312,
+      "person_num": 1,
+      "human_conf": 85.1,
+      "zone": "upper",
+      "short_color": "Light Grey",
+      "clothing_color": "light grey / silver",
+      "color_hex": "#94A3B8",
+      "short_type": "Safety Vest",
+      "clothing_type": "vest / safety vest",
+      "color_conf": 88.1,
+      "type_conf": 11.5,
+      "joint_conf": 49.8,
+      "person_box_norm": [
+        0.6962,
+        0.001,
+        0.731,
+        0.0984
+      ],
+      "sub_box_norm": [
+        0.7045,
+        0.0205,
+        0.7226,
+        0.0516
+      ]
+    },
+    {
+      "timestamp_str": "00:26.0",
+      "timestamp_sec": 26.0,
+      "frame_idx": 312,
+      "person_num": 1,
+      "human_conf": 85.1,
+      "zone": "lower",
+      "short_color": "White",
+      "clothing_color": "white",
+      "color_hex": "#F1F5F9",
+      "short_type": "Dress / Skirt",
+      "clothing_type": "dress / skirt",
+      "color_conf": 93.6,
+      "type_conf": 20.8,
+      "joint_conf": 57.2,
+      "person_box_norm": [
+        0.6962,
+        0.001,
+        0.731,
+        0.0984
+      ],
+      "sub_box_norm": [
+        0.7052,
+        0.0565,
+        0.722,
+        0.0808
+      ]
+    },
+    {
+      "timestamp_str": "00:28.0",
+      "timestamp_sec": 28.0,
+      "frame_idx": 336,
+      "person_num": 1,
+      "human_conf": 84.8,
+      "zone": "upper",
+      "short_color": "Dark Grey",
+      "clothing_color": "dark grey / charcoal",
+      "color_hex": "#475569",
+      "short_type": "Tank Top",
+      "clothing_type": "tank top / sleeveless top",
+      "color_conf": 80.8,
+      "type_conf": 13.0,
+      "joint_conf": 46.9,
+      "person_box_norm": [
+        0.8655,
+        0.0563,
+        0.9082,
+        0.1979
+      ],
+      "sub_box_norm": [
+        0.8757,
+        0.0846,
+        0.8979,
+        0.1299
+      ]
+    },
+    {
+      "timestamp_str": "00:28.0",
+      "timestamp_sec": 28.0,
+      "frame_idx": 336,
+      "person_num": 1,
+      "human_conf": 84.8,
+      "zone": "lower",
+      "short_color": "Dark Grey",
+      "clothing_color": "dark grey / charcoal",
+      "color_hex": "#475569",
+      "short_type": "Trousers / Pants",
+      "clothing_type": "trousers / pants",
+      "color_conf": 80.4,
+      "type_conf": 36.1,
+      "joint_conf": 58.3,
+      "person_box_norm": [
+        0.8655,
+        0.0563,
+        0.9082,
+        0.1979
+      ],
+      "sub_box_norm": [
+        0.8766,
+        0.137,
+        0.8971,
+        0.1724
+      ]
+    },
+    {
+      "timestamp_str": "00:42.0",
+      "timestamp_sec": 42.0,
+      "frame_idx": 504,
+      "person_num": 1,
+      "human_conf": 86.1,
+      "zone": "upper",
+      "short_color": "Light Grey",
+      "clothing_color": "light grey / silver",
+      "color_hex": "#94A3B8",
+      "short_type": "Tank Top",
+      "clothing_type": "tank top / sleeveless top",
+      "color_conf": 71.2,
+      "type_conf": 10.4,
+      "joint_conf": 40.8,
+      "person_box_norm": [
+        0.1168,
+        0.0784,
+        0.1587,
+        0.2563
+      ],
+      "sub_box_norm": [
+        0.1269,
+        0.1139,
+        0.1487,
+        0.1709
+      ]
+    },
+    {
+      "timestamp_str": "00:42.0",
+      "timestamp_sec": 42.0,
+      "frame_idx": 504,
+      "person_num": 1,
+      "human_conf": 86.1,
+      "zone": "lower",
+      "short_color": "Dark Grey",
+      "clothing_color": "dark grey / charcoal",
+      "color_hex": "#475569",
+      "short_type": "Trousers / Pants",
+      "clothing_type": "trousers / pants",
+      "color_conf": 81.3,
+      "type_conf": 44.6,
+      "joint_conf": 62.9,
+      "person_box_norm": [
+        0.1168,
+        0.0784,
+        0.1587,
+        0.2563
+      ],
+      "sub_box_norm": [
+        0.1277,
+        0.1798,
+        0.1478,
+        0.2242
+      ]
+    },
+    {
+      "timestamp_str": "00:44.0",
+      "timestamp_sec": 44.0,
+      "frame_idx": 528,
+      "person_num": 1,
+      "human_conf": 94.8,
+      "zone": "upper",
+      "short_color": "Light Grey",
+      "clothing_color": "light grey / silver",
+      "color_hex": "#94A3B8",
+      "short_type": "Work Overalls",
+      "clothing_type": "overalls / workwear",
+      "color_conf": 67.2,
+      "type_conf": 12.7,
+      "joint_conf": 40.0,
+      "person_box_norm": [
+        0.275,
+        0.0187,
+        0.3209,
+        0.206
+      ],
+      "sub_box_norm": [
+        0.286,
+        0.0562,
+        0.3099,
+        0.1161
+      ]
+    },
+    {
+      "timestamp_str": "00:44.0",
+      "timestamp_sec": 44.0,
+      "frame_idx": 528,
+      "person_num": 1,
+      "human_conf": 94.8,
+      "zone": "lower",
+      "short_color": "Dark Grey",
+      "clothing_color": "dark grey / charcoal",
+      "color_hex": "#475569",
+      "short_type": "Trousers / Pants",
+      "clothing_type": "trousers / pants",
+      "color_conf": 77.1,
+      "type_conf": 39.5,
+      "joint_conf": 58.3,
+      "person_box_norm": [
+        0.275,
+        0.0187,
+        0.3209,
+        0.206
+      ],
+      "sub_box_norm": [
+        0.2869,
+        0.1255,
+        0.3089,
+        0.1723
+      ]
+    },
+    {
+      "timestamp_str": "00:46.0",
+      "timestamp_sec": 46.0,
+      "frame_idx": 552,
+      "person_num": 1,
+      "human_conf": 84.6,
+      "zone": "upper",
+      "short_color": "Black",
+      "clothing_color": "black",
+      "color_hex": "#1E293B",
+      "short_type": "Work Overalls",
+      "clothing_type": "overalls / workwear",
+      "color_conf": 58.5,
+      "type_conf": 12.5,
+      "joint_conf": 35.5,
+      "person_box_norm": [
+        0.3808,
+        0.0,
+        0.4011,
+        0.0633
+      ],
+      "sub_box_norm": [
+        0.3857,
+        0.0127,
+        0.3962,
+        0.0329
+      ]
+    },
+    {
+      "timestamp_str": "00:46.0",
+      "timestamp_sec": 46.0,
+      "frame_idx": 552,
+      "person_num": 1,
+      "human_conf": 84.6,
+      "zone": "lower",
+      "short_color": "Dark Grey",
+      "clothing_color": "dark grey / charcoal",
+      "color_hex": "#475569",
+      "short_type": "Trousers / Pants",
+      "clothing_type": "trousers / pants",
+      "color_conf": 56.7,
+      "type_conf": 38.1,
+      "joint_conf": 47.4,
+      "person_box_norm": [
+        0.3808,
+        0.0,
+        0.4011,
+        0.0633
+      ],
+      "sub_box_norm": [
+        0.3861,
+        0.0361,
+        0.3958,
+        0.0519
+      ]
+    },
+    {
+      "timestamp_str": "00:48.0",
+      "timestamp_sec": 48.0,
+      "frame_idx": 576,
+      "person_num": 1,
+      "human_conf": 64.5,
+      "zone": "upper",
+      "short_color": "Dark Grey",
+      "clothing_color": "dark grey / charcoal",
+      "color_hex": "#475569",
+      "short_type": "Work Overalls",
+      "clothing_type": "overalls / workwear",
+      "color_conf": 95.5,
+      "type_conf": 10.5,
+      "joint_conf": 53.0,
+      "person_box_norm": [
+        0.8518,
+        0.0456,
+        0.895,
+        0.2081
+      ],
+      "sub_box_norm": [
+        0.8621,
+        0.0781,
+        0.8846,
+        0.1301
+      ]
+    },
+    {
+      "timestamp_str": "00:48.0",
+      "timestamp_sec": 48.0,
+      "frame_idx": 576,
+      "person_num": 1,
+      "human_conf": 64.5,
+      "zone": "lower",
+      "short_color": "Light Grey",
+      "clothing_color": "light grey / silver",
+      "color_hex": "#94A3B8",
+      "short_type": "Dress / Skirt",
+      "clothing_type": "dress / skirt",
+      "color_conf": 87.0,
+      "type_conf": 25.1,
+      "joint_conf": 56.0,
+      "person_box_norm": [
+        0.8518,
+        0.0456,
+        0.895,
+        0.2081
+      ],
+      "sub_box_norm": [
+        0.863,
+        0.1382,
+        0.8838,
+        0.1788
+      ]
+    }
+  ]
+}

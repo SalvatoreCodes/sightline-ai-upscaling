@@ -802,6 +802,128 @@ class ClothingSearchDB:
         leftovers = [w for w in rem.split() if w not in {"a", "an", "the", "with", "in", "wearing", "and", "or", "color", "clothing"}]
         return matched_colors, matched_types, leftovers
 
+    COLOR_NEIGHBORS: dict[str, set[str]] = {
+        "black": {"dark grey / charcoal", "navy blue"},
+        "dark grey / charcoal": {"black", "light grey / silver", "navy blue"},
+        "light grey / silver": {"dark grey / charcoal", "white", "beige / khaki", "light blue"},
+        "white": {"light grey / silver", "beige / khaki", "light blue"},
+        "red": {"orange", "pink / magenta", "brown"},
+        "orange": {"red", "yellow", "brown"},
+        "yellow": {"orange", "beige / khaki", "green"},
+        "green": {"teal / cyan", "yellow", "dark grey / charcoal"},
+        "teal / cyan": {"green", "light blue", "blue"},
+        "light blue": {"blue", "teal / cyan", "light grey / silver", "white"},
+        "blue": {"royal blue", "navy blue", "light blue", "teal / cyan", "dark grey / charcoal"},
+        "royal blue": {"blue", "navy blue", "purple / violet"},
+        "navy blue": {"blue", "royal blue", "dark grey / charcoal", "black"},
+        "purple / violet": {"pink / magenta", "royal blue", "navy blue"},
+        "pink / magenta": {"red", "purple / violet", "orange"},
+        "brown": {"beige / khaki", "orange", "red", "dark grey / charcoal"},
+        "beige / khaki": {"brown", "light grey / silver", "white", "yellow"},
+    }
+
+    _OUTER_TYPES = {
+        "vest / safety vest", "zip-up jacket / bomber jacket", "open jacket / coat",
+        "puffer jacket", "buttoned coat", "long overcoat", "windbreaker / rain jacket",
+        "suit jacket / blazer", "overalls / workwear",
+    }
+    _TOP_TYPES = {
+        "t-shirt / polo shirt", "dress shirt / blouse", "flannel / plaid shirt",
+        "tank top / sleeveless top", "sweater / knitwear", "hoodie / sweatshirt",
+    }
+    _LOWER_TYPES = {
+        "trousers / pants", "blue denim jeans", "shorts / cargo shorts",
+        "joggers / track pants", "cargo pants", "dress / skirt",
+    }
+    TYPE_NEIGHBORS: dict[str, set[str]] = {}
+    for _grp in (_OUTER_TYPES, _TOP_TYPES, _LOWER_TYPES):
+        for _t in _grp:
+            TYPE_NEIGHBORS[_t] = _grp - {_t}
+    # Link outerwear & mid-layer tops as partial upper-body neighbors
+    for _t in _OUTER_TYPES:
+        TYPE_NEIGHBORS[_t] = TYPE_NEIGHBORS[_t] | {"sweater / knitwear", "hoodie / sweatshirt", "dress shirt / blouse"}
+    for _t in _TOP_TYPES:
+        TYPE_NEIGHBORS[_t] = TYPE_NEIGHBORS[_t] | {"zip-up jacket / bomber jacket", "open jacket / coat", "vest / safety vest"}
+
+    @staticmethod
+    def _format_match_row(r: dict, duration_sec: float, similarity_reason: str = "") -> dict:
+        out = {
+            "id": r["id"],
+            "video_quality": r["video_quality"],
+            "frame_idx": r["frame_idx"],
+            "timestamp_sec": round(float(r["timestamp_sec"]), 2),
+            "timestamp_str": r["timestamp_str"],
+            "timeline_pct": round(100.0 * float(r["timestamp_sec"]) / max(1e-4, duration_sec), 2),
+            "shopper_num": r["shopper_num"],
+            "zone": r["zone"],
+            "person_box_norm": json.loads(r["person_box_norm"]),
+            "sub_box_norm": json.loads(r["sub_box_norm"]),
+            "clothing_type": r["clothing_type"],
+            "clothing_color": r["clothing_color"],
+            "short_type": r["short_type"],
+            "short_color": r["short_color"],
+            "color_hex": r["color_hex"],
+            "type_conf": round(float(r["type_conf"]), 1),
+            "color_conf": round(float(r["color_conf"]), 1),
+            "joint_conf": round(float(r["joint_conf"]), 1),
+            "human_conf": round(float(r["human_conf"]) if "human_conf" in r.keys() else 95.0, 1),
+            "is_new_category": False,
+            "thumb_b64": r["thumb_b64"],
+        }
+        if similarity_reason:
+            out["similarity_reason"] = similarity_reason
+        return out
+
+    def _find_close_matches(
+        self,
+        all_rows: list[dict],
+        q_colors: set[str],
+        q_types: set[str],
+        leftovers: list[str],
+        duration_sec: float,
+        limit: int = 12,
+    ) -> list[dict]:
+        """Rank close/related clothing matches when an exact search returns zero rows."""
+        color_nbrs: set[str] = set()
+        for c in q_colors:
+            color_nbrs |= self.COLOR_NEIGHBORS.get(c, set())
+        type_nbrs: set[str] = set()
+        for t in q_types:
+            type_nbrs |= self.TYPE_NEIGHBORS.get(t, set())
+
+        scored: list[tuple[float, dict, str]] = []
+        for r in all_rows:
+            ct = r["clothing_type"]
+            cc = r["clothing_color"]
+            st_l = (r["short_type"] or "").lower()
+            sc_l = (r["short_color"] or "").lower()
+            score = 0.25 * float(r["joint_conf"]) + 0.15 * float(r["human_conf"] if "human_conf" in r.keys() else 95.0)
+            reasons: list[str] = []
+
+            if q_types and ct in q_types:
+                score += 65.0
+                reasons.append("Matching type")
+            elif type_nbrs and ct in type_nbrs:
+                score += 30.0
+                reasons.append("Similar garment")
+
+            if q_colors and cc in q_colors:
+                score += 65.0
+                reasons.append("Matching color")
+            elif color_nbrs and cc in color_nbrs:
+                score += 32.0
+                reasons.append("Similar color")
+
+            if any(kw in sc_l or kw in st_l for kw in leftovers):
+                score += 25.0
+                reasons.append("Keyword match")
+
+            reason = " · ".join(reasons) if reasons else "Top detected in video"
+            scored.append((score, r, reason))
+
+        scored.sort(key=lambda x: (-x[0], float(x[1]["timestamp_sec"])))
+        return [self._format_match_row(r, duration_sec, reason) for _, r, reason in scored[:limit]]
+
     def search(
         self,
         query: str = "",
@@ -844,36 +966,21 @@ class ClothingSearchDB:
         order_sql = "joint_conf DESC, timestamp_sec ASC" if sort_by == "confidence" else "timestamp_sec ASC, joint_conf DESC"
         sql = f"SELECT * FROM detections WHERE {' AND '.join(clauses)} ORDER BY {order_sql}"
 
+        all_quality_rows: list[dict] = []
         with self._connect() as conn:
             meta_row = conn.execute("SELECT duration_sec FROM video_meta WHERE video_quality = ?", (quality,)).fetchone()
             duration_sec = float(meta_row["duration_sec"]) if meta_row else 110.9
             rows = [dict(r) for r in conn.execute(sql, params).fetchall()]
+            if not rows and (q_colors or q_types or leftovers or query.strip()):
+                all_quality_rows = [
+                    dict(r)
+                    for r in conn.execute("SELECT * FROM detections WHERE video_quality = ?", (quality,)).fetchall()
+                ]
 
-        matches = []
-        for r in rows:
-            matches.append({
-                "id": r["id"],
-                "video_quality": r["video_quality"],
-                "frame_idx": r["frame_idx"],
-                "timestamp_sec": round(float(r["timestamp_sec"]), 2),
-                "timestamp_str": r["timestamp_str"],
-                "timeline_pct": round(100.0 * float(r["timestamp_sec"]) / max(1e-4, duration_sec), 2),
-                "shopper_num": r["shopper_num"],
-                "zone": r["zone"],
-                "person_box_norm": json.loads(r["person_box_norm"]),
-                "sub_box_norm": json.loads(r["sub_box_norm"]),
-                "clothing_type": r["clothing_type"],
-                "clothing_color": r["clothing_color"],
-                "short_type": r["short_type"],
-                "short_color": r["short_color"],
-                "color_hex": r["color_hex"],
-                "type_conf": round(float(r["type_conf"]), 1),
-                "color_conf": round(float(r["color_conf"]), 1),
-                "joint_conf": round(float(r["joint_conf"]), 1),
-                "human_conf": round(float(r["human_conf"]) if "human_conf" in r.keys() else 95.0, 1),
-                "is_new_category": False,
-                "thumb_b64": r["thumb_b64"],
-            })
+        matches = [self._format_match_row(r, duration_sec) for r in rows]
+        close_matches: list[dict] = []
+        if not matches and all_quality_rows:
+            close_matches = self._find_close_matches(all_quality_rows, q_colors, q_types, leftovers, duration_sec)
 
         unique_ts: list[float] = []
         for m in sorted(matches, key=lambda x: x["timestamp_sec"]):
@@ -891,6 +998,8 @@ class ClothingSearchDB:
             "unique_timestamp_events": len(unique_ts),
             "query_ms": query_ms,
             "matches": matches,
+            "close_matches": close_matches,
+            "close_match_count": len(close_matches),
         }
 
 
