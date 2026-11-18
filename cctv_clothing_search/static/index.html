@@ -209,32 +209,6 @@
     }
     .btn-ghost:hover { background: var(--surface); color: var(--text); }
 
-    .chips-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .chip {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: border-color 140ms ease, color 140ms ease, background 140ms ease;
-    }
-    .chip:hover { color: var(--text); border-color: var(--border-strong); }
-    .chip.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-    .chip.discovered { border-color: rgba(16, 185, 129, 0.45); color: #6EE7B7; }
-    .chip.discovered:hover { border-color: #10B981; color: #A7F3D0; }
-    .chip.discovered.active { background: rgba(16, 185, 129, 0.16); border-color: #10B981; color: #34D399; }
-    .chip-dot { width: 7px; height: 7px; border-radius: 999px; flex-shrink: 0; }
-
     /* Main Split Grid */
     .workspace {
       flex: 1;
@@ -479,17 +453,6 @@
       border-radius: 4px;
       font-variant-numeric: tabular-nums;
     }
-    .new-badge {
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 700;
-      color: #10B981;
-      background: rgba(16, 185, 129, 0.14);
-      border: 1px solid rgba(16, 185, 129, 0.45);
-      padding: 0 5px;
-      border-radius: 4px;
-      letter-spacing: 0.04em;
-    }
     .garment-line {
       display: flex;
       align-items: center;
@@ -573,7 +536,6 @@
       </select>
       <button id="clearBtn" class="btn-ghost">Reset</button>
     </div>
-    <div class="chips-row" id="quickChips"></div>
   </section>
 
   <main class="workspace">
@@ -620,23 +582,10 @@
   </main>
 
   <script>
-    const PRESETS = [
-      { label: 'Blue jacket', dot: '#2563EB' },
-      { label: 'Navy puffer', dot: '#1E3A8A' },
-      { label: 'Pink shirt', dot: '#EC4899' },
-      { label: 'White hoodie', dot: '#F1F5F9' },
-      { label: 'White coat', dot: '#E2E8F0' },
-      { label: 'Black pants', dot: '#1E293B' },
-      { label: 'Blue jeans', dot: '#3B82F6' },
-      { label: 'Beige coat', dot: '#D6B88D' },
-      { label: 'Grey sweater', dot: '#94A3B8' }
-    ];
-
     const state = {
       quality: '144p',
       sort: 'time',
       matches: [],
-      discoveredCategories: [],
       selectedIdx: -1,
       durationSec: 110.9,
       debounceTimer: null
@@ -660,7 +609,6 @@
     const fileInput = document.getElementById('fileInput');
     const scanBtn = document.getElementById('scanBtn');
     const qualityGroupEl = document.getElementById('qualityGroup');
-    const chipsEl = document.getElementById('quickChips');
     const PRESET_QUALITIES = ['144p', '240p', '360p', '480p', '720p'];
 
     function renderQualityButtons(available) {
@@ -686,46 +634,17 @@
       return `${String(m).padStart(2, '0')}:${s}`;
     }
 
-    function renderChips() {
-      const qVal = searchEl.value.trim().toLowerCase();
-      chipsEl.innerHTML = '';
-      PRESETS.forEach(p => {
-        const b = document.createElement('button');
-        b.className = 'chip' + (qVal === p.label.toLowerCase() ? ' active' : '');
-        b.innerHTML = `<span class="chip-dot" style="background:${p.dot}"></span>${p.label}`;
-        b.onclick = () => {
-          searchEl.value = (searchEl.value.trim().toLowerCase() === p.label.toLowerCase()) ? '' : p.label;
-          runSearch();
-        };
-        chipsEl.appendChild(b);
-      });
-      (state.discoveredCategories || []).forEach(cat => {
-        const label = cat.short_label || cat.name;
-        const b = document.createElement('button');
-        b.className = 'chip discovered' + (qVal === label.toLowerCase() ? ' active' : '');
-        b.innerHTML = `<span class="chip-dot" style="background:#10B981"></span>+ ${label}`;
-        b.onclick = () => {
-          searchEl.value = (searchEl.value.trim().toLowerCase() === label.toLowerCase()) ? '' : label;
-          runSearch();
-        };
-        chipsEl.appendChild(b);
-      });
-    }
-
     async function loadStats() {
       const res = await fetch(`/api/stats?quality=${encodeURIComponent(state.quality)}`);
       const data = await res.json();
       renderQualityButtons(data.available_qualities);
-      state.discoveredCategories = data.discovered_categories || [];
-      const discCount = state.discoveredCategories.length;
-      const discPart = discCount > 0 ? ` · +${discCount} new types` : '';
       const v = data.video;
       if (v) {
-        statusEl.textContent = `${state.quality} (${v.width}x${v.height}) · ${data.total_detections} indexed${discPart}`;
+        statusEl.textContent = `${state.quality} (${v.width}x${v.height}) · ${data.total_detections} indexed`;
         state.durationSec = v.duration_sec;
         updateTimeUI();
       } else {
-        statusEl.textContent = `${state.quality} · unindexed${discPart}`;
+        statusEl.textContent = `${state.quality} · unindexed`;
       }
 
       const prevC = colorEl.value;
@@ -743,15 +662,13 @@
       (data.types || []).forEach(t => {
         const opt = document.createElement('option');
         opt.value = t.type;
-        opt.textContent = `${t.is_discovered ? '+ NEW: ' : ''}${t.short_type} (${t.count})`;
+        opt.textContent = `${t.short_type} (${t.count})`;
         typeEl.appendChild(opt);
       });
       typeEl.value = prevT;
-      renderChips();
     }
 
     async function runSearch(preserveTime = false) {
-      renderChips();
       const params = new URLSearchParams({
         q: searchEl.value.trim(),
         quality: state.quality,
@@ -799,7 +716,6 @@
         card.className = 'match-card' + (idx === state.selectedIdx ? ' selected' : '');
         card.dataset.idx = idx;
         const humanHtml = `<span class="human-badge">Human ${Math.round(m.human_conf ?? 95)}%</span>`;
-        const newHtml = m.is_new_category ? `<span class="new-badge">NEW</span>` : '';
         card.innerHTML = `
           <img class="thumb" src="data:image/jpeg;base64,${m.thumb_b64}" alt="" loading="lazy" />
           <div class="card-mid">
@@ -808,7 +724,6 @@
               <span class="frame-badge">F${m.frame_idx}</span>
               <span class="zone-badge">${zoneLabel(m.zone)}</span>
               ${humanHtml}
-              ${newHtml}
             </div>
             <div class="garment-line">
               <span class="swatch" style="background:${m.color_hex}"></span>
@@ -854,8 +769,7 @@
       }
       renderTimelineTicks();
 
-      const newPill = m.is_new_category ? ' <span class="new-badge">NEW</span>' : '';
-      activeTagEl.innerHTML = `<span class="swatch" style="background:${m.color_hex}"></span>${m.timestamp_str} · Human ${Math.round(m.human_conf ?? 95)}% · ${m.short_color} ${m.short_type} (${Math.round(m.joint_conf)}%)${newPill}`;
+      activeTagEl.innerHTML = `<span class="swatch" style="background:${m.color_hex}"></span>${m.timestamp_str} · Human ${Math.round(m.human_conf ?? 95)}% · ${m.short_color} ${m.short_type} (${Math.round(m.joint_conf)}%)`;
 
       if (seekVideo) {
         videoEl.pause();
@@ -910,8 +824,7 @@
       ctx.lineWidth = 2.5;
       ctx.strokeRect(bx, by, bw, bh);
 
-      const newTag = m.is_new_category ? ' [NEW]' : '';
-      const label = `Human ${Math.round(m.human_conf ?? 95)}% · ${m.short_color} · ${m.short_type}${newTag} (${Math.round(m.joint_conf)}%)`;
+      const label = `Human ${Math.round(m.human_conf ?? 95)}% · ${m.short_color} · ${m.short_type} (${Math.round(m.joint_conf)}%)`;
       ctx.font = '600 12px "Geist", system-ui, sans-serif';
       const tw = ctx.measureText(label).width + 14;
       const lx = Math.max(4, Math.min(overlayEl.width - tw - 4, vr.x + px1 * vr.w));
