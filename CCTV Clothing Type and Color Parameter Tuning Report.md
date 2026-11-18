@@ -1,6 +1,6 @@
 # Parameter Tuning Report: CCTV Clothing Type & Color Classification at Lowest Video Quality (`720p` to `144p`)
 
-**Dataset Tested:** 5 real retail-store CCTV footage qualities in `D:\Projects\affine-ai-upscaling\Assets` (`720p` `1270x720`, `480p` `846x480`, `360p` `634x360`, `240p` `424x240`, `144p` `254x144`; `13.09 FPS`, `1452 frames`).
+**Dataset Tested:** 5 real retail-store CCTV footage qualities in `D:\Projects\sightline-ai-upscaling\Assets` (`720p` `1270x720`, `480p` `846x480`, `360p` `634x360`, `240p` `424x240`, `144p` `254x144`; `13.09 FPS`, `1452 frames`).
 **Local Hardware & Models:** NVIDIA GeForce RTX 4050 Laptop GPU (`6,141 MiB VRAM`) + `wkcn/TinyCLIP-ViT-61M-32-Text-29M-LAION400M` + `RealESRGAN_x2plus` + Gaussian `CIELAB/HSV` Fusion + `FasterRCNN-ResNet50-FPN-V2`.
 
 ---

@@ -53,6 +53,6 @@
     "per_frame_cnn_mae": 3.6,
     "multi_frame_fusion_mae": 0.96
   },
-  "affine_zip": "D:\\projects\\affine-ai-upscaling\\AFFiNE_AI_Upscaling_Report.zip",
+  "affine_zip": "D:\\projects\\sightline-ai-upscaling\\AFFiNE_AI_Upscaling_Report.zip",
   "zip_bytes": 1450596
 }

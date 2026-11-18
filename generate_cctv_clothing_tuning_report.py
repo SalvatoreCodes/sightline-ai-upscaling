@@ -32,8 +32,8 @@ sys.path.insert(0, str(KEEP_ROOT / "py_shims"))
 sys.path.insert(0, str(KEEP_ROOT / "KEEP"))
 from basicsr.archs.rrdbnet_arch import RRDBNet  # noqa: E402
 
-ASSETS_VID_DIR = Path(r"D:\Projects\affine-ai-upscaling\Assets")
-OUT_DIR = Path(r"D:\projects\affine-ai-upscaling")
+ASSETS_VID_DIR = Path(r"D:\Projects\sightline-ai-upscaling\Assets")
+OUT_DIR = Path(r"D:\projects\sightline-ai-upscaling")
 WORK_DIR = OUT_DIR / "_assets_lq_class"
 WORK_DIR.mkdir(parents=True, exist_ok=True)
 ARTIFACT_DIR = Path(r"C:\Users\gonip\.gemini\antigravity\brain\9aef8ee6-bcd8-433c-83fd-7a1ce800d4e7")
@@ -1146,7 +1146,7 @@ def write_report_and_zip(summary: dict, panels: list[Path]) -> tuple[Path, Path,
     md_body = "\n".join([
         "# Parameter Tuning Report: CCTV Clothing Type & Color Classification at Lowest Video Quality (`720p` to `144p`)",
         "",
-        "**Dataset Tested:** 5 real retail-store CCTV footage qualities in `D:\\Projects\\affine-ai-upscaling\\Assets` (`720p` `1270x720`, `480p` `846x480`, `360p` `634x360`, `240p` `424x240`, `144p` `254x144`; `13.09 FPS`, `1452 frames`).",
+        "**Dataset Tested:** 5 real retail-store CCTV footage qualities in `D:\\Projects\\sightline-ai-upscaling\\Assets` (`720p` `1270x720`, `480p` `846x480`, `360p` `634x360`, `240p` `424x240`, `144p` `254x144`; `13.09 FPS`, `1452 frames`).",
         "**Local Hardware & Models:** NVIDIA GeForce RTX 4050 Laptop GPU (`6,141 MiB VRAM`) + `wkcn/TinyCLIP-ViT-61M-32-Text-29M-LAION400M` + `RealESRGAN_x2plus` + Gaussian `CIELAB/HSV` Fusion + `FasterRCNN-ResNet50-FPN-V2`.",
         "",
         "---",

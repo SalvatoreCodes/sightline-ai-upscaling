@@ -17,7 +17,7 @@ import torchvision.models.detection as tv_det
 from PIL import Image, ImageFilter
 from transformers import CLIPModel, CLIPProcessor
 
-ROOT_DIR = Path(r"D:\projects\affine-ai-upscaling")
+ROOT_DIR = Path(r"D:\projects\sightline-ai-upscaling")
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
@@ -27,7 +27,7 @@ DATA_DIR = Path(__file__).resolve().parent / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 MODEL_PATH = DATA_DIR / "sightline_trained_model.pt"
 METRICS_PATH = DATA_DIR / "training_metrics.json"
-VIRAT_DIR = Path(r"D:\Projects\affine-ai-upscaling\Assets\VIRAT")
+VIRAT_DIR = Path(r"D:\Projects\sightline-ai-upscaling\Assets\VIRAT")
 
 EXPANDED_COLORS = list(tuned.CLOTHING_COLORS) + [
     "red",

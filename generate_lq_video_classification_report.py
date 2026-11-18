@@ -21,7 +21,7 @@ sys.path.insert(0, str(KEEP_ROOT / "py_shims"))
 sys.path.insert(0, str(KEEP_ROOT / "KEEP"))
 from basicsr.archs.rrdbnet_arch import RRDBNet  # noqa: E402
 
-OUT_DIR = Path(r"D:\projects\affine-ai-upscaling")
+OUT_DIR = Path(r"D:\projects\sightline-ai-upscaling")
 ASSETS_DIR = OUT_DIR / "_assets_lq_class"
 CLIPS_DIR = ASSETS_DIR / "clips"
 ARTIFACT_DIR = Path(r"C:\Users\gonip\.gemini\antigravity\brain\9aef8ee6-bcd8-433c-83fd-7a1ce800d4e7")

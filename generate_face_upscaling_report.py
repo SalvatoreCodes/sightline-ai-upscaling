@@ -28,7 +28,7 @@ if "torchvision.transforms.functional_tensor" not in sys.modules:
     sys.modules["torchvision.transforms.functional_tensor"] = shim
 
 
-OUT_DIR = Path(r"D:\projects\affine-ai-upscaling")
+OUT_DIR = Path(r"D:\projects\sightline-ai-upscaling")
 CACHE_DIR = Path(r"D:\projects\_cache")
 FACE_CACHE = CACHE_DIR / "face_assets"
 OUT_DIR.mkdir(parents=True, exist_ok=True)

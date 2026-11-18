@@ -10,7 +10,7 @@ from pathlib import Path
 
 import cv2
 
-VIRAT_DIR = Path(r"D:\Projects\affine-ai-upscaling\Assets\VIRAT")
+VIRAT_DIR = Path(r"D:\Projects\sightline-ai-upscaling\Assets\VIRAT")
 VIRAT_DIR.mkdir(parents=True, exist_ok=True)
 
 KITWARE_VIDEOS_FOLDER = "56f581ce8d777f753209ca43"

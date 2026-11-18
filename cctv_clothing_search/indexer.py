@@ -23,7 +23,7 @@ import torchvision.models.detection as tv_det
 from PIL import Image, ImageFilter
 from transformers import CLIPModel, CLIPProcessor
 
-ROOT_DIR = Path(r"D:\projects\affine-ai-upscaling")
+ROOT_DIR = Path(r"D:\projects\sightline-ai-upscaling")
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
