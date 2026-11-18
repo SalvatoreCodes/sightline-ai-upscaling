@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import argparse
 import base64
+import csv
 import io
 import json
 import os
+import re
 import sqlite3
 import sys
 import time
@@ -32,6 +34,8 @@ DATA_DIR = Path(__file__).resolve().parent / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 UPLOADS_DIR = Path(__file__).resolve().parent / "uploads"
 UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+SCANS_DIR = Path(__file__).resolve().parent / "scans"
+SCANS_DIR.mkdir(parents=True, exist_ok=True)
 DB_PATH = DATA_DIR / "clothing_index.db"
 JSON_PATH = DATA_DIR / "clothing_index.json"
 
@@ -126,7 +130,11 @@ def resolve_video_path(quality: str, db: ClothingSearchDB | None = None) -> Path
     if quality in VIDEO_FILES:
         return VIDEO_FILES[quality]
     if db is not None:
-        meta = db.get_stats(quality).get("video")
+        stats = db.get_stats(quality)
+        resolved_q = stats.get("quality", "")
+        if resolved_q in VIDEO_FILES:
+            return VIDEO_FILES[resolved_q]
+        meta = stats.get("video")
         if meta and meta.get("video_filename"):
             cand = UPLOADS_DIR / meta["video_filename"]
             if cand.exists():
@@ -644,6 +652,74 @@ class ClothingSearchDB:
                     for r in rows
                 ],
             )
+        self.export_video_scan_files(q)
+
+    def export_video_scan_files(self, quality: str) -> dict:
+        """Export per-video scan results (metadata, summary counts, and timestamped detections) to JSON and CSV."""
+        safe_q = re.sub(r"[^A-Za-z0-9._-]", "_", quality) or "scan"
+        json_file = SCANS_DIR / f"{safe_q}_scan.json"
+        csv_file = SCANS_DIR / f"{safe_q}_scan.csv"
+
+        with self._connect() as conn:
+            meta_row = conn.execute("SELECT * FROM video_meta WHERE video_quality = ?", (quality,)).fetchone()
+            det_rows = conn.execute(
+                "SELECT * FROM detections WHERE video_quality = ? ORDER BY timestamp_sec ASC, shopper_num ASC, id ASC",
+                (quality,),
+            ).fetchall()
+
+        color_counts: dict[str, int] = {}
+        type_counts: dict[str, int] = {}
+        det_list: list[dict[str, Any]] = []
+        for r in det_rows:
+            sc = r["short_color"]
+            st = r["short_type"]
+            color_counts[sc] = color_counts.get(sc, 0) + 1
+            type_counts[st] = type_counts.get(st, 0) + 1
+            det_list.append({
+                "timestamp_str": r["timestamp_str"],
+                "timestamp_sec": round(float(r["timestamp_sec"]), 2),
+                "frame_idx": int(r["frame_idx"]),
+                "person_num": int(r["shopper_num"]),
+                "human_conf": round(float(r["human_conf"]) if "human_conf" in r.keys() else 95.0, 1),
+                "zone": r["zone"],
+                "short_color": sc,
+                "clothing_color": r["clothing_color"],
+                "color_hex": r["color_hex"],
+                "short_type": st,
+                "clothing_type": r["clothing_type"],
+                "color_conf": round(float(r["color_conf"]), 1),
+                "type_conf": round(float(r["type_conf"]), 1),
+                "joint_conf": round(float(r["joint_conf"]), 1),
+                "person_box_norm": json.loads(r["person_box_norm"]),
+                "sub_box_norm": json.loads(r["sub_box_norm"]),
+            })
+
+        payload = {
+            "video": dict(meta_row) if meta_row else {"video_quality": quality},
+            "summary": {
+                "total_detections": len(det_list),
+                "colors": dict(sorted(color_counts.items(), key=lambda kv: -kv[1])),
+                "clothing_types": dict(sorted(type_counts.items(), key=lambda kv: -kv[1])),
+            },
+            "detections": det_list,
+        }
+        json_file.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+        with open(csv_file, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow([
+                "timestamp_str", "timestamp_sec", "frame_idx", "person_num", "human_conf",
+                "zone", "color", "clothing_type", "joint_conf", "color_conf", "type_conf",
+                "person_box_norm", "sub_box_norm",
+            ])
+            for d in det_list:
+                writer.writerow([
+                    d["timestamp_str"], d["timestamp_sec"], d["frame_idx"], d["person_num"], d["human_conf"],
+                    d["zone"], d["short_color"], d["short_type"], d["joint_conf"], d["color_conf"], d["type_conf"],
+                    json.dumps(d["person_box_norm"]), json.dumps(d["sub_box_norm"]),
+                ])
+
+        return {"json_file": str(json_file), "csv_file": str(csv_file), "detections": len(det_list)}
 
     def export_json_snapshot(self, out_path: Path = JSON_PATH):
         with self._connect() as conn:
@@ -654,9 +730,12 @@ class ClothingSearchDB:
             d["sub_box_norm"] = json.loads(d["sub_box_norm"])
         out_path.write_text(json.dumps({"videos": metas, "detections": dets}), encoding="utf-8")
 
-    def get_stats(self, quality: str = "144p") -> dict:
+    def get_stats(self, quality: str = "latest") -> dict:
         with self._connect() as conn:
-            metas = [dict(r) for r in conn.execute("SELECT * FROM video_meta ORDER BY width ASC").fetchall()]
+            metas = [dict(r) for r in conn.execute("SELECT * FROM video_meta ORDER BY updated_at DESC").fetchall()]
+            available = [m["video_quality"] for m in metas]
+            if not quality or quality == "latest" or quality not in available:
+                quality = metas[0]["video_quality"] if metas else "144p"
             meta_q = next((m for m in metas if m["video_quality"] == quality), None)
             total_dets = conn.execute(
                 "SELECT COUNT(*) FROM detections WHERE video_quality = ?", (quality,)
@@ -680,16 +759,20 @@ class ClothingSearchDB:
                     (quality,),
                 ).fetchall()
             ]
+        safe_q = re.sub(r"[^A-Za-z0-9._-]", "_", quality) or "scan"
         all_cats = self.get_categories()
         tmetrics = json.loads(trainer.METRICS_PATH.read_text(encoding="utf-8")) if trainer.METRICS_PATH.exists() else None
         return {
             "quality": quality,
             "video": meta_q,
-            "available_qualities": [m["video_quality"] for m in metas],
+            "available_qualities": available,
             "all_videos": metas,
             "total_detections": total_dets,
             "colors": colors,
             "types": types,
+            "scan_json_file": f"{safe_q}_scan.json",
+            "scan_csv_file": f"{safe_q}_scan.csv",
+            "scan_json_path": str(SCANS_DIR / f"{safe_q}_scan.json"),
             "discovered_categories": [],
             "all_categories": all_cats,
             "training_metrics": tmetrics,

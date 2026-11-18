@@ -505,14 +505,8 @@
       <span>SIGHTLINE</span>
     </div>
     <div class="topbar-controls">
-      <div class="seg-group" id="qualityGroup" role="group" aria-label="Video source">
-        <button class="seg-btn active" data-q="144p">144p</button>
-        <button class="seg-btn" data-q="240p">240p</button>
-        <button class="seg-btn" data-q="360p">360p</button>
-        <button class="seg-btn" data-q="480p">480p</button>
-        <button class="seg-btn" data-q="720p">720p</button>
-      </div>
       <span class="status-pill" id="indexStatus">--</span>
+      <a class="status-pill" id="scanFileLink" href="#" download style="display:none;text-decoration:none;color:var(--accent)" title="Download scan results with timestamps"></a>
       <input id="fileInput" type="file" accept="video/*,.mp4,.mov,.avi,.mkv,.webm" style="display:none" />
       <button class="btn-primary" id="uploadBtn">Upload Video</button>
       <button class="btn-primary" id="scanBtn">Scan Video</button>
@@ -583,7 +577,7 @@
 
   <script>
     const state = {
-      quality: '144p',
+      quality: 'latest',
       sort: 'time',
       matches: [],
       selectedIdx: -1,
@@ -605,27 +599,10 @@
     const matchTitleEl = document.getElementById('matchTitle');
     const querySpeedEl = document.getElementById('querySpeed');
     const statusEl = document.getElementById('indexStatus');
+    const scanFileLink = document.getElementById('scanFileLink');
     const uploadBtn = document.getElementById('uploadBtn');
     const fileInput = document.getElementById('fileInput');
     const scanBtn = document.getElementById('scanBtn');
-    const qualityGroupEl = document.getElementById('qualityGroup');
-    const PRESET_QUALITIES = ['144p', '240p', '360p', '480p', '720p'];
-
-    function renderQualityButtons(available) {
-      const merged = [...PRESET_QUALITIES];
-      (available || []).forEach(q => {
-        if (!merged.includes(q)) merged.push(q);
-      });
-      qualityGroupEl.innerHTML = '';
-      merged.forEach(q => {
-        const b = document.createElement('button');
-        b.className = 'seg-btn' + (q === state.quality ? ' active' : '');
-        b.dataset.q = q;
-        b.textContent = q;
-        b.onclick = () => setVideoQuality(q);
-        qualityGroupEl.appendChild(b);
-      });
-    }
 
     function fmtTime(sec) {
       if (!isFinite(sec) || sec < 0) sec = 0;
@@ -637,14 +614,25 @@
     async function loadStats() {
       const res = await fetch(`/api/stats?quality=${encodeURIComponent(state.quality)}`);
       const data = await res.json();
-      renderQualityButtons(data.available_qualities);
+      if (data.quality) state.quality = data.quality;
       const v = data.video;
       if (v) {
         statusEl.textContent = `${state.quality} (${v.width}x${v.height}) · ${data.total_detections} indexed`;
         state.durationSec = v.duration_sec;
+        const targetSrc = `/video/${encodeURIComponent(state.quality)}`;
+        if (videoEl.getAttribute('src') !== targetSrc) {
+          videoEl.src = targetSrc;
+        }
+        if (data.scan_json_file) {
+          scanFileLink.style.display = 'inline-block';
+          scanFileLink.href = `/api/scan-file/${encodeURIComponent(state.quality)}`;
+          scanFileLink.download = data.scan_json_file;
+          scanFileLink.textContent = data.scan_json_file;
+        }
         updateTimeUI();
       } else {
         statusEl.textContent = `${state.quality} · unindexed`;
+        scanFileLink.style.display = 'none';
       }
 
       const prevC = colorEl.value;
@@ -851,7 +839,6 @@
     function setVideoQuality(q) {
       state.quality = q;
       const prevTime = videoEl.currentTime || 0;
-      document.querySelectorAll('#qualityGroup .seg-btn').forEach(b => b.classList.toggle('active', b.dataset.q === q));
       videoEl.src = `/video/${encodeURIComponent(q)}`;
       videoEl.addEventListener('loadedmetadata', () => {
         if (prevTime > 0 && prevTime < videoEl.duration) videoEl.currentTime = prevTime;
@@ -961,7 +948,7 @@
       }
     });
 
-    setVideoQuality('144p');
+    loadStats().then(() => runSearch());
   </script>
 </body>
 </html>

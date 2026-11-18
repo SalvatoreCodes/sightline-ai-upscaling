@@ -12,7 +12,7 @@ import uvicorn
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, StreamingResponse
 
-from .indexer import UPLOADS_DIR, ClothingSearchDB, resolve_video_path
+from .indexer import SCANS_DIR, UPLOADS_DIR, ClothingSearchDB, resolve_video_path
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 app = FastAPI(title="Sightline Clothing Search", docs_url=None, redoc_url=None)
@@ -43,8 +43,26 @@ def health():
 
 
 @app.get("/api/stats")
-def api_stats(quality: str = Query("144p")):
+def api_stats(quality: str = Query("latest")):
     return db.get_stats(quality)
+
+
+@app.get("/api/scan-file/{quality}")
+def api_scan_file(quality: str, fmt: str = Query("json")):
+    stats = db.get_stats(quality)
+    resolved_q = stats["quality"]
+    if not stats.get("video"):
+        raise HTTPException(status_code=404, detail=f"No scan data found for {quality}")
+    safe_q = re.sub(r"[^A-Za-z0-9._-]", "_", resolved_q) or "scan"
+    if fmt.lower() == "csv":
+        target = SCANS_DIR / f"{safe_q}_scan.csv"
+        media_t = "text/csv"
+    else:
+        target = SCANS_DIR / f"{safe_q}_scan.json"
+        media_t = "application/json"
+    if not target.exists():
+        db.export_video_scan_files(resolved_q)
+    return FileResponse(target, media_type=media_t, filename=target.name)
 
 
 @app.get("/api/categories")
@@ -64,12 +82,14 @@ def api_train(epochs: int = Query(65, ge=5, le=200)):
 @app.get("/api/search")
 def api_search(
     q: str = Query("", max_length=120),
-    quality: str = Query("144p"),
+    quality: str = Query("latest"),
     color: str = Query(""),
     garment_type: str = Query("", alias="type"),
     min_conf: float = Query(0.0, ge=0.0, le=100.0),
     sort: str = Query("time"),
 ):
+    if not quality or quality == "latest":
+        quality = db.get_stats("latest")["quality"]
     return db.search(
         query=q,
         quality=quality,

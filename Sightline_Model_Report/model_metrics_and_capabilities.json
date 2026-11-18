@@ -1,0 +1,620 @@
+{
+  "training_metrics": {
+    "epochs": 65,
+    "train_time_sec": 101.16,
+    "human_train_samples": 538,
+    "human_val_samples": 152,
+    "human_val_acc_pct": 96.1,
+    "garment_train_samples": 336,
+    "garment_val_samples": 24,
+    "type_val_acc_144_240_pct": 100.0,
+    "color_val_acc_144_240_pct": 100.0,
+    "final_loss": 0.6747
+  },
+  "timing_vram": {
+    "sr4x_ms_per_crop": 134.16,
+    "clip_ms_per_roi": 27.14,
+    "tuned_ms_per_tracklet_frame": 298.95,
+    "sr_vram_mb": 76.6,
+    "clip_vram_mb": 456.2
+  },
+  "detector_recall": {
+    "720p": {
+      "target_raw_hits": 8,
+      "target_sr_hits": 8,
+      "target_total": 8,
+      "target_raw_pct": 100.0,
+      "target_sr_pct": 100.0,
+      "all_raw_hits": 56,
+      "all_sr_hits": 56,
+      "all_total": 56,
+      "all_raw_pct": 100.0,
+      "all_sr_pct": 100.0,
+      "raw_mean_iou": 0.992,
+      "sr_mean_iou": 0.975,
+      "raw_ms": 186.5,
+      "sr_ms": 2919.6
+    },
+    "480p": {
+      "target_raw_hits": 8,
+      "target_sr_hits": 8,
+      "target_total": 8,
+      "target_raw_pct": 100.0,
+      "target_sr_pct": 100.0,
+      "all_raw_hits": 56,
+      "all_sr_hits": 55,
+      "all_total": 56,
+      "all_raw_pct": 100.0,
+      "all_sr_pct": 98.2,
+      "raw_mean_iou": 0.965,
+      "sr_mean_iou": 0.959,
+      "raw_ms": 166.4,
+      "sr_ms": 1675.7
+    },
+    "360p": {
+      "target_raw_hits": 8,
+      "target_sr_hits": 8,
+      "target_total": 8,
+      "target_raw_pct": 100.0,
+      "target_sr_pct": 100.0,
+      "all_raw_hits": 53,
+      "all_sr_hits": 54,
+      "all_total": 56,
+      "all_raw_pct": 94.6,
+      "all_sr_pct": 96.4,
+      "raw_mean_iou": 0.943,
+      "sr_mean_iou": 0.963,
+      "raw_ms": 166.4,
+      "sr_ms": 827.3
+    },
+    "240p": {
+      "target_raw_hits": 8,
+      "target_sr_hits": 8,
+      "target_total": 8,
+      "target_raw_pct": 100.0,
+      "target_sr_pct": 100.0,
+      "all_raw_hits": 46,
+      "all_sr_hits": 53,
+      "all_total": 56,
+      "all_raw_pct": 82.1,
+      "all_sr_pct": 94.6,
+      "raw_mean_iou": 0.907,
+      "sr_mean_iou": 0.933,
+      "raw_ms": 162.0,
+      "sr_ms": 452.6
+    },
+    "144p": {
+      "target_raw_hits": 8,
+      "target_sr_hits": 8,
+      "target_total": 8,
+      "target_raw_pct": 100.0,
+      "target_sr_pct": 100.0,
+      "all_raw_hits": 33,
+      "all_sr_hits": 43,
+      "all_total": 56,
+      "all_raw_pct": 58.9,
+      "all_sr_pct": 76.8,
+      "raw_mean_iou": 0.853,
+      "sr_mean_iou": 0.876,
+      "raw_ms": 162.7,
+      "sr_ms": 265.2
+    }
+  },
+  "variable_colors_count": 17,
+  "variable_colors": [
+    "black",
+    "dark grey / charcoal",
+    "light grey / silver",
+    "white",
+    "red",
+    "orange",
+    "yellow",
+    "green",
+    "teal / cyan",
+    "light blue",
+    "blue",
+    "royal blue",
+    "navy blue",
+    "purple / violet",
+    "pink / magenta",
+    "brown",
+    "beige / khaki"
+  ],
+  "variable_types_count": 21,
+  "variable_types": [
+    "vest / safety vest",
+    "t-shirt / polo shirt",
+    "dress shirt / blouse",
+    "flannel / plaid shirt",
+    "tank top / sleeveless top",
+    "sweater / knitwear",
+    "hoodie / sweatshirt",
+    "zip-up jacket / bomber jacket",
+    "open jacket / coat",
+    "puffer jacket",
+    "buttoned coat",
+    "long overcoat",
+    "windbreaker / rain jacket",
+    "suit jacket / blazer",
+    "overalls / workwear",
+    "trousers / pants",
+    "blue denim jeans",
+    "shorts / cargo shorts",
+    "joggers / track pants",
+    "cargo pants",
+    "dress / skirt"
+  ],
+  "scanned_videos": [
+    {
+      "source": "Construction-Site-CC",
+      "filename": "Construction-Site-CCTV.html.mp4",
+      "resolution": "586x480",
+      "duration_sec": 87.0,
+      "detections": 189,
+      "top_colors": [
+        [
+          "Black",
+          62
+        ],
+        [
+          "Dark Grey",
+          41
+        ],
+        [
+          "Red",
+          32
+        ],
+        [
+          "Yellow",
+          14
+        ]
+      ],
+      "top_types": [
+        [
+          "Safety Vest",
+          56
+        ],
+        [
+          "Trousers / Pants",
+          56
+        ],
+        [
+          "Shirt / Blouse",
+          32
+        ],
+        [
+          "Work Overalls",
+          16
+        ]
+      ],
+      "scan_ms": 65269.1
+    },
+    {
+      "source": "240p",
+      "filename": "YTDown.com_YouTube_Media_KMJS66jBtVQ_HD-CCTV-Camera-video-3MP-4MP-iProx-CCTV-HDCCTVCameras-net-retail-store_004_240p.mp4",
+      "resolution": "424x240",
+      "duration_sec": 110.9,
+      "detections": 626,
+      "top_colors": [
+        [
+          "Black",
+          204
+        ],
+        [
+          "Dark Grey",
+          134
+        ],
+        [
+          "Pink",
+          70
+        ],
+        [
+          "White",
+          50
+        ]
+      ],
+      "top_types": [
+        [
+          "Trousers / Pants",
+          251
+        ],
+        [
+          "Shirt / Blouse",
+          95
+        ],
+        [
+          "Jacket",
+          94
+        ],
+        [
+          "Sweater",
+          51
+        ]
+      ],
+      "scan_ms": 238166.7
+    },
+    {
+      "source": "144p",
+      "filename": "YTDown.com_YouTube_Media_KMJS66jBtVQ_HD-CCTV-Camera-video-3MP-4MP-iProx-CCTV-HDCCTVCameras-net-retail-store_005_144p.mp4",
+      "resolution": "254x144",
+      "duration_sec": 110.9,
+      "detections": 540,
+      "top_colors": [
+        [
+          "Black",
+          216
+        ],
+        [
+          "Dark Grey",
+          93
+        ],
+        [
+          "White",
+          49
+        ],
+        [
+          "Pink",
+          38
+        ]
+      ],
+      "top_types": [
+        [
+          "Trousers / Pants",
+          203
+        ],
+        [
+          "Jacket",
+          77
+        ],
+        [
+          "Shirt / Blouse",
+          64
+        ],
+        [
+          "Open Jacket",
+          52
+        ]
+      ],
+      "scan_ms": 207057.2
+    },
+    {
+      "source": "VIRAT_0102",
+      "filename": "VIRAT_S_010204_05_000856_000890.mp4",
+      "resolution": "1280x720",
+      "duration_sec": 24.4,
+      "detections": 266,
+      "top_colors": [
+        [
+          "Black",
+          152
+        ],
+        [
+          "Dark Grey",
+          91
+        ],
+        [
+          "Light Grey",
+          19
+        ],
+        [
+          "Green",
+          3
+        ]
+      ],
+      "top_types": [
+        [
+          "Trousers / Pants",
+          128
+        ],
+        [
+          "Work Overalls",
+          105
+        ],
+        [
+          "T-Shirt / Polo",
+          8
+        ],
+        [
+          "Safety Vest",
+          6
+        ]
+      ],
+      "scan_ms": 107811.3
+    },
+    {
+      "source": "VIRAT_0100",
+      "filename": "VIRAT_S_010000_07_000827_000860.mp4",
+      "resolution": "1280x720",
+      "duration_sec": 25.7,
+      "detections": 38,
+      "top_colors": [
+        [
+          "Black",
+          12
+        ],
+        [
+          "Dark Grey",
+          12
+        ],
+        [
+          "Red",
+          4
+        ],
+        [
+          "White",
+          2
+        ]
+      ],
+      "top_types": [
+        [
+          "Trousers / Pants",
+          13
+        ],
+        [
+          "Work Overalls",
+          9
+        ],
+        [
+          "Shirt / Blouse",
+          7
+        ],
+        [
+          "Denim Jeans",
+          4
+        ]
+      ],
+      "scan_ms": 23100.8
+    },
+    {
+      "source": "720p",
+      "filename": "YTDown.com_YouTube_Media_KMJS66jBtVQ_HD-CCTV-Camera-video-3MP-4MP-iProx-CCTV-HDCCTVCameras-net-retail-store_001_720p.mp4",
+      "resolution": "1270x720",
+      "duration_sec": 110.9,
+      "detections": 696,
+      "top_colors": [
+        [
+          "Beige / Khaki",
+          143
+        ],
+        [
+          "Pink",
+          122
+        ],
+        [
+          "Black",
+          111
+        ],
+        [
+          "Dark Grey",
+          99
+        ]
+      ],
+      "top_types": [
+        [
+          "Trousers / Pants",
+          252
+        ],
+        [
+          "Sweater",
+          104
+        ],
+        [
+          "Shirt / Blouse",
+          93
+        ],
+        [
+          "Open Jacket",
+          58
+        ]
+      ],
+      "scan_ms": 102659.8
+    },
+    {
+      "source": "480p",
+      "filename": "YTDown.com_YouTube_Media_KMJS66jBtVQ_HD-CCTV-Camera-video-3MP-4MP-iProx-CCTV-HDCCTVCameras-net-retail-store_002_480p.mp4",
+      "resolution": "846x480",
+      "duration_sec": 110.9,
+      "detections": 688,
+      "top_colors": [
+        [
+          "Beige / Khaki",
+          150
+        ],
+        [
+          "Pink",
+          120
+        ],
+        [
+          "Black",
+          113
+        ],
+        [
+          "Dark Grey",
+          90
+        ]
+      ],
+      "top_types": [
+        [
+          "Trousers / Pants",
+          253
+        ],
+        [
+          "Sweater",
+          101
+        ],
+        [
+          "Shirt / Blouse",
+          83
+        ],
+        [
+          "Open Jacket",
+          64
+        ]
+      ],
+      "scan_ms": 127076.9
+    },
+    {
+      "source": "360p",
+      "filename": "YTDown.com_YouTube_Media_KMJS66jBtVQ_HD-CCTV-Camera-video-3MP-4MP-iProx-CCTV-HDCCTVCameras-net-retail-store_003_360p.mp4",
+      "resolution": "634x360",
+      "duration_sec": 110.9,
+      "detections": 669,
+      "top_colors": [
+        [
+          "Beige / Khaki",
+          135
+        ],
+        [
+          "Black",
+          111
+        ],
+        [
+          "Pink",
+          109
+        ],
+        [
+          "Dark Grey",
+          88
+        ]
+      ],
+      "top_types": [
+        [
+          "Trousers / Pants",
+          244
+        ],
+        [
+          "Sweater",
+          107
+        ],
+        [
+          "Shirt / Blouse",
+          77
+        ],
+        [
+          "Open Jacket",
+          63
+        ]
+      ],
+      "scan_ms": 155445.2
+    }
+  ],
+  "query_benchmarks": [
+    {
+      "quality": "Construction-Site-CC",
+      "query": "Red shirt",
+      "match_count": 24,
+      "unique_events": 9,
+      "query_ms": 2.05,
+      "sample_timestamps": [
+        "00:24.0",
+        "00:25.0",
+        "00:25.9",
+        "00:26.9",
+        "00:27.8",
+        "00:28.8"
+      ]
+    },
+    {
+      "quality": "Construction-Site-CC",
+      "query": "Orange safety vest",
+      "match_count": 11,
+      "unique_events": 6,
+      "query_ms": 0.89,
+      "sample_timestamps": [
+        "00:03.8",
+        "00:04.8",
+        "00:05.8",
+        "00:06.7",
+        "00:07.7",
+        "00:08.6"
+      ]
+    },
+    {
+      "quality": "Construction-Site-CC",
+      "query": "Yellow safety vest",
+      "match_count": 13,
+      "unique_events": 5,
+      "query_ms": 0.91,
+      "sample_timestamps": [
+        "00:23.0",
+        "00:24.0",
+        "00:25.0",
+        "00:25.9",
+        "00:27.8",
+        "00:28.8"
+      ]
+    },
+    {
+      "quality": "Construction-Site-CC",
+      "query": "Black pants",
+      "match_count": 30,
+      "unique_events": 13,
+      "query_ms": 2.05,
+      "sample_timestamps": [
+        "00:05.8",
+        "00:06.7",
+        "00:07.7",
+        "00:08.6",
+        "00:09.6",
+        "00:10.6"
+      ]
+    },
+    {
+      "quality": "144p",
+      "query": "Blue jacket",
+      "match_count": 37,
+      "unique_events": 20,
+      "query_ms": 3.49,
+      "sample_timestamps": [
+        "00:00.0",
+        "00:01.5",
+        "00:01.8",
+        "00:05.5",
+        "00:09.2",
+        "00:11.0"
+      ]
+    },
+    {
+      "quality": "144p",
+      "query": "Pink shirt",
+      "match_count": 15,
+      "unique_events": 9,
+      "query_ms": 3.03,
+      "sample_timestamps": [
+        "00:00.0",
+        "00:01.5",
+        "00:01.8",
+        "00:05.5",
+        "00:14.7",
+        "00:16.5"
+      ]
+    },
+    {
+      "quality": "VIRAT_0102",
+      "query": "Black pants",
+      "match_count": 71,
+      "unique_events": 13,
+      "query_ms": 2.75,
+      "sample_timestamps": [
+        "00:00.0",
+        "00:00.0",
+        "00:00.0",
+        "00:00.0",
+        "00:01.0",
+        "00:01.0"
+      ]
+    },
+    {
+      "quality": "VIRAT_0100",
+      "query": "Blue jacket",
+      "match_count": 3,
+      "unique_events": 2,
+      "query_ms": 1.36,
+      "sample_timestamps": [
+        "00:19.0",
+        "00:21.0",
+        "00:22.0"
+      ]
+    }
+  ]
+}
