@@ -1,0 +1,1304 @@
+{
+  "pipeline_stats": {
+    "naive_coco": {
+      "correct": 6,
+      "total": 22,
+      "accuracy_pct": 27.3,
+      "mean_conf_pct": 34.5
+    },
+    "imagenet_raw": {
+      "correct": 3,
+      "total": 22,
+      "accuracy_pct": 13.6,
+      "mean_conf_pct": 9.8
+    },
+    "tinyclip_sr": {
+      "correct": 17,
+      "total": 22,
+      "accuracy_pct": 77.3,
+      "mean_conf_pct": 73.7
+    },
+    "hybrid": {
+      "correct": 18,
+      "total": 22,
+      "accuracy_pct": 81.8,
+      "mean_conf_pct": 69.1
+    }
+  },
+  "timing_vram": {
+    "tinyclip_ms_per_crop": 3.33,
+    "sr2x_ms_per_crop": 90.43,
+    "clip_with_sr_ms": 93.77,
+    "conv_ms_per_crop": 6.01,
+    "swin_ms_per_crop": 10.2,
+    "hybrid_ms_per_crop": 109.98,
+    "naive_det_ms": 232.6,
+    "sahi_det_ms": 2345.8,
+    "tinyclip_vram_mb": 476.7,
+    "sr_vram_mb": 73.9,
+    "conv_vram_mb": 303.1,
+    "swin_vram_mb": 410.7,
+    "det_vram_mb": 647.3
+  },
+  "cameras": {
+    "CAM-02": {
+      "det": {
+        "naive_ms": 277.1,
+        "det_vram_mb": 717.5,
+        "naive_dets": [
+          {
+            "label": "vase",
+            "score": 0.819,
+            "box": [
+              272.4,
+              195.5,
+              322.2,
+              245.8
+            ]
+          },
+          {
+            "label": "dining table",
+            "score": 0.567,
+            "box": [
+              171.6,
+              208.9,
+              599.7,
+              352.8
+            ]
+          },
+          {
+            "label": "bottle",
+            "score": 0.327,
+            "box": [
+              85.2,
+              205.3,
+              101.3,
+              253.8
+            ]
+          }
+        ],
+        "sahi_ms": 2684.0,
+        "sahi_dets": [
+          {
+            "label": "cup",
+            "score": 0.992,
+            "box": [
+              282.0,
+              198.5,
+              313.1,
+              237.8
+            ]
+          },
+          {
+            "label": "dining table",
+            "score": 0.706,
+            "box": [
+              176.5,
+              196.1,
+              379.7,
+              357.1
+            ]
+          },
+          {
+            "label": "dining table",
+            "score": 0.628,
+            "box": [
+              281.9,
+              208.7,
+              519.5,
+              239.6
+            ]
+          },
+          {
+            "label": "tv",
+            "score": 0.627,
+            "box": [
+              140.0,
+              0.0,
+              380.0,
+              236.7
+            ]
+          },
+          {
+            "label": "chair",
+            "score": 0.603,
+            "box": [
+              87.4,
+              177.0,
+              170.0,
+              239.6
+            ]
+          },
+          {
+            "label": "dining table",
+            "score": 0.5,
+            "box": [
+              187.4,
+              200.1,
+              363.8,
+              239.8
+            ]
+          },
+          {
+            "label": "dining table",
+            "score": 0.498,
+            "box": [
+              174.5,
+              211.2,
+              239.9,
+              356.3
+            ]
+          },
+          {
+            "label": "dining table",
+            "score": 0.448,
+            "box": [
+              404.0,
+              200.9,
+              599.4,
+              359.8
+            ]
+          },
+          {
+            "label": "tv",
+            "score": 0.423,
+            "box": [
+              0.0,
+              0.0,
+              238.5,
+              238.9
+            ]
+          }
+        ]
+      },
+      "items": [
+        {
+          "camera": "CAM-02",
+          "display_name": "Coffee Cup",
+          "target_cat": "coffee cup",
+          "box_mid": [
+            270,
+            194,
+            328,
+            250
+          ],
+          "size_px": "58x56",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "vase",
+            "score_pct": 81.9,
+            "max_iou": 0.771
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "whiskey jug",
+            "score_pct": 4.7
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "coffee cup",
+            "score_pct": 99.4,
+            "target_pct": 99.4
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "coffee cup",
+            "score_pct": 98.6,
+            "target_pct": 98.6
+          }
+        },
+        {
+          "camera": "CAM-02",
+          "display_name": "Straw Hat",
+          "target_cat": "straw hat",
+          "box_mid": [
+            410,
+            182,
+            490,
+            240
+          ],
+          "size_px": "80x58",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "missed / no class",
+            "score_pct": 0.0,
+            "max_iou": 0.0
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "whiskey jug",
+            "score_pct": 2.2
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "straw hat",
+            "score_pct": 72.6,
+            "target_pct": 72.6
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "straw hat",
+            "score_pct": 73.2,
+            "target_pct": 73.2
+          }
+        },
+        {
+          "camera": "CAM-02",
+          "display_name": "Wooden Chair",
+          "target_cat": "wooden chair",
+          "box_mid": [
+            80,
+            155,
+            176,
+            315
+          ],
+          "size_px": "96x160",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "missed / no class",
+            "score_pct": 0.0,
+            "max_iou": 0.0
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "pedestal",
+            "score_pct": 2.5
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "wooden chair",
+            "score_pct": 82.3,
+            "target_pct": 82.3
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "wooden chair",
+            "score_pct": 72.5,
+            "target_pct": 72.5
+          }
+        },
+        {
+          "camera": "CAM-02",
+          "display_name": "Wooden Table",
+          "target_cat": "wooden table",
+          "box_mid": [
+            175,
+            212,
+            595,
+            355
+          ],
+          "size_px": "420x143",
+          "naive_coco": {
+            "correct": true,
+            "pred_label": "dining table",
+            "score_pct": 56.7,
+            "max_iou": 0.946
+          },
+          "imagenet_raw": {
+            "correct": true,
+            "pred_label": "dining table",
+            "score_pct": 46.8
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "wooden table",
+            "score_pct": 97.4,
+            "target_pct": 97.4
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "wooden table",
+            "score_pct": 98.2,
+            "target_pct": 98.2
+          }
+        },
+        {
+          "camera": "CAM-02",
+          "display_name": "Glass Window",
+          "target_cat": "glass window",
+          "box_mid": [
+            380,
+            44,
+            520,
+            148
+          ],
+          "size_px": "140x104",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "missed / no class",
+            "score_pct": 0.0,
+            "max_iou": 0.0
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "table lamp",
+            "score_pct": 1.3
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "glass window",
+            "score_pct": 52.3,
+            "target_pct": 52.3
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "glass window",
+            "score_pct": 51.0,
+            "target_pct": 51.0
+          }
+        },
+        {
+          "camera": "CAM-02",
+          "display_name": "Plaster Wall",
+          "target_cat": "plaster wall",
+          "box_mid": [
+            30,
+            44,
+            350,
+            148
+          ],
+          "size_px": "320x104",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "missed / no class",
+            "score_pct": 0.0,
+            "max_iou": 0.0
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "screw",
+            "score_pct": 0.0
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "plaster wall",
+            "score_pct": 55.7,
+            "target_pct": 55.7
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "plaster wall",
+            "score_pct": 55.7,
+            "target_pct": 55.7
+          }
+        },
+        {
+          "camera": "CAM-02",
+          "display_name": "Wood Floor",
+          "target_cat": "hardwood floor",
+          "box_mid": [
+            180,
+            295,
+            580,
+            356
+          ],
+          "size_px": "400x61",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "dining table",
+            "score_pct": 56.7,
+            "max_iou": 0.368
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "promontory",
+            "score_pct": 2.2
+          },
+          "tinyclip_sr": {
+            "correct": false,
+            "pred_label": "plaster wall",
+            "score_pct": 41.3,
+            "target_pct": 5.5
+          },
+          "hybrid": {
+            "correct": false,
+            "pred_label": "plaster wall",
+            "score_pct": 35.5,
+            "target_pct": 4.7
+          }
+        }
+      ]
+    },
+    "CAM-01": {
+      "det": {
+        "naive_ms": 230.6,
+        "det_vram_mb": 717.5,
+        "naive_dets": [
+          {
+            "label": "person",
+            "score": 0.984,
+            "box": [
+              250.6,
+              128.6,
+              365.8,
+              281.8
+            ]
+          },
+          {
+            "label": "tv",
+            "score": 0.783,
+            "box": [
+              209.6,
+              82.6,
+              397.5,
+              248.7
+            ]
+          }
+        ],
+        "sahi_ms": 2187.2,
+        "sahi_dets": [
+          {
+            "label": "person",
+            "score": 0.989,
+            "box": [
+              251.3,
+              132.3,
+              367.8,
+              282.7
+            ]
+          },
+          {
+            "label": "person",
+            "score": 0.986,
+            "box": [
+              280.0,
+              133.3,
+              515.0,
+              240.0
+            ]
+          }
+        ]
+      },
+      "items": [
+        {
+          "camera": "CAM-01",
+          "display_name": "Walking Person",
+          "target_cat": "person",
+          "box_mid": [
+            251,
+            118,
+            367,
+            282
+          ],
+          "size_px": "116x164",
+          "naive_coco": {
+            "correct": true,
+            "pred_label": "person",
+            "score_pct": 98.4,
+            "max_iou": 0.922
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "Windsor tie",
+            "score_pct": 6.0
+          },
+          "tinyclip_sr": {
+            "correct": false,
+            "pred_label": "human face",
+            "score_pct": 74.7,
+            "target_pct": 15.4
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "person",
+            "score_pct": 66.2,
+            "target_pct": 66.2
+          }
+        },
+        {
+          "camera": "CAM-01",
+          "display_name": "Face / Head",
+          "target_cat": "human face",
+          "box_mid": [
+            266,
+            138,
+            346,
+            250
+          ],
+          "size_px": "80x112",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "person",
+            "score_pct": 98.4,
+            "max_iou": 0.508
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "Windsor tie",
+            "score_pct": 10.4
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "human face",
+            "score_pct": 86.4,
+            "target_pct": 86.4
+          },
+          "hybrid": {
+            "correct": false,
+            "pred_label": "person",
+            "score_pct": 63.6,
+            "target_pct": 31.4
+          }
+        },
+        {
+          "camera": "CAM-01",
+          "display_name": "Shirt / Collar",
+          "target_cat": "shirt / collar",
+          "box_mid": [
+            261,
+            246,
+            356,
+            282
+          ],
+          "size_px": "95x36",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "missed / no class",
+            "score_pct": 0.0,
+            "max_iou": 0.0
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "Windsor tie",
+            "score_pct": 0.8
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "shirt / collar",
+            "score_pct": 52.2,
+            "target_pct": 52.2
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "shirt / collar",
+            "score_pct": 52.2,
+            "target_pct": 52.2
+          }
+        },
+        {
+          "camera": "CAM-01",
+          "display_name": "Ceiling Light",
+          "target_cat": "ceiling light",
+          "box_mid": [
+            265,
+            36,
+            375,
+            56
+          ],
+          "size_px": "110x20",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "missed / no class",
+            "score_pct": 0.0,
+            "max_iou": 0.0
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "spatula",
+            "score_pct": 0.6
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "ceiling light",
+            "score_pct": 48.4,
+            "target_pct": 48.4
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "ceiling light",
+            "score_pct": 48.4,
+            "target_pct": 48.4
+          }
+        },
+        {
+          "camera": "CAM-01",
+          "display_name": "Glass Door",
+          "target_cat": "glass door",
+          "box_mid": [
+            352,
+            82,
+            430,
+            220
+          ],
+          "size_px": "78x138",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "missed / no class",
+            "score_pct": 0.0,
+            "max_iou": 0.0
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "hourglass",
+            "score_pct": 0.2
+          },
+          "tinyclip_sr": {
+            "correct": false,
+            "pred_label": "person",
+            "score_pct": 30.1,
+            "target_pct": 19.2
+          },
+          "hybrid": {
+            "correct": false,
+            "pred_label": "person",
+            "score_pct": 28.8,
+            "target_pct": 18.9
+          }
+        },
+        {
+          "camera": "CAM-01",
+          "display_name": "Tiled Floor",
+          "target_cat": "tiled floor",
+          "box_mid": [
+            140,
+            285,
+            500,
+            356
+          ],
+          "size_px": "360x71",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "missed / no class",
+            "score_pct": 0.0,
+            "max_iou": 0.0
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "matchstick",
+            "score_pct": 2.2
+          },
+          "tinyclip_sr": {
+            "correct": false,
+            "pred_label": "shirt / collar",
+            "score_pct": 69.8,
+            "target_pct": 8.9
+          },
+          "hybrid": {
+            "correct": false,
+            "pred_label": "shirt / collar",
+            "score_pct": 69.8,
+            "target_pct": 8.9
+          }
+        }
+      ]
+    },
+    "CAM-03": {
+      "det": {
+        "naive_ms": 190.2,
+        "det_vram_mb": 717.5,
+        "naive_dets": [
+          {
+            "label": "clock",
+            "score": 0.998,
+            "box": [
+              212.7,
+              55.7,
+              256.2,
+              99.2
+            ]
+          },
+          {
+            "label": "person",
+            "score": 0.964,
+            "box": [
+              50.3,
+              125.0,
+              153.1,
+              269.8
+            ]
+          },
+          {
+            "label": "toothbrush",
+            "score": 0.9,
+            "box": [
+              466.4,
+              279.0,
+              486.7,
+              311.4
+            ]
+          },
+          {
+            "label": "chair",
+            "score": 0.836,
+            "box": [
+              530.0,
+              184.6,
+              613.3,
+              293.3
+            ]
+          },
+          {
+            "label": "cup",
+            "score": 0.53,
+            "box": [
+              221.4,
+              249.6,
+              244.4,
+              289.3
+            ]
+          },
+          {
+            "label": "toothbrush",
+            "score": 0.513,
+            "box": [
+              483.5,
+              281.2,
+              497.7,
+              314.4
+            ]
+          },
+          {
+            "label": "vase",
+            "score": 0.497,
+            "box": [
+              474.4,
+              314.0,
+              490.2,
+              345.7
+            ]
+          },
+          {
+            "label": "clock",
+            "score": 0.353,
+            "box": [
+              286.0,
+              197.2,
+              333.1,
+              245.2
+            ]
+          },
+          {
+            "label": "toothbrush",
+            "score": 0.33,
+            "box": [
+              481.2,
+              278.0,
+              490.7,
+              307.1
+            ]
+          },
+          {
+            "label": "vase",
+            "score": 0.281,
+            "box": [
+              286.4,
+              198.9,
+              332.2,
+              246.0
+            ]
+          },
+          {
+            "label": "couch",
+            "score": 0.263,
+            "box": [
+              531.2,
+              185.6,
+              611.6,
+              287.7
+            ]
+          },
+          {
+            "label": "sink",
+            "score": 0.259,
+            "box": [
+              161.8,
+              288.4,
+              509.8,
+              355.1
+            ]
+          },
+          {
+            "label": "chair",
+            "score": 0.257,
+            "box": [
+              169.5,
+              188.7,
+              233.8,
+              282.2
+            ]
+          }
+        ],
+        "sahi_ms": 2166.2,
+        "sahi_dets": [
+          {
+            "label": "clock",
+            "score": 0.998,
+            "box": [
+              212.8,
+              55.8,
+              256.0,
+              99.2
+            ]
+          },
+          {
+            "label": "person",
+            "score": 0.977,
+            "box": [
+              29.5,
+              122.0,
+              190.2,
+              239.4
+            ]
+          },
+          {
+            "label": "cup",
+            "score": 0.916,
+            "box": [
+              291.4,
+              200.9,
+              324.9,
+              237.7
+            ]
+          },
+          {
+            "label": "chair",
+            "score": 0.839,
+            "box": [
+              181.7,
+              188.4,
+              229.6,
+              238.9
+            ]
+          },
+          {
+            "label": "toothbrush",
+            "score": 0.827,
+            "box": [
+              482.0,
+              281.6,
+              497.8,
+              315.2
+            ]
+          },
+          {
+            "label": "dining table",
+            "score": 0.749,
+            "box": [
+              285.0,
+              212.0,
+              495.3,
+              240.0
+            ]
+          },
+          {
+            "label": "dining table",
+            "score": 0.72,
+            "box": [
+              140.0,
+              213.6,
+              380.0,
+              239.6
+            ]
+          },
+          {
+            "label": "chair",
+            "score": 0.704,
+            "box": [
+              531.0,
+              185.2,
+              616.2,
+              290.9
+            ]
+          },
+          {
+            "label": "toilet",
+            "score": 0.663,
+            "box": [
+              364.9,
+              206.9,
+              427.6,
+              240.0
+            ]
+          },
+          {
+            "label": "person",
+            "score": 0.65,
+            "box": [
+              140.0,
+              122.3,
+              153.6,
+              245.7
+            ]
+          },
+          {
+            "label": "cat",
+            "score": 0.571,
+            "box": [
+              441.4,
+              259.4,
+              514.1,
+              331.7
+            ]
+          },
+          {
+            "label": "cell phone",
+            "score": 0.536,
+            "box": [
+              473.6,
+              311.3,
+              491.6,
+              347.3
+            ]
+          },
+          {
+            "label": "chair",
+            "score": 0.474,
+            "box": [
+              165.4,
+              190.2,
+              239.7,
+              306.7
+            ]
+          },
+          {
+            "label": "vase",
+            "score": 0.466,
+            "box": [
+              140.0,
+              200.1,
+              151.6,
+              240.0
+            ]
+          },
+          {
+            "label": "chair",
+            "score": 0.43,
+            "box": [
+              182.7,
+              231.8,
+              230.8,
+              240.0
+            ]
+          },
+          {
+            "label": "refrigerator",
+            "score": 0.391,
+            "box": [
+              380.6,
+              43.6,
+              519.3,
+              153.6
+            ]
+          }
+        ]
+      },
+      "items": [
+        {
+          "camera": "CAM-03",
+          "display_name": "Walking Person",
+          "target_cat": "person",
+          "box_mid": [
+            50,
+            108,
+            156,
+            272
+          ],
+          "size_px": "106x164",
+          "naive_coco": {
+            "correct": true,
+            "pred_label": "person",
+            "score_pct": 96.4,
+            "max_iou": 0.856
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "lotion",
+            "score_pct": 6.9
+          },
+          "tinyclip_sr": {
+            "correct": false,
+            "pred_label": "human face",
+            "score_pct": 74.3,
+            "target_pct": 22.3
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "person",
+            "score_pct": 68.9,
+            "target_pct": 68.9
+          }
+        },
+        {
+          "camera": "CAM-03",
+          "display_name": "Wall Clock",
+          "target_cat": "wall clock",
+          "box_mid": [
+            208,
+            52,
+            260,
+            104
+          ],
+          "size_px": "52x52",
+          "naive_coco": {
+            "correct": true,
+            "pred_label": "clock",
+            "score_pct": 99.8,
+            "max_iou": 0.7
+          },
+          "imagenet_raw": {
+            "correct": true,
+            "pred_label": "wall clock",
+            "score_pct": 67.0
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "wall clock",
+            "score_pct": 99.8,
+            "target_pct": 99.8
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "wall clock",
+            "score_pct": 99.7,
+            "target_pct": 99.7
+          }
+        },
+        {
+          "camera": "CAM-03",
+          "display_name": "Glass Window",
+          "target_cat": "glass window",
+          "box_mid": [
+            380,
+            44,
+            520,
+            148
+          ],
+          "size_px": "140x104",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "missed / no class",
+            "score_pct": 0.0,
+            "max_iou": 0.0
+          },
+          "imagenet_raw": {
+            "correct": true,
+            "pred_label": "shoji",
+            "score_pct": 27.6
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "glass window",
+            "score_pct": 94.8,
+            "target_pct": 94.8
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "glass window",
+            "score_pct": 88.9,
+            "target_pct": 88.9
+          }
+        },
+        {
+          "camera": "CAM-03",
+          "display_name": "Armchair",
+          "target_cat": "armchair",
+          "box_mid": [
+            528,
+            184,
+            620,
+            296
+          ],
+          "size_px": "92x112",
+          "naive_coco": {
+            "correct": true,
+            "pred_label": "chair",
+            "score_pct": 83.6,
+            "max_iou": 0.879
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "switch",
+            "score_pct": 5.4
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "armchair",
+            "score_pct": 91.2,
+            "target_pct": 91.2
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "armchair",
+            "score_pct": 66.5,
+            "target_pct": 66.5
+          }
+        },
+        {
+          "camera": "CAM-03",
+          "display_name": "Wooden Chair",
+          "target_cat": "wooden chair",
+          "box_mid": [
+            168,
+            172,
+            244,
+            304
+          ],
+          "size_px": "76x132",
+          "naive_coco": {
+            "correct": true,
+            "pred_label": "chair",
+            "score_pct": 25.7,
+            "max_iou": 0.599
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "hourglass",
+            "score_pct": 6.3
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "wooden chair",
+            "score_pct": 90.8,
+            "target_pct": 90.8
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "wooden chair",
+            "score_pct": 57.6,
+            "target_pct": 57.6
+          }
+        },
+        {
+          "camera": "CAM-03",
+          "display_name": "Coffee Cup",
+          "target_cat": "coffee cup",
+          "box_mid": [
+            286,
+            200,
+            332,
+            246
+          ],
+          "size_px": "46x46",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "clock",
+            "score_pct": 35.3,
+            "max_iou": 0.905
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "eggnog",
+            "score_pct": 0.7
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "coffee cup",
+            "score_pct": 99.0,
+            "target_pct": 99.0
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "coffee cup",
+            "score_pct": 82.7,
+            "target_pct": 82.7
+          }
+        },
+        {
+          "camera": "CAM-03",
+          "display_name": "Straw Hat",
+          "target_cat": "straw hat",
+          "box_mid": [
+            358,
+            194,
+            430,
+            244
+          ],
+          "size_px": "72x50",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "missed / no class",
+            "score_pct": 0.0,
+            "max_iou": 0.0
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "cleaver",
+            "score_pct": 11.6
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "straw hat",
+            "score_pct": 78.9,
+            "target_pct": 78.9
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "straw hat",
+            "score_pct": 79.6,
+            "target_pct": 79.6
+          }
+        },
+        {
+          "camera": "CAM-03",
+          "display_name": "Orange Cat",
+          "target_cat": "orange cat",
+          "box_mid": [
+            444,
+            264,
+            512,
+            318
+          ],
+          "size_px": "68x54",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "missed / no class",
+            "score_pct": 0.0,
+            "max_iou": 0.0
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "nipple",
+            "score_pct": 0.5
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "orange cat",
+            "score_pct": 44.4,
+            "target_pct": 44.4
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "orange cat",
+            "score_pct": 77.8,
+            "target_pct": 77.8
+          }
+        },
+        {
+          "camera": "CAM-03",
+          "display_name": "Wooden Table",
+          "target_cat": "wooden table",
+          "box_mid": [
+            250,
+            216,
+            495,
+            348
+          ],
+          "size_px": "245x132",
+          "naive_coco": {
+            "correct": false,
+            "pred_label": "sink",
+            "score_pct": 25.9,
+            "max_iou": 0.357
+          },
+          "imagenet_raw": {
+            "correct": false,
+            "pred_label": "table lamp",
+            "score_pct": 9.0
+          },
+          "tinyclip_sr": {
+            "correct": true,
+            "pred_label": "wooden table",
+            "score_pct": 86.3,
+            "target_pct": 86.3
+          },
+          "hybrid": {
+            "correct": true,
+            "pred_label": "wooden table",
+            "score_pct": 84.8,
+            "target_pct": 84.8
+          }
+        }
+      ]
+    }
+  }
+}

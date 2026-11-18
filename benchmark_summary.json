@@ -1,0 +1,58 @@
+{
+  "model": "Real-ESRGAN general-x4v3 (num_conv=32)",
+  "benchmark": {
+    "device_name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+    "cuda_available": true,
+    "total_vram_gb": 6.0,
+    "cases": [
+      {
+        "label": "160x160 -> 640x640 (4x Patch)",
+        "input_hw": "160x160",
+        "output_hw": "640x640",
+        "mean_ms": 10.19,
+        "fps": 98.1,
+        "peak_vram_mb": 15.1
+      },
+      {
+        "label": "480x270 -> 1920x1080 (4x 1080p)",
+        "input_hw": "480x270",
+        "output_hw": "1920x1080",
+        "mean_ms": 54.12,
+        "fps": 18.5,
+        "peak_vram_mb": 66.9
+      },
+      {
+        "label": "960x540 -> 3840x2160 (4x 4K)",
+        "input_hw": "960x540",
+        "output_hw": "3840x2160",
+        "mean_ms": 236.32,
+        "fps": 4.2,
+        "peak_vram_mb": 259.9
+      }
+    ]
+  },
+  "visual_1_metrics": {
+    "nearest": [
+      18.23,
+      0.632,
+      43.0
+    ],
+    "bicubic": [
+      18.69,
+      0.66,
+      8.3
+    ],
+    "realesrgan_x4v3": [
+      18.97,
+      0.773,
+      48.9
+    ]
+  },
+  "visual_2_metrics": {
+    "shader_mae": 7.87,
+    "per_frame_cnn_mae": 3.6,
+    "multi_frame_fusion_mae": 0.96
+  },
+  "affine_zip": "D:\\projects\\affine-ai-upscaling\\AFFiNE_AI_Upscaling_Report.zip",
+  "zip_bytes": 1450596
+}

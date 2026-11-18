@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.DS_Store
+Thumbs.db
+cctv_clothing_search/uploads/*.mp4
+cctv_clothing_search/uploads/*.mov
+cctv_clothing_search/uploads/*.avi
+cctv_clothing_search/uploads/*.mkv
+cctv_clothing_search/uploads/*.webm

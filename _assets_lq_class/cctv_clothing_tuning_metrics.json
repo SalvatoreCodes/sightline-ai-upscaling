@@ -1,0 +1,5603 @@
+{
+  "resolutions": {
+    "720p": {
+      "cfg1_untuned": {
+        "type_hits": 5,
+        "color_hits": 5,
+        "joint_hits": 1,
+        "total": 12,
+        "type_acc_pct": 41.7,
+        "color_acc_pct": 41.7,
+        "joint_acc_pct": 8.3,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 29.4,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 17.4,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              172,
+              334
+            ],
+            "lab": [
+              12.9,
+              4.8,
+              -10.7
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 34.6,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 23.9,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              143,
+              244
+            ],
+            "lab": [
+              18.8,
+              0.9,
+              -7.3
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 34.6,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 23.9,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              143,
+              244
+            ],
+            "lab": [
+              18.8,
+              0.9,
+              -7.3
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 18.3,
+            "type_ok": false,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 24.5,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              231,
+              427
+            ],
+            "lab": [
+              11.4,
+              0.7,
+              -0.4
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 18.3,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 24.5,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              231,
+              427
+            ],
+            "lab": [
+              11.4,
+              0.7,
+              -0.4
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 22.9,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 26.0,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              205,
+              383
+            ],
+            "lab": [
+              16.5,
+              -0.2,
+              -5.2
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 22.9,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 26.0,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              205,
+              383
+            ],
+            "lab": [
+              16.5,
+              -0.2,
+              -5.2
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 25.3,
+            "type_ok": false,
+            "pred_color": "royal blue",
+            "color_conf_pct": 27.6,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              187,
+              378
+            ],
+            "lab": [
+              29.4,
+              37.4,
+              8.3
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 25.3,
+            "type_ok": false,
+            "pred_color": "royal blue",
+            "color_conf_pct": 27.6,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              187,
+              378
+            ],
+            "lab": [
+              29.4,
+              37.4,
+              8.3
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 25.3,
+            "type_ok": false,
+            "pred_color": "white",
+            "color_conf_pct": 62.6,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              269,
+              377
+            ],
+            "lab": [
+              80.0,
+              -0.5,
+              5.5
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 17.1,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 47.6,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              117,
+              311
+            ],
+            "lab": [
+              75.7,
+              -2.4,
+              0.7
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 26.6,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 22.6,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              138,
+              296
+            ],
+            "lab": [
+              54.5,
+              0.8,
+              9.4
+            ]
+          }
+        ]
+      },
+      "cfg2_subroi": {
+        "type_hits": 4,
+        "color_hits": 7,
+        "joint_hits": 2,
+        "total": 12,
+        "type_acc_pct": 33.3,
+        "color_acc_pct": 58.3,
+        "joint_acc_pct": 16.7,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 17.8,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 23.2,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              90,
+              107
+            ],
+            "lab": [
+              14.1,
+              5.4,
+              -12.3
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 16.5,
+            "type_ok": false,
+            "pred_color": "white",
+            "color_conf_pct": 27.5,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              75,
+              78
+            ],
+            "lab": [
+              58.8,
+              -2.9,
+              -3.6
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 51.0,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 40.4,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              69,
+              61
+            ],
+            "lab": [
+              16.1,
+              2.0,
+              -12.5
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 21.5,
+            "type_ok": false,
+            "pred_color": "black",
+            "color_conf_pct": 44.0,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              121,
+              137
+            ],
+            "lab": [
+              7.1,
+              -0.9,
+              -4.2
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 70.8,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 22.1,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              111,
+              107
+            ],
+            "lab": [
+              3.5,
+              1.9,
+              0.6
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 18.8,
+            "type_ok": false,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 27.8,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              107,
+              122
+            ],
+            "lab": [
+              16.1,
+              -1.7,
+              -10.4
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 71.4,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 29.9,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              99,
+              96
+            ],
+            "lab": [
+              29.0,
+              -1.0,
+              4.0
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 18.0,
+            "type_ok": false,
+            "pred_color": "royal blue",
+            "color_conf_pct": 59.5,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              49,
+              128
+            ],
+            "lab": [
+              24.3,
+              43.3,
+              -70.2
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 28.8,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 97.9,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              60,
+              114
+            ],
+            "lab": [
+              43.9,
+              63.0,
+              9.6
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 20.8,
+            "type_ok": false,
+            "pred_color": "royal blue",
+            "color_conf_pct": 26.7,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              139,
+              121
+            ],
+            "lab": [
+              99.6,
+              -1.1,
+              2.7
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 23.4,
+            "type_ok": true,
+            "pred_color": "light grey",
+            "color_conf_pct": 60.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              61,
+              100
+            ],
+            "lab": [
+              80.4,
+              -3.2,
+              0.3
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 19.8,
+            "type_ok": false,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 42.9,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              72,
+              95
+            ],
+            "lab": [
+              80.4,
+              -1.4,
+              13.8
+            ]
+          }
+        ]
+      },
+      "cfg3_sr_priors": {
+        "type_hits": 11,
+        "color_hits": 6,
+        "joint_hits": 5,
+        "total": 12,
+        "type_acc_pct": 91.7,
+        "color_acc_pct": 50.0,
+        "joint_acc_pct": 41.7,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 81.3,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 43.1,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              90,
+              107
+            ],
+            "lab": [
+              14.1,
+              5.1,
+              -12.5
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 96.7,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 30.0,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              75,
+              78
+            ],
+            "lab": [
+              61.2,
+              -3.6,
+              -3.2
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 99.4,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 41.7,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              69,
+              61
+            ],
+            "lab": [
+              15.7,
+              2.0,
+              -13.2
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 91.3,
+            "type_ok": true,
+            "pred_color": "black",
+            "color_conf_pct": 51.0,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              121,
+              137
+            ],
+            "lab": [
+              7.8,
+              -1.1,
+              -4.6
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 92.9,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 26.5,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              111,
+              107
+            ],
+            "lab": [
+              3.5,
+              1.5,
+              -0.9
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 92.2,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 30.9,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              107,
+              122
+            ],
+            "lab": [
+              16.9,
+              -1.8,
+              -10.4
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 92.4,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 30.2,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              99,
+              96
+            ],
+            "lab": [
+              29.8,
+              -1.0,
+              3.8
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "open jacket / coat",
+            "type_conf_pct": 97.2,
+            "type_ok": true,
+            "pred_color": "royal blue",
+            "color_conf_pct": 71.6,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              49,
+              128
+            ],
+            "lab": [
+              24.7,
+              42.0,
+              -69.5
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 98.3,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 87.2,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              60,
+              114
+            ],
+            "lab": [
+              43.9,
+              62.7,
+              11.0
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 93.8,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 34.0,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              139,
+              121
+            ],
+            "lab": [
+              100.0,
+              -0.7,
+              2.3
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 23.9,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 56.5,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              61,
+              100
+            ],
+            "lab": [
+              80.8,
+              -3.0,
+              0.5
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 96.9,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 34.1,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              72,
+              95
+            ],
+            "lab": [
+              80.0,
+              -1.6,
+              13.8
+            ]
+          }
+        ]
+      },
+      "cfg4_full_tuned": {
+        "type_hits": 11,
+        "color_hits": 12,
+        "joint_hits": 11,
+        "total": 12,
+        "type_acc_pct": 91.7,
+        "color_acc_pct": 100.0,
+        "joint_acc_pct": 91.7,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 81.3,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 51.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              90,
+              107
+            ],
+            "lab": [
+              14.1,
+              5.1,
+              -12.5
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 97.2,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 67.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              75,
+              78
+            ],
+            "lab": [
+              61.2,
+              -3.6,
+              -3.2
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 97.9,
+            "type_ok": true,
+            "pred_color": "blue",
+            "color_conf_pct": 59.4,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              69,
+              61
+            ],
+            "lab": [
+              15.7,
+              2.0,
+              -13.2
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 27.5,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 38.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              121,
+              137
+            ],
+            "lab": [
+              7.8,
+              -1.1,
+              -4.6
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 92.0,
+            "type_ok": true,
+            "pred_color": "black",
+            "color_conf_pct": 43.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              111,
+              107
+            ],
+            "lab": [
+              3.5,
+              1.5,
+              -0.9
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 93.1,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 37.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              107,
+              122
+            ],
+            "lab": [
+              16.9,
+              -1.8,
+              -10.4
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 93.6,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 70.8,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              99,
+              96
+            ],
+            "lab": [
+              29.8,
+              -1.0,
+              3.8
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "open jacket / coat",
+            "type_conf_pct": 97.5,
+            "type_ok": true,
+            "pred_color": "royal blue",
+            "color_conf_pct": 90.4,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              49,
+              128
+            ],
+            "lab": [
+              24.7,
+              42.0,
+              -69.5
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 98.3,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 97.2,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              60,
+              114
+            ],
+            "lab": [
+              43.9,
+              62.7,
+              11.0
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 94.2,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 77.2,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              139,
+              121
+            ],
+            "lab": [
+              100.0,
+              -0.7,
+              2.3
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 45.2,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 54.0,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              61,
+              100
+            ],
+            "lab": [
+              80.8,
+              -3.0,
+              0.5
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 96.6,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 79.2,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              72,
+              95
+            ],
+            "lab": [
+              80.0,
+              -1.6,
+              13.8
+            ]
+          }
+        ]
+      }
+    },
+    "480p": {
+      "cfg1_untuned": {
+        "type_hits": 5,
+        "color_hits": 5,
+        "joint_hits": 1,
+        "total": 12,
+        "type_acc_pct": 41.7,
+        "color_acc_pct": 41.7,
+        "joint_acc_pct": 8.3,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 34.8,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 18.0,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              114,
+              222
+            ],
+            "lab": [
+              12.9,
+              4.9,
+              -10.7
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 28.6,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 27.7,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              96,
+              163
+            ],
+            "lab": [
+              19.6,
+              1.0,
+              -7.2
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 28.6,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 27.7,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              96,
+              163
+            ],
+            "lab": [
+              19.6,
+              1.0,
+              -7.2
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 21.1,
+            "type_ok": false,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 23.1,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              153,
+              285
+            ],
+            "lab": [
+              11.0,
+              0.8,
+              -0.5
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 21.1,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 23.1,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              153,
+              285
+            ],
+            "lab": [
+              11.0,
+              0.8,
+              -0.5
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 24.1,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 26.6,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              136,
+              255
+            ],
+            "lab": [
+              16.5,
+              -0.3,
+              -5.0
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 24.1,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 26.6,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              136,
+              255
+            ],
+            "lab": [
+              16.5,
+              -0.3,
+              -5.0
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 25.3,
+            "type_ok": false,
+            "pred_color": "royal blue",
+            "color_conf_pct": 27.1,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              124,
+              252
+            ],
+            "lab": [
+              29.0,
+              37.4,
+              8.3
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 25.3,
+            "type_ok": false,
+            "pred_color": "royal blue",
+            "color_conf_pct": 27.1,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              124,
+              252
+            ],
+            "lab": [
+              29.0,
+              37.4,
+              8.3
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 24.9,
+            "type_ok": false,
+            "pred_color": "white",
+            "color_conf_pct": 57.5,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              180,
+              251
+            ],
+            "lab": [
+              80.4,
+              -0.6,
+              5.6
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 17.3,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 43.8,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              78,
+              207
+            ],
+            "lab": [
+              75.7,
+              -2.4,
+              0.6
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 20.7,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 21.4,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              92,
+              197
+            ],
+            "lab": [
+              52.5,
+              0.8,
+              9.4
+            ]
+          }
+        ]
+      },
+      "cfg2_subroi": {
+        "type_hits": 5,
+        "color_hits": 6,
+        "joint_hits": 3,
+        "total": 12,
+        "type_acc_pct": 41.7,
+        "color_acc_pct": 50.0,
+        "joint_acc_pct": 25.0,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 36.9,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 46.9,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              60,
+              71
+            ],
+            "lab": [
+              13.7,
+              5.4,
+              -12.2
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 16.3,
+            "type_ok": false,
+            "pred_color": "white",
+            "color_conf_pct": 41.0,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              50,
+              52
+            ],
+            "lab": [
+              58.4,
+              -2.5,
+              -4.0
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 65.2,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 37.1,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              46,
+              41
+            ],
+            "lab": [
+              15.7,
+              2.0,
+              -12.4
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 20.6,
+            "type_ok": false,
+            "pred_color": "black",
+            "color_conf_pct": 46.1,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              80,
+              91
+            ],
+            "lab": [
+              7.1,
+              -0.7,
+              -4.2
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 71.7,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 56.9,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              73,
+              71
+            ],
+            "lab": [
+              3.1,
+              1.5,
+              0.5
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 22.4,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 27.8,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              71,
+              82
+            ],
+            "lab": [
+              16.5,
+              -1.6,
+              -10.4
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 68.1,
+            "type_ok": true,
+            "pred_color": "light grey",
+            "color_conf_pct": 24.0,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              66,
+              63
+            ],
+            "lab": [
+              28.6,
+              -1.2,
+              4.0
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 20.3,
+            "type_ok": false,
+            "pred_color": "royal blue",
+            "color_conf_pct": 56.1,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              32,
+              85
+            ],
+            "lab": [
+              24.3,
+              43.7,
+              -70.6
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 26.0,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 97.6,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              40,
+              75
+            ],
+            "lab": [
+              43.9,
+              62.9,
+              9.7
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 17.2,
+            "type_ok": false,
+            "pred_color": "royal blue",
+            "color_conf_pct": 30.3,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              94,
+              81
+            ],
+            "lab": [
+              99.6,
+              -1.3,
+              2.9
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 15.2,
+            "type_ok": true,
+            "pred_color": "light grey",
+            "color_conf_pct": 53.9,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              41,
+              66
+            ],
+            "lab": [
+              80.8,
+              -3.3,
+              0.4
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 21.6,
+            "type_ok": false,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 72.6,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              47,
+              64
+            ],
+            "lab": [
+              80.4,
+              -1.7,
+              14.2
+            ]
+          }
+        ]
+      },
+      "cfg3_sr_priors": {
+        "type_hits": 11,
+        "color_hits": 5,
+        "joint_hits": 4,
+        "total": 12,
+        "type_acc_pct": 91.7,
+        "color_acc_pct": 41.7,
+        "joint_acc_pct": 33.3,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 80.1,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 43.7,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              60,
+              71
+            ],
+            "lab": [
+              14.1,
+              5.1,
+              -12.6
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 96.7,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 33.5,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              50,
+              52
+            ],
+            "lab": [
+              53.3,
+              -2.5,
+              -3.9
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 99.2,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 41.3,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              46,
+              41
+            ],
+            "lab": [
+              15.3,
+              2.6,
+              -13.8
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 94.8,
+            "type_ok": true,
+            "pred_color": "black",
+            "color_conf_pct": 49.9,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              80,
+              91
+            ],
+            "lab": [
+              7.1,
+              -1.0,
+              -4.4
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 93.3,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 23.7,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              73,
+              71
+            ],
+            "lab": [
+              3.1,
+              1.1,
+              -0.6
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 93.0,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 28.7,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              71,
+              82
+            ],
+            "lab": [
+              16.9,
+              -1.5,
+              -10.5
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 93.5,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 21.0,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              66,
+              63
+            ],
+            "lab": [
+              29.0,
+              -1.4,
+              3.9
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "open jacket / coat",
+            "type_conf_pct": 97.3,
+            "type_ok": true,
+            "pred_color": "royal blue",
+            "color_conf_pct": 70.3,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              32,
+              85
+            ],
+            "lab": [
+              24.3,
+              42.1,
+              -69.5
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 98.2,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 87.6,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              40,
+              75
+            ],
+            "lab": [
+              43.9,
+              62.5,
+              11.1
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 94.3,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 30.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              94,
+              81
+            ],
+            "lab": [
+              100.0,
+              -0.6,
+              2.1
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 29.7,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 45.2,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              41,
+              66
+            ],
+            "lab": [
+              80.8,
+              -3.2,
+              0.5
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 97.6,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 32.5,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              47,
+              64
+            ],
+            "lab": [
+              80.0,
+              -2.0,
+              14.5
+            ]
+          }
+        ]
+      },
+      "cfg4_full_tuned": {
+        "type_hits": 11,
+        "color_hits": 12,
+        "joint_hits": 11,
+        "total": 12,
+        "type_acc_pct": 91.7,
+        "color_acc_pct": 100.0,
+        "joint_acc_pct": 91.7,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 80.1,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 52.0,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              60,
+              71
+            ],
+            "lab": [
+              14.1,
+              5.1,
+              -12.6
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 97.0,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 70.7,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              50,
+              52
+            ],
+            "lab": [
+              53.3,
+              -2.5,
+              -3.9
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 96.9,
+            "type_ok": true,
+            "pred_color": "blue",
+            "color_conf_pct": 60.6,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              46,
+              41
+            ],
+            "lab": [
+              15.3,
+              2.6,
+              -13.8
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 29.7,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 37.9,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              80,
+              91
+            ],
+            "lab": [
+              7.1,
+              -1.0,
+              -4.4
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 93.6,
+            "type_ok": true,
+            "pred_color": "black",
+            "color_conf_pct": 43.2,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              73,
+              71
+            ],
+            "lab": [
+              3.1,
+              1.1,
+              -0.6
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 93.1,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 38.9,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              71,
+              82
+            ],
+            "lab": [
+              16.9,
+              -1.5,
+              -10.5
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 94.0,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 71.2,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              66,
+              63
+            ],
+            "lab": [
+              29.0,
+              -1.4,
+              3.9
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "open jacket / coat",
+            "type_conf_pct": 97.5,
+            "type_ok": true,
+            "pred_color": "royal blue",
+            "color_conf_pct": 90.0,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              32,
+              85
+            ],
+            "lab": [
+              24.3,
+              42.1,
+              -69.5
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 98.2,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 97.3,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              40,
+              75
+            ],
+            "lab": [
+              43.9,
+              62.5,
+              11.1
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 94.3,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 77.6,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              94,
+              81
+            ],
+            "lab": [
+              100.0,
+              -0.6,
+              2.1
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 40.5,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 55.6,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              41,
+              66
+            ],
+            "lab": [
+              80.8,
+              -3.2,
+              0.5
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 97.5,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 79.0,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              47,
+              64
+            ],
+            "lab": [
+              80.0,
+              -2.0,
+              14.5
+            ]
+          }
+        ]
+      }
+    },
+    "360p": {
+      "cfg1_untuned": {
+        "type_hits": 4,
+        "color_hits": 5,
+        "joint_hits": 1,
+        "total": 12,
+        "type_acc_pct": 33.3,
+        "color_acc_pct": 41.7,
+        "joint_acc_pct": 8.3,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 30.6,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 21.5,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              86,
+              166
+            ],
+            "lab": [
+              12.9,
+              5.0,
+              -10.8
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 24.4,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 31.2,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              71,
+              122
+            ],
+            "lab": [
+              20.8,
+              1.0,
+              -7.2
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 24.4,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 31.2,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              71,
+              122
+            ],
+            "lab": [
+              20.8,
+              1.0,
+              -7.2
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 18.1,
+            "type_ok": false,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 26.2,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              116,
+              213
+            ],
+            "lab": [
+              12.2,
+              0.7,
+              -0.3
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 18.1,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 26.2,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              116,
+              213
+            ],
+            "lab": [
+              12.2,
+              0.7,
+              -0.3
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 26.5,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 29.2,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              103,
+              191
+            ],
+            "lab": [
+              16.5,
+              -0.5,
+              -4.8
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 26.5,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 29.2,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              103,
+              191
+            ],
+            "lab": [
+              16.5,
+              -0.5,
+              -4.8
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 25.2,
+            "type_ok": false,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 31.7,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              93,
+              190
+            ],
+            "lab": [
+              29.0,
+              37.3,
+              8.4
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 25.2,
+            "type_ok": false,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 31.7,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              93,
+              190
+            ],
+            "lab": [
+              29.0,
+              37.3,
+              8.4
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 22.2,
+            "type_ok": false,
+            "pred_color": "white",
+            "color_conf_pct": 50.6,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              134,
+              188
+            ],
+            "lab": [
+              79.2,
+              -0.5,
+              5.2
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 16.7,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 61.2,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              58,
+              156
+            ],
+            "lab": [
+              75.7,
+              -2.5,
+              0.7
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 28.2,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 45.7,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              69,
+              148
+            ],
+            "lab": [
+              51.0,
+              1.0,
+              9.1
+            ]
+          }
+        ]
+      },
+      "cfg2_subroi": {
+        "type_hits": 5,
+        "color_hits": 8,
+        "joint_hits": 3,
+        "total": 12,
+        "type_acc_pct": 41.7,
+        "color_acc_pct": 66.7,
+        "joint_acc_pct": 25.0,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 44.5,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 48.8,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              45,
+              53
+            ],
+            "lab": [
+              14.1,
+              5.8,
+              -12.6
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 16.3,
+            "type_ok": false,
+            "pred_color": "white",
+            "color_conf_pct": 34.4,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              37,
+              39
+            ],
+            "lab": [
+              54.9,
+              -2.6,
+              -4.8
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 55.2,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 37.9,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              35,
+              30
+            ],
+            "lab": [
+              15.7,
+              1.6,
+              -11.4
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 24.1,
+            "type_ok": false,
+            "pred_color": "black",
+            "color_conf_pct": 61.7,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              60,
+              69
+            ],
+            "lab": [
+              7.1,
+              -0.7,
+              -4.4
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 58.4,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 44.0,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              56,
+              54
+            ],
+            "lab": [
+              3.5,
+              1.7,
+              1.5
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 18.9,
+            "type_ok": false,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 34.6,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              53,
+              62
+            ],
+            "lab": [
+              16.1,
+              -1.9,
+              -10.4
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 68.9,
+            "type_ok": true,
+            "pred_color": "light grey",
+            "color_conf_pct": 26.2,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              49,
+              48
+            ],
+            "lab": [
+              28.2,
+              -1.2,
+              4.1
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 17.8,
+            "type_ok": false,
+            "pred_color": "royal blue",
+            "color_conf_pct": 43.3,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              24,
+              65
+            ],
+            "lab": [
+              23.9,
+              43.4,
+              -70.2
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 22.7,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 96.2,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              30,
+              57
+            ],
+            "lab": [
+              43.9,
+              63.0,
+              10.0
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 25.5,
+            "type_ok": false,
+            "pred_color": "white",
+            "color_conf_pct": 30.8,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              70,
+              61
+            ],
+            "lab": [
+              99.2,
+              -0.7,
+              2.1
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 19.9,
+            "type_ok": true,
+            "pred_color": "light grey",
+            "color_conf_pct": 51.6,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              30,
+              49
+            ],
+            "lab": [
+              80.4,
+              -3.5,
+              -0.0
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 23.7,
+            "type_ok": false,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 59.5,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              36,
+              47
+            ],
+            "lab": [
+              80.4,
+              -1.3,
+              14.9
+            ]
+          }
+        ]
+      },
+      "cfg3_sr_priors": {
+        "type_hits": 11,
+        "color_hits": 7,
+        "joint_hits": 6,
+        "total": 12,
+        "type_acc_pct": 91.7,
+        "color_acc_pct": 58.3,
+        "joint_acc_pct": 50.0,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 72.6,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 51.1,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              45,
+              53
+            ],
+            "lab": [
+              14.1,
+              5.2,
+              -13.0
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 96.7,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 29.6,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              37,
+              39
+            ],
+            "lab": [
+              55.7,
+              -2.8,
+              -4.5
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 98.1,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 39.1,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              35,
+              30
+            ],
+            "lab": [
+              14.9,
+              2.2,
+              -12.8
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 94.7,
+            "type_ok": true,
+            "pred_color": "black",
+            "color_conf_pct": 55.3,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              60,
+              69
+            ],
+            "lab": [
+              7.5,
+              -0.8,
+              -4.7
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 94.9,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 22.8,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              56,
+              54
+            ],
+            "lab": [
+              2.7,
+              1.0,
+              -0.3
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 91.9,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 30.1,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              53,
+              62
+            ],
+            "lab": [
+              16.9,
+              -1.9,
+              -10.6
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 94.3,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 23.3,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              49,
+              48
+            ],
+            "lab": [
+              28.6,
+              -1.2,
+              4.0
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "open jacket / coat",
+            "type_conf_pct": 97.5,
+            "type_ok": true,
+            "pred_color": "royal blue",
+            "color_conf_pct": 61.3,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              24,
+              65
+            ],
+            "lab": [
+              23.9,
+              41.6,
+              -68.9
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 98.5,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 85.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              30,
+              57
+            ],
+            "lab": [
+              43.9,
+              62.8,
+              11.3
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 94.4,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 38.7,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              70,
+              61
+            ],
+            "lab": [
+              100.0,
+              -0.4,
+              1.8
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 24.8,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 54.8,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              30,
+              49
+            ],
+            "lab": [
+              80.8,
+              -3.5,
+              0.1
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 97.8,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 54.3,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              36,
+              47
+            ],
+            "lab": [
+              81.2,
+              -1.7,
+              15.5
+            ]
+          }
+        ]
+      },
+      "cfg4_full_tuned": {
+        "type_hits": 11,
+        "color_hits": 12,
+        "joint_hits": 11,
+        "total": 12,
+        "type_acc_pct": 91.7,
+        "color_acc_pct": 100.0,
+        "joint_acc_pct": 91.7,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 72.6,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 56.4,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              45,
+              53
+            ],
+            "lab": [
+              14.1,
+              5.2,
+              -13.0
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 96.7,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 74.8,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              37,
+              39
+            ],
+            "lab": [
+              55.7,
+              -2.8,
+              -4.5
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 96.3,
+            "type_ok": true,
+            "pred_color": "blue",
+            "color_conf_pct": 55.7,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              35,
+              30
+            ],
+            "lab": [
+              14.9,
+              2.2,
+              -12.8
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 29.1,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 40.6,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              60,
+              69
+            ],
+            "lab": [
+              7.5,
+              -0.8,
+              -4.7
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 94.9,
+            "type_ok": true,
+            "pred_color": "black",
+            "color_conf_pct": 43.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              56,
+              54
+            ],
+            "lab": [
+              2.7,
+              1.0,
+              -0.3
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 92.3,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 36.3,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              53,
+              62
+            ],
+            "lab": [
+              16.9,
+              -1.9,
+              -10.6
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 94.5,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 70.1,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              49,
+              48
+            ],
+            "lab": [
+              28.6,
+              -1.2,
+              4.0
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "open jacket / coat",
+            "type_conf_pct": 97.5,
+            "type_ok": true,
+            "pred_color": "royal blue",
+            "color_conf_pct": 88.3,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              24,
+              65
+            ],
+            "lab": [
+              23.9,
+              41.6,
+              -68.9
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 98.6,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 97.0,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              30,
+              57
+            ],
+            "lab": [
+              43.9,
+              62.8,
+              11.3
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 94.3,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 76.2,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              70,
+              61
+            ],
+            "lab": [
+              100.0,
+              -0.4,
+              1.8
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 40.1,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 57.3,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              30,
+              49
+            ],
+            "lab": [
+              80.8,
+              -3.5,
+              0.1
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 97.3,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 82.9,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              36,
+              47
+            ],
+            "lab": [
+              81.2,
+              -1.7,
+              15.5
+            ]
+          }
+        ]
+      }
+    },
+    "240p": {
+      "cfg1_untuned": {
+        "type_hits": 3,
+        "color_hits": 6,
+        "joint_hits": 1,
+        "total": 12,
+        "type_acc_pct": 25.0,
+        "color_acc_pct": 50.0,
+        "joint_acc_pct": 8.3,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 57.5,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 35.1,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              58,
+              112
+            ],
+            "lab": [
+              12.9,
+              4.9,
+              -10.7
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 35.7,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 31.1,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              47,
+              81
+            ],
+            "lab": [
+              22.7,
+              0.8,
+              -6.5
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 35.7,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 31.1,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              47,
+              81
+            ],
+            "lab": [
+              22.7,
+              0.8,
+              -6.5
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 25.5,
+            "type_ok": false,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 28.2,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              78,
+              142
+            ],
+            "lab": [
+              12.9,
+              1.1,
+              -0.1
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 25.5,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 28.2,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              78,
+              142
+            ],
+            "lab": [
+              12.9,
+              1.1,
+              -0.1
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 27.3,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 40.1,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              69,
+              128
+            ],
+            "lab": [
+              17.6,
+              -0.3,
+              -4.9
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 27.3,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 40.1,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              69,
+              128
+            ],
+            "lab": [
+              17.6,
+              -0.3,
+              -4.9
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 23.6,
+            "type_ok": false,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 51.0,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              63,
+              126
+            ],
+            "lab": [
+              29.4,
+              37.4,
+              7.3
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 23.6,
+            "type_ok": false,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 51.0,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              63,
+              126
+            ],
+            "lab": [
+              29.4,
+              37.4,
+              7.3
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 20.3,
+            "type_ok": false,
+            "pred_color": "white",
+            "color_conf_pct": 64.0,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              89,
+              126
+            ],
+            "lab": [
+              78.8,
+              -0.5,
+              5.5
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 15.9,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 54.9,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              39,
+              104
+            ],
+            "lab": [
+              74.9,
+              -2.7,
+              1.2
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "open jacket / coat",
+            "type_conf_pct": 23.3,
+            "type_ok": false,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 59.1,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              46,
+              99
+            ],
+            "lab": [
+              54.5,
+              1.0,
+              8.8
+            ]
+          }
+        ]
+      },
+      "cfg2_subroi": {
+        "type_hits": 5,
+        "color_hits": 9,
+        "joint_hits": 3,
+        "total": 12,
+        "type_acc_pct": 41.7,
+        "color_acc_pct": 75.0,
+        "joint_acc_pct": 25.0,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 45.0,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 51.4,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              30,
+              35
+            ],
+            "lab": [
+              13.3,
+              5.5,
+              -12.9
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 20.5,
+            "type_ok": false,
+            "pred_color": "white",
+            "color_conf_pct": 34.1,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              25,
+              26
+            ],
+            "lab": [
+              57.3,
+              -1.9,
+              -3.9
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 51.4,
+            "type_ok": false,
+            "pred_color": "blue",
+            "color_conf_pct": 27.7,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              23,
+              20
+            ],
+            "lab": [
+              15.7,
+              0.9,
+              -9.7
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 23.3,
+            "type_ok": false,
+            "pred_color": "black",
+            "color_conf_pct": 68.5,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              40,
+              46
+            ],
+            "lab": [
+              7.1,
+              -0.9,
+              -3.9
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 72.2,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 51.2,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              37,
+              35
+            ],
+            "lab": [
+              3.1,
+              3.0,
+              0.2
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 19.3,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 29.7,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              35,
+              40
+            ],
+            "lab": [
+              16.5,
+              -1.6,
+              -10.8
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 66.4,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 28.4,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              33,
+              32
+            ],
+            "lab": [
+              30.2,
+              -1.1,
+              4.4
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 16.0,
+            "type_ok": false,
+            "pred_color": "royal blue",
+            "color_conf_pct": 38.4,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              16,
+              43
+            ],
+            "lab": [
+              22.7,
+              43.2,
+              -69.4
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 19.2,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 96.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              20,
+              38
+            ],
+            "lab": [
+              44.3,
+              63.5,
+              8.3
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 19.6,
+            "type_ok": false,
+            "pred_color": "white",
+            "color_conf_pct": 23.8,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              47,
+              40
+            ],
+            "lab": [
+              99.2,
+              -1.5,
+              3.7
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 25.9,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 40.3,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              20,
+              33
+            ],
+            "lab": [
+              80.8,
+              -3.8,
+              1.0
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 16.9,
+            "type_ok": false,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 65.0,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              24,
+              31
+            ],
+            "lab": [
+              80.8,
+              -1.8,
+              15.0
+            ]
+          }
+        ]
+      },
+      "cfg3_sr_priors": {
+        "type_hits": 11,
+        "color_hits": 7,
+        "joint_hits": 6,
+        "total": 12,
+        "type_acc_pct": 91.7,
+        "color_acc_pct": 58.3,
+        "joint_acc_pct": 50.0,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 71.4,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 52.0,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              30,
+              35
+            ],
+            "lab": [
+              14.1,
+              4.5,
+              -13.4
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 98.3,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 28.7,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              25,
+              26
+            ],
+            "lab": [
+              47.5,
+              -0.8,
+              -5.6
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 97.9,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 37.7,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              23,
+              20
+            ],
+            "lab": [
+              12.9,
+              3.4,
+              -14.8
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 93.3,
+            "type_ok": true,
+            "pred_color": "black",
+            "color_conf_pct": 46.4,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              40,
+              46
+            ],
+            "lab": [
+              7.8,
+              -0.7,
+              -4.6
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 95.8,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 24.6,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              37,
+              35
+            ],
+            "lab": [
+              2.7,
+              1.1,
+              -1.7
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 92.7,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 35.4,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              35,
+              40
+            ],
+            "lab": [
+              18.0,
+              -1.5,
+              -11.3
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 96.6,
+            "type_ok": true,
+            "pred_color": "light grey",
+            "color_conf_pct": 23.7,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              33,
+              32
+            ],
+            "lab": [
+              29.4,
+              -1.4,
+              4.9
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "open jacket / coat",
+            "type_conf_pct": 97.8,
+            "type_ok": true,
+            "pred_color": "royal blue",
+            "color_conf_pct": 74.4,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              16,
+              43
+            ],
+            "lab": [
+              23.9,
+              39.8,
+              -68.0
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 97.8,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 90.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              20,
+              38
+            ],
+            "lab": [
+              45.1,
+              63.1,
+              10.1
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 94.7,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 25.4,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              47,
+              40
+            ],
+            "lab": [
+              100.0,
+              -0.5,
+              2.2
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 29.5,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 64.6,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              20,
+              33
+            ],
+            "lab": [
+              81.2,
+              -4.0,
+              1.0
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 97.7,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 33.6,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              24,
+              31
+            ],
+            "lab": [
+              81.2,
+              -1.2,
+              15.4
+            ]
+          }
+        ]
+      },
+      "cfg4_full_tuned": {
+        "type_hits": 11,
+        "color_hits": 11,
+        "joint_hits": 10,
+        "total": 12,
+        "type_acc_pct": 91.7,
+        "color_acc_pct": 91.7,
+        "joint_acc_pct": 83.3,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 71.4,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 55.7,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              30,
+              35
+            ],
+            "lab": [
+              14.1,
+              4.5,
+              -13.4
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 97.7,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 62.3,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              25,
+              26
+            ],
+            "lab": [
+              47.5,
+              -0.8,
+              -5.6
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 97.9,
+            "type_ok": true,
+            "pred_color": "blue",
+            "color_conf_pct": 56.7,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              23,
+              20
+            ],
+            "lab": [
+              12.9,
+              3.4,
+              -14.8
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 25.8,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 48.1,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              40,
+              46
+            ],
+            "lab": [
+              7.8,
+              -0.7,
+              -4.6
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 96.0,
+            "type_ok": true,
+            "pred_color": "black",
+            "color_conf_pct": 44.0,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              37,
+              35
+            ],
+            "lab": [
+              2.7,
+              1.1,
+              -1.7
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 92.2,
+            "type_ok": true,
+            "pred_color": "blue",
+            "color_conf_pct": 38.0,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              35,
+              40
+            ],
+            "lab": [
+              18.0,
+              -1.5,
+              -11.3
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 96.5,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 70.7,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              33,
+              32
+            ],
+            "lab": [
+              29.4,
+              -1.4,
+              4.9
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "open jacket / coat",
+            "type_conf_pct": 97.6,
+            "type_ok": true,
+            "pred_color": "royal blue",
+            "color_conf_pct": 90.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              16,
+              43
+            ],
+            "lab": [
+              23.9,
+              39.8,
+              -68.0
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 97.9,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 97.7,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              20,
+              38
+            ],
+            "lab": [
+              45.1,
+              63.1,
+              10.1
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 95.2,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 77.9,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              47,
+              40
+            ],
+            "lab": [
+              100.0,
+              -0.5,
+              2.2
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 40.7,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 57.2,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              20,
+              33
+            ],
+            "lab": [
+              81.2,
+              -4.0,
+              1.0
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 97.8,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 80.1,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              24,
+              31
+            ],
+            "lab": [
+              81.2,
+              -1.2,
+              15.4
+            ]
+          }
+        ]
+      }
+    },
+    "144p": {
+      "cfg1_untuned": {
+        "type_hits": 4,
+        "color_hits": 6,
+        "joint_hits": 3,
+        "total": 12,
+        "type_acc_pct": 33.3,
+        "color_acc_pct": 50.0,
+        "joint_acc_pct": 25.0,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 43.4,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 50.1,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              34,
+              67
+            ],
+            "lab": [
+              12.9,
+              5.2,
+              -10.5
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 28.4,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 39.2,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              29,
+              49
+            ],
+            "lab": [
+              25.9,
+              1.0,
+              -5.9
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 28.4,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 39.2,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              29,
+              49
+            ],
+            "lab": [
+              25.9,
+              1.0,
+              -5.9
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 58.6,
+            "type_ok": false,
+            "pred_color": "black",
+            "color_conf_pct": 64.2,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              46,
+              85
+            ],
+            "lab": [
+              14.1,
+              1.1,
+              0.2
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 58.6,
+            "type_ok": true,
+            "pred_color": "black",
+            "color_conf_pct": 64.2,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              46,
+              85
+            ],
+            "lab": [
+              14.1,
+              1.1,
+              0.2
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 24.2,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 44.2,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              41,
+              77
+            ],
+            "lab": [
+              18.4,
+              -0.4,
+              -4.0
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 24.2,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 44.2,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              41,
+              77
+            ],
+            "lab": [
+              18.4,
+              -0.4,
+              -4.0
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 30.5,
+            "type_ok": false,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 54.5,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              38,
+              75
+            ],
+            "lab": [
+              27.5,
+              33.9,
+              6.9
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 30.5,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 54.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              38,
+              75
+            ],
+            "lab": [
+              27.5,
+              33.9,
+              6.9
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 18.4,
+            "type_ok": false,
+            "pred_color": "white",
+            "color_conf_pct": 78.8,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              53,
+              75
+            ],
+            "lab": [
+              78.8,
+              -0.4,
+              5.9
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 17.0,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 52.2,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              23,
+              62
+            ],
+            "lab": [
+              74.9,
+              -1.4,
+              1.1
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 13.3,
+            "type_ok": false,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 36.9,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              28,
+              59
+            ],
+            "lab": [
+              54.1,
+              1.1,
+              8.6
+            ]
+          }
+        ]
+      },
+      "cfg2_subroi": {
+        "type_hits": 5,
+        "color_hits": 8,
+        "joint_hits": 2,
+        "total": 12,
+        "type_acc_pct": 41.7,
+        "color_acc_pct": 66.7,
+        "joint_acc_pct": 16.7,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 17.3,
+            "type_ok": false,
+            "pred_color": "navy blue",
+            "color_conf_pct": 41.0,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              18,
+              22
+            ],
+            "lab": [
+              13.3,
+              6.4,
+              -12.7
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 17.8,
+            "type_ok": false,
+            "pred_color": "white",
+            "color_conf_pct": 33.1,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              15,
+              16
+            ],
+            "lab": [
+              51.4,
+              -2.5,
+              -3.5
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 54.8,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 26.7,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              14,
+              12
+            ],
+            "lab": [
+              18.0,
+              2.5,
+              -10.8
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 19.2,
+            "type_ok": false,
+            "pred_color": "black",
+            "color_conf_pct": 54.0,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              24,
+              27
+            ],
+            "lab": [
+              7.8,
+              -0.8,
+              -4.4
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 78.8,
+            "type_ok": true,
+            "pred_color": "black",
+            "color_conf_pct": 29.2,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              22,
+              22
+            ],
+            "lab": [
+              3.5,
+              2.9,
+              3.0
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 23.0,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 25.7,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              21,
+              24
+            ],
+            "lab": [
+              18.4,
+              -4.0,
+              -8.7
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 53.7,
+            "type_ok": true,
+            "pred_color": "blue",
+            "color_conf_pct": 16.6,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              20,
+              19
+            ],
+            "lab": [
+              28.6,
+              -0.8,
+              3.2
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 18.7,
+            "type_ok": false,
+            "pred_color": "royal blue",
+            "color_conf_pct": 43.3,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              9,
+              26
+            ],
+            "lab": [
+              21.2,
+              41.6,
+              -67.2
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 15.9,
+            "type_ok": false,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 84.2,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              12,
+              23
+            ],
+            "lab": [
+              43.9,
+              60.5,
+              10.9
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 23.2,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 16.6,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              27,
+              24
+            ],
+            "lab": [
+              98.8,
+              -1.0,
+              4.1
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 17.0,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 18.2,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              12,
+              20
+            ],
+            "lab": [
+              80.8,
+              -3.5,
+              0.4
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 20.1,
+            "type_ok": false,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 40.6,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              14,
+              19
+            ],
+            "lab": [
+              78.8,
+              -1.8,
+              12.9
+            ]
+          }
+        ]
+      },
+      "cfg3_sr_priors": {
+        "type_hits": 12,
+        "color_hits": 7,
+        "joint_hits": 7,
+        "total": 12,
+        "type_acc_pct": 100.0,
+        "color_acc_pct": 58.3,
+        "joint_acc_pct": 58.3,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 66.2,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 57.3,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              18,
+              22
+            ],
+            "lab": [
+              14.1,
+              4.9,
+              -14.6
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 97.1,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 29.9,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              15,
+              16
+            ],
+            "lab": [
+              43.9,
+              0.7,
+              -5.5
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 99.1,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 48.8,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              14,
+              12
+            ],
+            "lab": [
+              13.3,
+              3.5,
+              -14.3
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 94.1,
+            "type_ok": true,
+            "pred_color": "black",
+            "color_conf_pct": 37.5,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              24,
+              27
+            ],
+            "lab": [
+              8.2,
+              -0.7,
+              -4.7
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 97.6,
+            "type_ok": true,
+            "pred_color": "black",
+            "color_conf_pct": 22.2,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              22,
+              22
+            ],
+            "lab": [
+              1.2,
+              0.3,
+              -1.0
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 92.1,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 29.9,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              21,
+              24
+            ],
+            "lab": [
+              18.0,
+              -2.8,
+              -10.4
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 95.1,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 25.7,
+            "color_ok": false,
+            "joint_ok": false,
+            "sub_size_px": [
+              20,
+              19
+            ],
+            "lab": [
+              26.7,
+              -0.5,
+              3.0
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "open jacket / coat",
+            "type_conf_pct": 97.2,
+            "type_ok": true,
+            "pred_color": "royal blue",
+            "color_conf_pct": 55.3,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              9,
+              26
+            ],
+            "lab": [
+              22.4,
+              38.7,
+              -65.0
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 98.2,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 91.0,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              12,
+              23
+            ],
+            "lab": [
+              45.1,
+              61.4,
+              9.9
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 96.0,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 20.3,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              27,
+              24
+            ],
+            "lab": [
+              99.6,
+              -0.9,
+              5.0
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 90.0,
+            "type_ok": true,
+            "pred_color": "light grey",
+            "color_conf_pct": 32.9,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              12,
+              20
+            ],
+            "lab": [
+              83.9,
+              -3.1,
+              -2.6
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 97.1,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 50.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              14,
+              19
+            ],
+            "lab": [
+              82.7,
+              -0.9,
+              13.6
+            ]
+          }
+        ]
+      },
+      "cfg4_full_tuned": {
+        "type_hits": 11,
+        "color_hits": 12,
+        "joint_hits": 11,
+        "total": 12,
+        "type_acc_pct": 91.7,
+        "color_acc_pct": 100.0,
+        "joint_acc_pct": 91.7,
+        "items": [
+          {
+            "id": "G01",
+            "zone": "upper",
+            "gt_type": "puffer jacket / quilted coat",
+            "gt_color": "navy blue",
+            "pred_type": "puffer jacket / quilted coat",
+            "type_conf_pct": 66.2,
+            "type_ok": true,
+            "pred_color": "navy blue",
+            "color_conf_pct": 62.7,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              18,
+              22
+            ],
+            "lab": [
+              14.1,
+              4.9,
+              -14.6
+            ]
+          },
+          {
+            "id": "G02",
+            "zone": "upper",
+            "gt_type": "hoodie / hooded sweatshirt",
+            "gt_color": "white",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 96.7,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 50.0,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              15,
+              16
+            ],
+            "lab": [
+              43.9,
+              0.7,
+              -5.5
+            ]
+          },
+          {
+            "id": "G03",
+            "zone": "lower",
+            "gt_type": "jeans / denim pants",
+            "gt_color": "blue",
+            "pred_type": "jeans / denim pants",
+            "type_conf_pct": 97.4,
+            "type_ok": true,
+            "pred_color": "blue",
+            "color_conf_pct": 58.8,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              14,
+              12
+            ],
+            "lab": [
+              13.3,
+              3.5,
+              -14.3
+            ]
+          },
+          {
+            "id": "G04",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "sweater / sweatshirt",
+            "type_conf_pct": 32.6,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 49.6,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              24,
+              27
+            ],
+            "lab": [
+              8.2,
+              -0.7,
+              -4.7
+            ]
+          },
+          {
+            "id": "G05",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "black",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 96.5,
+            "type_ok": true,
+            "pred_color": "black",
+            "color_conf_pct": 45.9,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              22,
+              22
+            ],
+            "lab": [
+              1.2,
+              0.3,
+              -1.0
+            ]
+          },
+          {
+            "id": "G06",
+            "zone": "upper",
+            "gt_type": "jacket / sweater",
+            "gt_color": "dark grey / charcoal",
+            "pred_type": "jacket / sweater",
+            "type_conf_pct": 91.8,
+            "type_ok": true,
+            "pred_color": "dark grey / charcoal",
+            "color_conf_pct": 38.3,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              21,
+              24
+            ],
+            "lab": [
+              18.0,
+              -2.8,
+              -10.4
+            ]
+          },
+          {
+            "id": "G07",
+            "zone": "lower",
+            "gt_type": "pants / trousers",
+            "gt_color": "beige / khaki",
+            "pred_type": "pants / trousers",
+            "type_conf_pct": 94.8,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 68.5,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              20,
+              19
+            ],
+            "lab": [
+              26.7,
+              -0.5,
+              3.0
+            ]
+          },
+          {
+            "id": "G08",
+            "zone": "outer_upper",
+            "gt_type": "open jacket / coat",
+            "gt_color": "royal blue",
+            "pred_type": "open jacket / coat",
+            "type_conf_pct": 97.2,
+            "type_ok": true,
+            "pred_color": "royal blue",
+            "color_conf_pct": 85.4,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              9,
+              26
+            ],
+            "lab": [
+              22.4,
+              38.7,
+              -65.0
+            ]
+          },
+          {
+            "id": "G09",
+            "zone": "inner_upper",
+            "gt_type": "shirt / blouse",
+            "gt_color": "pink / magenta",
+            "pred_type": "shirt / blouse",
+            "type_conf_pct": 97.9,
+            "type_ok": true,
+            "pred_color": "pink / magenta",
+            "color_conf_pct": 97.8,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              12,
+              23
+            ],
+            "lab": [
+              45.1,
+              61.4,
+              9.9
+            ]
+          },
+          {
+            "id": "G10",
+            "zone": "upper",
+            "gt_type": "long coat / overcoat",
+            "gt_color": "white",
+            "pred_type": "long coat / overcoat",
+            "type_conf_pct": 95.9,
+            "type_ok": true,
+            "pred_color": "white",
+            "color_conf_pct": 76.4,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              27,
+              24
+            ],
+            "lab": [
+              99.6,
+              -0.9,
+              5.0
+            ]
+          },
+          {
+            "id": "G11",
+            "zone": "upper",
+            "gt_type": "sweater / sweatshirt",
+            "gt_color": "light grey",
+            "pred_type": "hoodie / hooded sweatshirt",
+            "type_conf_pct": 36.7,
+            "type_ok": false,
+            "pred_color": "light grey",
+            "color_conf_pct": 54.2,
+            "color_ok": true,
+            "joint_ok": false,
+            "sub_size_px": [
+              12,
+              20
+            ],
+            "lab": [
+              83.9,
+              -3.1,
+              -2.6
+            ]
+          },
+          {
+            "id": "G12",
+            "zone": "upper",
+            "gt_type": "buttoned coat / jacket",
+            "gt_color": "beige / khaki",
+            "pred_type": "buttoned coat / jacket",
+            "type_conf_pct": 96.9,
+            "type_ok": true,
+            "pred_color": "beige / khaki",
+            "color_conf_pct": 79.0,
+            "color_ok": true,
+            "joint_ok": true,
+            "sub_size_px": [
+              14,
+              19
+            ],
+            "lab": [
+              82.7,
+              -0.9,
+              13.6
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "detector_recall": {
+    "720p": {
+      "target_raw_hits": 8,
+      "target_sr_hits": 8,
+      "target_total": 8,
+      "target_raw_pct": 100.0,
+      "target_sr_pct": 100.0,
+      "all_raw_hits": 56,
+      "all_sr_hits": 56,
+      "all_total": 56,
+      "all_raw_pct": 100.0,
+      "all_sr_pct": 100.0,
+      "raw_mean_iou": 0.992,
+      "sr_mean_iou": 0.975,
+      "raw_ms": 186.5,
+      "sr_ms": 2919.6
+    },
+    "480p": {
+      "target_raw_hits": 8,
+      "target_sr_hits": 8,
+      "target_total": 8,
+      "target_raw_pct": 100.0,
+      "target_sr_pct": 100.0,
+      "all_raw_hits": 56,
+      "all_sr_hits": 55,
+      "all_total": 56,
+      "all_raw_pct": 100.0,
+      "all_sr_pct": 98.2,
+      "raw_mean_iou": 0.965,
+      "sr_mean_iou": 0.959,
+      "raw_ms": 166.4,
+      "sr_ms": 1675.7
+    },
+    "360p": {
+      "target_raw_hits": 8,
+      "target_sr_hits": 8,
+      "target_total": 8,
+      "target_raw_pct": 100.0,
+      "target_sr_pct": 100.0,
+      "all_raw_hits": 53,
+      "all_sr_hits": 54,
+      "all_total": 56,
+      "all_raw_pct": 94.6,
+      "all_sr_pct": 96.4,
+      "raw_mean_iou": 0.943,
+      "sr_mean_iou": 0.963,
+      "raw_ms": 166.4,
+      "sr_ms": 827.3
+    },
+    "240p": {
+      "target_raw_hits": 8,
+      "target_sr_hits": 8,
+      "target_total": 8,
+      "target_raw_pct": 100.0,
+      "target_sr_pct": 100.0,
+      "all_raw_hits": 46,
+      "all_sr_hits": 53,
+      "all_total": 56,
+      "all_raw_pct": 82.1,
+      "all_sr_pct": 94.6,
+      "raw_mean_iou": 0.907,
+      "sr_mean_iou": 0.933,
+      "raw_ms": 162.0,
+      "sr_ms": 452.6
+    },
+    "144p": {
+      "target_raw_hits": 8,
+      "target_sr_hits": 8,
+      "target_total": 8,
+      "target_raw_pct": 100.0,
+      "target_sr_pct": 100.0,
+      "all_raw_hits": 33,
+      "all_sr_hits": 43,
+      "all_total": 56,
+      "all_raw_pct": 58.9,
+      "all_sr_pct": 76.8,
+      "raw_mean_iou": 0.853,
+      "sr_mean_iou": 0.876,
+      "raw_ms": 162.7,
+      "sr_ms": 265.2
+    }
+  },
+  "timing_vram": {
+    "sr4x_ms_per_crop": 134.16,
+    "clip_ms_per_roi": 27.14,
+    "tuned_ms_per_tracklet_frame": 298.95,
+    "sr_vram_mb": 76.6,
+    "clip_vram_mb": 456.2
+  }
+}

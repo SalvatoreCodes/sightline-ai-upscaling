@@ -1,0 +1,12 @@
+{
+  "epochs": 65,
+  "train_time_sec": 101.16,
+  "human_train_samples": 538,
+  "human_val_samples": 152,
+  "human_val_acc_pct": 96.1,
+  "garment_train_samples": 336,
+  "garment_val_samples": 24,
+  "type_val_acc_144_240_pct": 100.0,
+  "color_val_acc_144_240_pct": 100.0,
+  "final_loss": 0.6747
+}

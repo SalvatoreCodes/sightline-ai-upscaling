@@ -1,0 +1,1976 @@
+[
+  {
+    "name": "VIRAT_S_000001.mp4",
+    "id": "56f581ce8d777f753209ca44",
+    "size_mb": 1388.89,
+    "download_url": "https://data.kitware.com/api/v1/item/56f581ce8d777f753209ca44/download"
+  },
+  {
+    "name": "VIRAT_S_000002.mp4",
+    "id": "56f5825c8d777f753209ca47",
+    "size_mb": 612.01,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5825c8d777f753209ca47/download"
+  },
+  {
+    "name": "VIRAT_S_000003.mp4",
+    "id": "56f582988d777f753209ca4a",
+    "size_mb": 1403.1,
+    "download_url": "https://data.kitware.com/api/v1/item/56f582988d777f753209ca4a/download"
+  },
+  {
+    "name": "VIRAT_S_000004.mp4",
+    "id": "56f583238d777f753209ca4d",
+    "size_mb": 1197.7,
+    "download_url": "https://data.kitware.com/api/v1/item/56f583238d777f753209ca4d/download"
+  },
+  {
+    "name": "VIRAT_S_000006.mp4",
+    "id": "56f583998d777f753209ca50",
+    "size_mb": 1214.95,
+    "download_url": "https://data.kitware.com/api/v1/item/56f583998d777f753209ca50/download"
+  },
+  {
+    "name": "VIRAT_S_000101.mp4",
+    "id": "56f584138d777f753209ca53",
+    "size_mb": 1059.52,
+    "download_url": "https://data.kitware.com/api/v1/item/56f584138d777f753209ca53/download"
+  },
+  {
+    "name": "VIRAT_S_000102.mp4",
+    "id": "56f584828d777f753209ca56",
+    "size_mb": 1533.74,
+    "download_url": "https://data.kitware.com/api/v1/item/56f584828d777f753209ca56/download"
+  },
+  {
+    "name": "VIRAT_S_000200_00_000100_000171.mp4",
+    "id": "56f5851c8d777f753209ca59",
+    "size_mb": 68.92,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5851c8d777f753209ca59/download"
+  },
+  {
+    "name": "VIRAT_S_000200_01_000226_000268.mp4",
+    "id": "56f585248d777f753209ca5c",
+    "size_mb": 41.64,
+    "download_url": "https://data.kitware.com/api/v1/item/56f585248d777f753209ca5c/download"
+  },
+  {
+    "name": "VIRAT_S_000200_02_000479_000635.mp4",
+    "id": "56f585298d777f753209ca5f",
+    "size_mb": 154.15,
+    "download_url": "https://data.kitware.com/api/v1/item/56f585298d777f753209ca5f/download"
+  },
+  {
+    "name": "VIRAT_S_000200_03_000657_000899.mp4",
+    "id": "56f5853c8d777f753209ca62",
+    "size_mb": 238.05,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5853c8d777f753209ca62/download"
+  },
+  {
+    "name": "VIRAT_S_000200_04_000937_001443.mp4",
+    "id": "56f5855a8d777f753209ca65",
+    "size_mb": 504.38,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5855a8d777f753209ca65/download"
+  },
+  {
+    "name": "VIRAT_S_000200_05_001525_001575.mp4",
+    "id": "56f585958d777f753209ca68",
+    "size_mb": 49.43,
+    "download_url": "https://data.kitware.com/api/v1/item/56f585958d777f753209ca68/download"
+  },
+  {
+    "name": "VIRAT_S_000200_06_001693_001824.mp4",
+    "id": "56f5859b8d777f753209ca6b",
+    "size_mb": 129.89,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5859b8d777f753209ca6b/download"
+  },
+  {
+    "name": "VIRAT_S_000201_00_000018_000380.mp4",
+    "id": "56f585aa8d777f753209ca6e",
+    "size_mb": 358.81,
+    "download_url": "https://data.kitware.com/api/v1/item/56f585aa8d777f753209ca6e/download"
+  },
+  {
+    "name": "VIRAT_S_000201_01_000384_000589.mp4",
+    "id": "56f585d48d777f753209ca71",
+    "size_mb": 204.33,
+    "download_url": "https://data.kitware.com/api/v1/item/56f585d48d777f753209ca71/download"
+  },
+  {
+    "name": "VIRAT_S_000201_02_000590_000623.mp4",
+    "id": "56f585ec8d777f753209ca74",
+    "size_mb": 32.59,
+    "download_url": "https://data.kitware.com/api/v1/item/56f585ec8d777f753209ca74/download"
+  },
+  {
+    "name": "VIRAT_S_000201_03_000640_000672.mp4",
+    "id": "56f585f08d777f753209ca77",
+    "size_mb": 31.36,
+    "download_url": "https://data.kitware.com/api/v1/item/56f585f08d777f753209ca77/download"
+  },
+  {
+    "name": "VIRAT_S_000201_04_000682_000822.mp4",
+    "id": "56f585f48d777f753209ca7a",
+    "size_mb": 138.96,
+    "download_url": "https://data.kitware.com/api/v1/item/56f585f48d777f753209ca7a/download"
+  },
+  {
+    "name": "VIRAT_S_000201_05_001081_001215.mp4",
+    "id": "56f586058d777f753209ca7d",
+    "size_mb": 132.78,
+    "download_url": "https://data.kitware.com/api/v1/item/56f586058d777f753209ca7d/download"
+  },
+  {
+    "name": "VIRAT_S_000201_06_001354_001397.mp4",
+    "id": "56f586158d777f753209ca80",
+    "size_mb": 42.63,
+    "download_url": "https://data.kitware.com/api/v1/item/56f586158d777f753209ca80/download"
+  },
+  {
+    "name": "VIRAT_S_000201_07_001485_001581.mp4",
+    "id": "56f5861a8d777f753209ca83",
+    "size_mb": 95.96,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5861a8d777f753209ca83/download"
+  },
+  {
+    "name": "VIRAT_S_000201_08_001652_001838.mp4",
+    "id": "56f586258d777f753209ca86",
+    "size_mb": 185.29,
+    "download_url": "https://data.kitware.com/api/v1/item/56f586258d777f753209ca86/download"
+  },
+  {
+    "name": "VIRAT_S_000202_00_000000_000977.mp4",
+    "id": "56f5863a8d777f753209ca89",
+    "size_mb": 973.47,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5863a8d777f753209ca89/download"
+  },
+  {
+    "name": "VIRAT_S_000203_03_000736_000785.mp4",
+    "id": "56f586ac8d777f753209ca8c",
+    "size_mb": 49.41,
+    "download_url": "https://data.kitware.com/api/v1/item/56f586ac8d777f753209ca8c/download"
+  },
+  {
+    "name": "VIRAT_S_000203_04_000903_001086.mp4",
+    "id": "56f586b28d777f753209ca8f",
+    "size_mb": 182.89,
+    "download_url": "https://data.kitware.com/api/v1/item/56f586b28d777f753209ca8f/download"
+  },
+  {
+    "name": "VIRAT_S_000203_05_001122_001159.mp4",
+    "id": "56f586c78d777f753209ca92",
+    "size_mb": 36.71,
+    "download_url": "https://data.kitware.com/api/v1/item/56f586c78d777f753209ca92/download"
+  },
+  {
+    "name": "VIRAT_S_000203_06_001206_001266.mp4",
+    "id": "56f586cb8d777f753209ca95",
+    "size_mb": 59.53,
+    "download_url": "https://data.kitware.com/api/v1/item/56f586cb8d777f753209ca95/download"
+  },
+  {
+    "name": "VIRAT_S_000203_07_001341_001458.mp4",
+    "id": "56f586d28d777f753209ca98",
+    "size_mb": 116.63,
+    "download_url": "https://data.kitware.com/api/v1/item/56f586d28d777f753209ca98/download"
+  },
+  {
+    "name": "VIRAT_S_000203_08_001702_001734.mp4",
+    "id": "56f586e08d777f753209ca9b",
+    "size_mb": 31.69,
+    "download_url": "https://data.kitware.com/api/v1/item/56f586e08d777f753209ca9b/download"
+  },
+  {
+    "name": "VIRAT_S_000203_09_001789_001842.mp4",
+    "id": "56f586e48d777f753209ca9e",
+    "size_mb": 46.79,
+    "download_url": "https://data.kitware.com/api/v1/item/56f586e48d777f753209ca9e/download"
+  },
+  {
+    "name": "VIRAT_S_000205_00_000065_000149.mp4",
+    "id": "56f586ea8d777f753209caa1",
+    "size_mb": 83.25,
+    "download_url": "https://data.kitware.com/api/v1/item/56f586ea8d777f753209caa1/download"
+  },
+  {
+    "name": "VIRAT_S_000205_01_000197_000342.mp4",
+    "id": "56f586f38d777f753209caa4",
+    "size_mb": 144.25,
+    "download_url": "https://data.kitware.com/api/v1/item/56f586f38d777f753209caa4/download"
+  },
+  {
+    "name": "VIRAT_S_000205_02_000409_000566.mp4",
+    "id": "56f587048d777f753209caa7",
+    "size_mb": 156.03,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587048d777f753209caa7/download"
+  },
+  {
+    "name": "VIRAT_S_000205_03_000860_000922.mp4",
+    "id": "56f587178d777f753209caaa",
+    "size_mb": 61.01,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587178d777f753209caaa/download"
+  },
+  {
+    "name": "VIRAT_S_000205_04_000927_001057.mp4",
+    "id": "56f5871e8d777f753209caad",
+    "size_mb": 129.64,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5871e8d777f753209caad/download"
+  },
+  {
+    "name": "VIRAT_S_000205_05_001092_001124.mp4",
+    "id": "56f5872d8d777f753209cab0",
+    "size_mb": 31.98,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5872d8d777f753209cab0/download"
+  },
+  {
+    "name": "VIRAT_S_000206_07_001501_001600.mp4",
+    "id": "56f587318d777f753209cab3",
+    "size_mb": 91.05,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587318d777f753209cab3/download"
+  },
+  {
+    "name": "VIRAT_S_000206_08_001618_001712.mp4",
+    "id": "56f5873c8d777f753209cab6",
+    "size_mb": 93.4,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5873c8d777f753209cab6/download"
+  },
+  {
+    "name": "VIRAT_S_000206_09_001714_001851.mp4",
+    "id": "56f587468d777f753209cab9",
+    "size_mb": 127.23,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587468d777f753209cab9/download"
+  },
+  {
+    "name": "VIRAT_S_000207_00_000000_000045.mp4",
+    "id": "56f587558d777f753209cabc",
+    "size_mb": 45.33,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587558d777f753209cabc/download"
+  },
+  {
+    "name": "VIRAT_S_000207_01_000094_000156.mp4",
+    "id": "56f5875b8d777f753209cabf",
+    "size_mb": 61.67,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5875b8d777f753209cabf/download"
+  },
+  {
+    "name": "VIRAT_S_000207_02_000498_000530.mp4",
+    "id": "56f587628d777f753209cac2",
+    "size_mb": 31.38,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587628d777f753209cac2/download"
+  },
+  {
+    "name": "VIRAT_S_000207_03_000556_000590.mp4",
+    "id": "56f587668d777f753209cac5",
+    "size_mb": 34.04,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587668d777f753209cac5/download"
+  },
+  {
+    "name": "VIRAT_S_000207_04_000902_000934.mp4",
+    "id": "56f5876a8d777f753209cac8",
+    "size_mb": 31.4,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5876a8d777f753209cac8/download"
+  },
+  {
+    "name": "VIRAT_S_000207_05_001125_001193.mp4",
+    "id": "56f5876e8d777f753209cacb",
+    "size_mb": 67.58,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5876e8d777f753209cacb/download"
+  },
+  {
+    "name": "VIRAT_S_010000_00_000000_000165.mp4",
+    "id": "56f587768d777f753209cace",
+    "size_mb": 28.6,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587768d777f753209cace/download"
+  },
+  {
+    "name": "VIRAT_S_010000_01_000184_000324.mp4",
+    "id": "56f587798d777f753209cad1",
+    "size_mb": 23.64,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587798d777f753209cad1/download"
+  },
+  {
+    "name": "VIRAT_S_010000_02_000388_000421.mp4",
+    "id": "56f5877b8d777f753209cad4",
+    "size_mb": 4.9,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5877b8d777f753209cad4/download"
+  },
+  {
+    "name": "VIRAT_S_010000_03_000442_000528.mp4",
+    "id": "56f5877c8d777f753209cad7",
+    "size_mb": 14.62,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5877c8d777f753209cad7/download"
+  },
+  {
+    "name": "VIRAT_S_010000_04_000530_000605.mp4",
+    "id": "56f5877e8d777f753209cada",
+    "size_mb": 12.81,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5877e8d777f753209cada/download"
+  },
+  {
+    "name": "VIRAT_S_010000_05_000638_000718.mp4",
+    "id": "56f5877f8d777f753209cadd",
+    "size_mb": 12.72,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5877f8d777f753209cadd/download"
+  },
+  {
+    "name": "VIRAT_S_010000_06_000728_000762.mp4",
+    "id": "56f587808d777f753209cae0",
+    "size_mb": 6.72,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587808d777f753209cae0/download"
+  },
+  {
+    "name": "VIRAT_S_010000_07_000827_000860.mp4",
+    "id": "56f587818d777f753209cae3",
+    "size_mb": 4.34,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587818d777f753209cae3/download"
+  },
+  {
+    "name": "VIRAT_S_010000_08_000893_001024.mp4",
+    "id": "56f587828d777f753209cae6",
+    "size_mb": 23.96,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587828d777f753209cae6/download"
+  },
+  {
+    "name": "VIRAT_S_010001_00_000019_000065.mp4",
+    "id": "56f587848d777f753209cae9",
+    "size_mb": 7.64,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587848d777f753209cae9/download"
+  },
+  {
+    "name": "VIRAT_S_010001_01_000071_000167.mp4",
+    "id": "56f587858d777f753209caec",
+    "size_mb": 18.16,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587858d777f753209caec/download"
+  },
+  {
+    "name": "VIRAT_S_010001_02_000195_000498.mp4",
+    "id": "56f587878d777f753209caef",
+    "size_mb": 50.87,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587878d777f753209caef/download"
+  },
+  {
+    "name": "VIRAT_S_010001_03_000537_000563.mp4",
+    "id": "56f5878c8d777f753209caf2",
+    "size_mb": 4.07,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5878c8d777f753209caf2/download"
+  },
+  {
+    "name": "VIRAT_S_010001_04_000583_000646.mp4",
+    "id": "56f5878d8d777f753209caf5",
+    "size_mb": 11.02,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5878d8d777f753209caf5/download"
+  },
+  {
+    "name": "VIRAT_S_010001_05_000649_000684.mp4",
+    "id": "56f5878e8d777f753209caf8",
+    "size_mb": 4.37,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5878e8d777f753209caf8/download"
+  },
+  {
+    "name": "VIRAT_S_010001_06_000685_000722.mp4",
+    "id": "56f5878f8d777f753209cafb",
+    "size_mb": 6.04,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5878f8d777f753209cafb/download"
+  },
+  {
+    "name": "VIRAT_S_010001_07_000741_000810.mp4",
+    "id": "56f5878f8d777f753209cafe",
+    "size_mb": 10.82,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5878f8d777f753209cafe/download"
+  },
+  {
+    "name": "VIRAT_S_010001_08_000826_000893.mp4",
+    "id": "56f587918d777f753209cb01",
+    "size_mb": 11.16,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587918d777f753209cb01/download"
+  },
+  {
+    "name": "VIRAT_S_010001_09_000921_000952.mp4",
+    "id": "56f587928d777f753209cb04",
+    "size_mb": 5.32,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587928d777f753209cb04/download"
+  },
+  {
+    "name": "VIRAT_S_010001_10_000962_001005.mp4",
+    "id": "56f587928d777f753209cb07",
+    "size_mb": 6.29,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587928d777f753209cb07/download"
+  },
+  {
+    "name": "VIRAT_S_010002_00_000012_000120.mp4",
+    "id": "56f587938d777f753209cb0a",
+    "size_mb": 17.97,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587938d777f753209cb0a/download"
+  },
+  {
+    "name": "VIRAT_S_010002_01_000123_000148.mp4",
+    "id": "56f587958d777f753209cb0d",
+    "size_mb": 4.2,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587958d777f753209cb0d/download"
+  },
+  {
+    "name": "VIRAT_S_010002_02_000174_000204.mp4",
+    "id": "56f587958d777f753209cb10",
+    "size_mb": 4.71,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587958d777f753209cb10/download"
+  },
+  {
+    "name": "VIRAT_S_010002_03_000236_000261.mp4",
+    "id": "56f587968d777f753209cb13",
+    "size_mb": 4.38,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587968d777f753209cb13/download"
+  },
+  {
+    "name": "VIRAT_S_010002_04_000307_000350.mp4",
+    "id": "56f587978d777f753209cb16",
+    "size_mb": 6.04,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587978d777f753209cb16/download"
+  },
+  {
+    "name": "VIRAT_S_010002_05_000397_000420.mp4",
+    "id": "56f587978d777f753209cb19",
+    "size_mb": 2.97,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587978d777f753209cb19/download"
+  },
+  {
+    "name": "VIRAT_S_010002_06_000441_000467.mp4",
+    "id": "56f587988d777f753209cb1c",
+    "size_mb": 3.35,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587988d777f753209cb1c/download"
+  },
+  {
+    "name": "VIRAT_S_010002_07_000522_000547.mp4",
+    "id": "56f587988d777f753209cb1f",
+    "size_mb": 2.97,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587988d777f753209cb1f/download"
+  },
+  {
+    "name": "VIRAT_S_010003_00_000000_000108.mp4",
+    "id": "56f587998d777f753209cb22",
+    "size_mb": 7.4,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587998d777f753209cb22/download"
+  },
+  {
+    "name": "VIRAT_S_010003_01_000111_000137.mp4",
+    "id": "56f5879a8d777f753209cb25",
+    "size_mb": 1.87,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5879a8d777f753209cb25/download"
+  },
+  {
+    "name": "VIRAT_S_010003_02_000165_000202.mp4",
+    "id": "56f5879a8d777f753209cb28",
+    "size_mb": 4.86,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5879a8d777f753209cb28/download"
+  },
+  {
+    "name": "VIRAT_S_010003_03_000219_000259.mp4",
+    "id": "56f5879b8d777f753209cb2b",
+    "size_mb": 3.88,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5879b8d777f753209cb2b/download"
+  },
+  {
+    "name": "VIRAT_S_010003_05_000499_000523.mp4",
+    "id": "56f5879b8d777f753209cb2e",
+    "size_mb": 2.39,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5879b8d777f753209cb2e/download"
+  },
+  {
+    "name": "VIRAT_S_010003_06_000526_000560.mp4",
+    "id": "56f5879b8d777f753209cb31",
+    "size_mb": 3.56,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5879b8d777f753209cb31/download"
+  },
+  {
+    "name": "VIRAT_S_010003_07_000608_000636.mp4",
+    "id": "56f5879c8d777f753209cb34",
+    "size_mb": 1.54,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5879c8d777f753209cb34/download"
+  },
+  {
+    "name": "VIRAT_S_010003_08_000739_000778.mp4",
+    "id": "56f5879c8d777f753209cb37",
+    "size_mb": 2.83,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5879c8d777f753209cb37/download"
+  },
+  {
+    "name": "VIRAT_S_010003_09_000779_000861.mp4",
+    "id": "56f5879d8d777f753209cb3a",
+    "size_mb": 7.65,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5879d8d777f753209cb3a/download"
+  },
+  {
+    "name": "VIRAT_S_010003_10_000901_000934.mp4",
+    "id": "56f5879e8d777f753209cb3d",
+    "size_mb": 1.7,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5879e8d777f753209cb3d/download"
+  },
+  {
+    "name": "VIRAT_S_010003_11_000956_000982.mp4",
+    "id": "56f5879e8d777f753209cb40",
+    "size_mb": 1.71,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5879e8d777f753209cb40/download"
+  },
+  {
+    "name": "VIRAT_S_010003_12_001009_001057.mp4",
+    "id": "56f5879e8d777f753209cb43",
+    "size_mb": 5.01,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5879e8d777f753209cb43/download"
+  },
+  {
+    "name": "VIRAT_S_010003_13_001066_001124.mp4",
+    "id": "56f5879f8d777f753209cb46",
+    "size_mb": 2.99,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5879f8d777f753209cb46/download"
+  },
+  {
+    "name": "VIRAT_S_010003_14_001127_001190.mp4",
+    "id": "56f5879f8d777f753209cb49",
+    "size_mb": 5.48,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5879f8d777f753209cb49/download"
+  },
+  {
+    "name": "VIRAT_S_010004_00_000064_000100.mp4",
+    "id": "56f587a08d777f753209cb4c",
+    "size_mb": 2.43,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587a08d777f753209cb4c/download"
+  },
+  {
+    "name": "VIRAT_S_010004_01_000163_000188.mp4",
+    "id": "56f587a08d777f753209cb4f",
+    "size_mb": 1.98,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587a08d777f753209cb4f/download"
+  },
+  {
+    "name": "VIRAT_S_010004_02_000191_000237.mp4",
+    "id": "56f587a18d777f753209cb52",
+    "size_mb": 3.13,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587a18d777f753209cb52/download"
+  },
+  {
+    "name": "VIRAT_S_010004_03_000239_000277.mp4",
+    "id": "56f587a28d777f753209cb55",
+    "size_mb": 3.42,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587a28d777f753209cb55/download"
+  },
+  {
+    "name": "VIRAT_S_010004_06_000547_000715.mp4",
+    "id": "56f587a38d777f753209cb58",
+    "size_mb": 13.27,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587a38d777f753209cb58/download"
+  },
+  {
+    "name": "VIRAT_S_010004_07_000729_000809.mp4",
+    "id": "56f587a58d777f753209cb5b",
+    "size_mb": 6.28,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587a58d777f753209cb5b/download"
+  },
+  {
+    "name": "VIRAT_S_010004_08_000811_000920.mp4",
+    "id": "56f587a68d777f753209cb5e",
+    "size_mb": 8.33,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587a68d777f753209cb5e/download"
+  },
+  {
+    "name": "VIRAT_S_010005_00_000048_000075.mp4",
+    "id": "56f587a78d777f753209cb61",
+    "size_mb": 2.35,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587a78d777f753209cb61/download"
+  },
+  {
+    "name": "VIRAT_S_010005_01_000085_000164.mp4",
+    "id": "56f587a78d777f753209cb64",
+    "size_mb": 7.84,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587a78d777f753209cb64/download"
+  },
+  {
+    "name": "VIRAT_S_010005_02_000177_000203.mp4",
+    "id": "56f587a88d777f753209cb67",
+    "size_mb": 3.51,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587a88d777f753209cb67/download"
+  },
+  {
+    "name": "VIRAT_S_010005_03_000215_000270.mp4",
+    "id": "56f587a88d777f753209cb6a",
+    "size_mb": 5.65,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587a88d777f753209cb6a/download"
+  },
+  {
+    "name": "VIRAT_S_010005_04_000299_000323.mp4",
+    "id": "56f587a98d777f753209cb6d",
+    "size_mb": 2.31,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587a98d777f753209cb6d/download"
+  },
+  {
+    "name": "VIRAT_S_010005_05_000397_000430.mp4",
+    "id": "56f587aa8d777f753209cb70",
+    "size_mb": 1.56,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587aa8d777f753209cb70/download"
+  },
+  {
+    "name": "VIRAT_S_010005_06_000475_000499.mp4",
+    "id": "56f587aa8d777f753209cb73",
+    "size_mb": 1.7,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587aa8d777f753209cb73/download"
+  },
+  {
+    "name": "VIRAT_S_010005_07_000535_000584.mp4",
+    "id": "56f587aa8d777f753209cb76",
+    "size_mb": 3.53,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587aa8d777f753209cb76/download"
+  },
+  {
+    "name": "VIRAT_S_010005_08_000647_000693.mp4",
+    "id": "56f587ab8d777f753209cb79",
+    "size_mb": 3.5,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587ab8d777f753209cb79/download"
+  },
+  {
+    "name": "VIRAT_S_010106_00_000098_000315.mp4",
+    "id": "56f587ab8d777f753209cb7c",
+    "size_mb": 36.93,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587ab8d777f753209cb7c/download"
+  },
+  {
+    "name": "VIRAT_S_010106_01_000493_000526.mp4",
+    "id": "56f587af8d777f753209cb7f",
+    "size_mb": 4.17,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587af8d777f753209cb7f/download"
+  },
+  {
+    "name": "VIRAT_S_010106_02_000656_000692.mp4",
+    "id": "56f587b08d777f753209cb82",
+    "size_mb": 6.09,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587b08d777f753209cb82/download"
+  },
+  {
+    "name": "VIRAT_S_010106_03_000730_000782.mp4",
+    "id": "56f587b18d777f753209cb85",
+    "size_mb": 9.5,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587b18d777f753209cb85/download"
+  },
+  {
+    "name": "VIRAT_S_010106_04_000800_000918.mp4",
+    "id": "56f587b28d777f753209cb88",
+    "size_mb": 20.09,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587b28d777f753209cb88/download"
+  },
+  {
+    "name": "VIRAT_S_010106_05_000954_000996.mp4",
+    "id": "56f587b48d777f753209cb8b",
+    "size_mb": 5.38,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587b48d777f753209cb8b/download"
+  },
+  {
+    "name": "VIRAT_S_010107_00_000019_000057.mp4",
+    "id": "56f587b58d777f753209cb8e",
+    "size_mb": 6.5,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587b58d777f753209cb8e/download"
+  },
+  {
+    "name": "VIRAT_S_010107_01_000068_000196.mp4",
+    "id": "56f587b68d777f753209cb91",
+    "size_mb": 21.54,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587b68d777f753209cb91/download"
+  },
+  {
+    "name": "VIRAT_S_010107_02_000282_000312.mp4",
+    "id": "56f587b88d777f753209cb94",
+    "size_mb": 3.69,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587b88d777f753209cb94/download"
+  },
+  {
+    "name": "VIRAT_S_010108_01_000570_000718.mp4",
+    "id": "56f587bd8d777f753209cb97",
+    "size_mb": 26.34,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587bd8d777f753209cb97/download"
+  },
+  {
+    "name": "VIRAT_S_010108_02_000800_000960.mp4",
+    "id": "56f587bf8d777f753209cb9a",
+    "size_mb": 28.9,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587bf8d777f753209cb9a/download"
+  },
+  {
+    "name": "VIRAT_S_010109_00_000000_000063.mp4",
+    "id": "56f587c28d777f753209cb9d",
+    "size_mb": 11.47,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587c28d777f753209cb9d/download"
+  },
+  {
+    "name": "VIRAT_S_010109_04_000487_000538.mp4",
+    "id": "56f587c48d777f753209cba0",
+    "size_mb": 9.22,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587c48d777f753209cba0/download"
+  },
+  {
+    "name": "VIRAT_S_010109_05_000602_000678.mp4",
+    "id": "56f587c58d777f753209cba3",
+    "size_mb": 12.02,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587c58d777f753209cba3/download"
+  },
+  {
+    "name": "VIRAT_S_010109_07_000876_000910.mp4",
+    "id": "56f587c68d777f753209cba6",
+    "size_mb": 6.48,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587c68d777f753209cba6/download"
+  },
+  {
+    "name": "VIRAT_S_010109_08_000952_001011.mp4",
+    "id": "56f587c78d777f753209cba9",
+    "size_mb": 8.89,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587c78d777f753209cba9/download"
+  },
+  {
+    "name": "VIRAT_S_010110_00_000000_000021.mp4",
+    "id": "56f587c88d777f753209cbac",
+    "size_mb": 3.9,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587c88d777f753209cbac/download"
+  },
+  {
+    "name": "VIRAT_S_010110_02_000513_000566.mp4",
+    "id": "56f587c98d777f753209cbaf",
+    "size_mb": 8.07,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587c98d777f753209cbaf/download"
+  },
+  {
+    "name": "VIRAT_S_010110_03_000712_000739.mp4",
+    "id": "56f587ca8d777f753209cbb2",
+    "size_mb": 3.46,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587ca8d777f753209cbb2/download"
+  },
+  {
+    "name": "VIRAT_S_010110_04_000777_000812.mp4",
+    "id": "56f587ca8d777f753209cbb5",
+    "size_mb": 6.16,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587ca8d777f753209cbb5/download"
+  },
+  {
+    "name": "VIRAT_S_010110_05_000899_000935.mp4",
+    "id": "56f587cb8d777f753209cbb8",
+    "size_mb": 5.57,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587cb8d777f753209cbb8/download"
+  },
+  {
+    "name": "VIRAT_S_010110_06_000953_001011.mp4",
+    "id": "56f587cc8d777f753209cbbb",
+    "size_mb": 8.2,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587cc8d777f753209cbbb/download"
+  },
+  {
+    "name": "VIRAT_S_010111_00_000000_000032.mp4",
+    "id": "56f587cd8d777f753209cbbe",
+    "size_mb": 5.58,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587cd8d777f753209cbbe/download"
+  },
+  {
+    "name": "VIRAT_S_010111_02_000198_000310.mp4",
+    "id": "56f587cd8d777f753209cbc1",
+    "size_mb": 22.13,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587cd8d777f753209cbc1/download"
+  },
+  {
+    "name": "VIRAT_S_010111_04_000718_000760.mp4",
+    "id": "56f587d08d777f753209cbc4",
+    "size_mb": 8.36,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587d08d777f753209cbc4/download"
+  },
+  {
+    "name": "VIRAT_S_010111_05_000762_000799.mp4",
+    "id": "56f587d18d777f753209cbc7",
+    "size_mb": 4.72,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587d18d777f753209cbc7/download"
+  },
+  {
+    "name": "VIRAT_S_010111_06_000820_000860.mp4",
+    "id": "56f587d18d777f753209cbca",
+    "size_mb": 6.28,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587d18d777f753209cbca/download"
+  },
+  {
+    "name": "VIRAT_S_010111_07_000872_000909.mp4",
+    "id": "56f587d28d777f753209cbcd",
+    "size_mb": 6.45,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587d28d777f753209cbcd/download"
+  },
+  {
+    "name": "VIRAT_S_010111_08_000920_000954.mp4",
+    "id": "56f587d38d777f753209cbd0",
+    "size_mb": 4.23,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587d38d777f753209cbd0/download"
+  },
+  {
+    "name": "VIRAT_S_010111_09_000981_001014.mp4",
+    "id": "56f587d38d777f753209cbd3",
+    "size_mb": 2.53,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587d38d777f753209cbd3/download"
+  },
+  {
+    "name": "VIRAT_S_010112_00_000015_000095.mp4",
+    "id": "56f587d48d777f753209cbd6",
+    "size_mb": 13.45,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587d48d777f753209cbd6/download"
+  },
+  {
+    "name": "VIRAT_S_010112_01_000128_000187.mp4",
+    "id": "56f587d58d777f753209cbd9",
+    "size_mb": 8.85,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587d58d777f753209cbd9/download"
+  },
+  {
+    "name": "VIRAT_S_010113_00_000013_000071.mp4",
+    "id": "56f587d68d777f753209cbdc",
+    "size_mb": 9.19,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587d68d777f753209cbdc/download"
+  },
+  {
+    "name": "VIRAT_S_010113_02_000434_000479.mp4",
+    "id": "56f587d78d777f753209cbdf",
+    "size_mb": 6.62,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587d78d777f753209cbdf/download"
+  },
+  {
+    "name": "VIRAT_S_010113_04_000681_000772.mp4",
+    "id": "56f587d88d777f753209cbe2",
+    "size_mb": 15.65,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587d88d777f753209cbe2/download"
+  },
+  {
+    "name": "VIRAT_S_010113_05_000776_000805.mp4",
+    "id": "56f587da8d777f753209cbe5",
+    "size_mb": 3.56,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587da8d777f753209cbe5/download"
+  },
+  {
+    "name": "VIRAT_S_010113_06_000831_000896.mp4",
+    "id": "56f587da8d777f753209cbe8",
+    "size_mb": 12.52,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587da8d777f753209cbe8/download"
+  },
+  {
+    "name": "VIRAT_S_010113_07_000965_001013.mp4",
+    "id": "56f587dc8d777f753209cbeb",
+    "size_mb": 7.58,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587dc8d777f753209cbeb/download"
+  },
+  {
+    "name": "VIRAT_S_010114_00_000006_000116.mp4",
+    "id": "56f587dd8d777f753209cbee",
+    "size_mb": 19.22,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587dd8d777f753209cbee/download"
+  },
+  {
+    "name": "VIRAT_S_010114_01_000235_000311.mp4",
+    "id": "56f587df8d777f753209cbf1",
+    "size_mb": 12.69,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587df8d777f753209cbf1/download"
+  },
+  {
+    "name": "VIRAT_S_010114_02_000765_000802.mp4",
+    "id": "56f587e08d777f753209cbf4",
+    "size_mb": 5.55,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587e08d777f753209cbf4/download"
+  },
+  {
+    "name": "VIRAT_S_010115_01_000399_000467.mp4",
+    "id": "56f587e18d777f753209cbf7",
+    "size_mb": 10.85,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587e18d777f753209cbf7/download"
+  },
+  {
+    "name": "VIRAT_S_010115_02_000485_000516.mp4",
+    "id": "56f587e28d777f753209cbfa",
+    "size_mb": 4.14,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587e28d777f753209cbfa/download"
+  },
+  {
+    "name": "VIRAT_S_010115_03_000685_000793.mp4",
+    "id": "56f587e28d777f753209cbfd",
+    "size_mb": 20.0,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587e28d777f753209cbfd/download"
+  },
+  {
+    "name": "VIRAT_S_010115_04_000830_000892.mp4",
+    "id": "56f587e58d777f753209cc00",
+    "size_mb": 10.59,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587e58d777f753209cc00/download"
+  },
+  {
+    "name": "VIRAT_S_010116_00_000061_000121.mp4",
+    "id": "56f587e68d777f753209cc03",
+    "size_mb": 11.36,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587e68d777f753209cc03/download"
+  },
+  {
+    "name": "VIRAT_S_010200_00_000060_000218.mp4",
+    "id": "56f587e78d777f753209cc06",
+    "size_mb": 12.59,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587e78d777f753209cc06/download"
+  },
+  {
+    "name": "VIRAT_S_010200_01_000254_000322.mp4",
+    "id": "56f587e98d777f753209cc09",
+    "size_mb": 3.39,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587e98d777f753209cc09/download"
+  },
+  {
+    "name": "VIRAT_S_010200_02_000349_000398.mp4",
+    "id": "56f587e98d777f753209cc0c",
+    "size_mb": 6.19,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587e98d777f753209cc0c/download"
+  },
+  {
+    "name": "VIRAT_S_010200_03_000470_000567.mp4",
+    "id": "56f587ea8d777f753209cc0f",
+    "size_mb": 7.9,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587ea8d777f753209cc0f/download"
+  },
+  {
+    "name": "VIRAT_S_010200_04_000568_000620.mp4",
+    "id": "56f587eb8d777f753209cc12",
+    "size_mb": 2.95,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587eb8d777f753209cc12/download"
+  },
+  {
+    "name": "VIRAT_S_010200_05_000658_000700.mp4",
+    "id": "56f587eb8d777f753209cc15",
+    "size_mb": 3.88,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587eb8d777f753209cc15/download"
+  },
+  {
+    "name": "VIRAT_S_010200_06_000702_000744.mp4",
+    "id": "56f587ec8d777f753209cc18",
+    "size_mb": 3.32,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587ec8d777f753209cc18/download"
+  },
+  {
+    "name": "VIRAT_S_010200_07_000748_000837.mp4",
+    "id": "56f587ec8d777f753209cc1b",
+    "size_mb": 5.67,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587ec8d777f753209cc1b/download"
+  },
+  {
+    "name": "VIRAT_S_010200_08_000838_000867.mp4",
+    "id": "56f587ed8d777f753209cc1e",
+    "size_mb": 1.95,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587ed8d777f753209cc1e/download"
+  },
+  {
+    "name": "VIRAT_S_010200_09_000886_000915.mp4",
+    "id": "56f587ed8d777f753209cc21",
+    "size_mb": 3.29,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587ed8d777f753209cc21/download"
+  },
+  {
+    "name": "VIRAT_S_010200_10_000923_000959.mp4",
+    "id": "56f587ee8d777f753209cc24",
+    "size_mb": 2.14,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587ee8d777f753209cc24/download"
+  },
+  {
+    "name": "VIRAT_S_010201_00_000000_000053.mp4",
+    "id": "56f587ef8d777f753209cc27",
+    "size_mb": 3.24,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587ef8d777f753209cc27/download"
+  },
+  {
+    "name": "VIRAT_S_010201_01_000125_000152.mp4",
+    "id": "56f587ef8d777f753209cc2a",
+    "size_mb": 3.41,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587ef8d777f753209cc2a/download"
+  },
+  {
+    "name": "VIRAT_S_010201_02_000167_000197.mp4",
+    "id": "56f587f08d777f753209cc2d",
+    "size_mb": 2.58,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587f08d777f753209cc2d/download"
+  },
+  {
+    "name": "VIRAT_S_010201_03_000270_000359.mp4",
+    "id": "56f587f08d777f753209cc30",
+    "size_mb": 9.1,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587f08d777f753209cc30/download"
+  },
+  {
+    "name": "VIRAT_S_010201_04_000374_000469.mp4",
+    "id": "56f587f18d777f753209cc33",
+    "size_mb": 6.91,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587f18d777f753209cc33/download"
+  },
+  {
+    "name": "VIRAT_S_010201_05_000499_000527.mp4",
+    "id": "56f587f28d777f753209cc36",
+    "size_mb": 3.02,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587f28d777f753209cc36/download"
+  },
+  {
+    "name": "VIRAT_S_010201_06_000550_000600.mp4",
+    "id": "56f587f28d777f753209cc39",
+    "size_mb": 3.8,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587f28d777f753209cc39/download"
+  },
+  {
+    "name": "VIRAT_S_010201_07_000601_000697.mp4",
+    "id": "56f587f38d777f753209cc3c",
+    "size_mb": 9.59,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587f38d777f753209cc3c/download"
+  },
+  {
+    "name": "VIRAT_S_010201_08_000705_000739.mp4",
+    "id": "56f587f48d777f753209cc3f",
+    "size_mb": 3.05,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587f48d777f753209cc3f/download"
+  },
+  {
+    "name": "VIRAT_S_010201_09_000770_000801.mp4",
+    "id": "56f587f48d777f753209cc42",
+    "size_mb": 2.53,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587f48d777f753209cc42/download"
+  },
+  {
+    "name": "VIRAT_S_010202_00_000001_000033.mp4",
+    "id": "56f587f58d777f753209cc45",
+    "size_mb": 1.72,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587f58d777f753209cc45/download"
+  },
+  {
+    "name": "VIRAT_S_010202_01_000055_000147.mp4",
+    "id": "56f587f58d777f753209cc48",
+    "size_mb": 11.92,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587f58d777f753209cc48/download"
+  },
+  {
+    "name": "VIRAT_S_010202_02_000161_000189.mp4",
+    "id": "56f587f78d777f753209cc4b",
+    "size_mb": 3.51,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587f78d777f753209cc4b/download"
+  },
+  {
+    "name": "VIRAT_S_010202_03_000313_000355.mp4",
+    "id": "56f587f78d777f753209cc4e",
+    "size_mb": 4.26,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587f78d777f753209cc4e/download"
+  },
+  {
+    "name": "VIRAT_S_010202_06_000784_000873.mp4",
+    "id": "56f587f88d777f753209cc51",
+    "size_mb": 10.39,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587f88d777f753209cc51/download"
+  },
+  {
+    "name": "VIRAT_S_010203_00_000047_000139.mp4",
+    "id": "56f587f98d777f753209cc54",
+    "size_mb": 9.5,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587f98d777f753209cc54/download"
+  },
+  {
+    "name": "VIRAT_S_010203_02_000347_000397.mp4",
+    "id": "56f587fa8d777f753209cc57",
+    "size_mb": 5.7,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587fa8d777f753209cc57/download"
+  },
+  {
+    "name": "VIRAT_S_010203_03_000400_000435.mp4",
+    "id": "56f587fb8d777f753209cc5a",
+    "size_mb": 3.95,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587fb8d777f753209cc5a/download"
+  },
+  {
+    "name": "VIRAT_S_010203_04_000457_000511.mp4",
+    "id": "56f587fb8d777f753209cc5d",
+    "size_mb": 4.82,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587fb8d777f753209cc5d/download"
+  },
+  {
+    "name": "VIRAT_S_010203_05_000515_000593.mp4",
+    "id": "56f587fc8d777f753209cc60",
+    "size_mb": 10.18,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587fc8d777f753209cc60/download"
+  },
+  {
+    "name": "VIRAT_S_010203_06_000620_000760.mp4",
+    "id": "56f587fd8d777f753209cc63",
+    "size_mb": 18.03,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587fd8d777f753209cc63/download"
+  },
+  {
+    "name": "VIRAT_S_010203_07_000775_000869.mp4",
+    "id": "56f587ff8d777f753209cc66",
+    "size_mb": 9.87,
+    "download_url": "https://data.kitware.com/api/v1/item/56f587ff8d777f753209cc66/download"
+  },
+  {
+    "name": "VIRAT_S_010203_08_000895_000975.mp4",
+    "id": "56f588008d777f753209cc69",
+    "size_mb": 10.59,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588008d777f753209cc69/download"
+  },
+  {
+    "name": "VIRAT_S_010203_09_001010_001036.mp4",
+    "id": "56f588018d777f753209cc6c",
+    "size_mb": 3.17,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588018d777f753209cc6c/download"
+  },
+  {
+    "name": "VIRAT_S_010203_10_001092_001121.mp4",
+    "id": "56f588028d777f753209cc6f",
+    "size_mb": 3.82,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588028d777f753209cc6f/download"
+  },
+  {
+    "name": "VIRAT_S_010204_00_000030_000059.mp4",
+    "id": "56f588028d777f753209cc72",
+    "size_mb": 5.08,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588028d777f753209cc72/download"
+  },
+  {
+    "name": "VIRAT_S_010204_01_000072_000225.mp4",
+    "id": "56f588038d777f753209cc75",
+    "size_mb": 27.19,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588038d777f753209cc75/download"
+  },
+  {
+    "name": "VIRAT_S_010204_03_000606_000632.mp4",
+    "id": "56f588068d777f753209cc78",
+    "size_mb": 3.51,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588068d777f753209cc78/download"
+  },
+  {
+    "name": "VIRAT_S_010204_04_000646_000754.mp4",
+    "id": "56f588068d777f753209cc7b",
+    "size_mb": 19.35,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588068d777f753209cc7b/download"
+  },
+  {
+    "name": "VIRAT_S_010204_05_000856_000890.mp4",
+    "id": "56f5880b8d777f753209cc7e",
+    "size_mb": 5.01,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5880b8d777f753209cc7e/download"
+  },
+  {
+    "name": "VIRAT_S_010204_06_000913_000939.mp4",
+    "id": "56f5880b8d777f753209cc81",
+    "size_mb": 4.3,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5880b8d777f753209cc81/download"
+  },
+  {
+    "name": "VIRAT_S_010204_07_000942_000989.mp4",
+    "id": "56f5880c8d777f753209cc84",
+    "size_mb": 7.11,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5880c8d777f753209cc84/download"
+  },
+  {
+    "name": "VIRAT_S_010204_09_001285_001336.mp4",
+    "id": "56f5880d8d777f753209cc87",
+    "size_mb": 7.88,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5880d8d777f753209cc87/download"
+  },
+  {
+    "name": "VIRAT_S_010204_10_001372_001395.mp4",
+    "id": "56f5880e8d777f753209cc8a",
+    "size_mb": 3.34,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5880e8d777f753209cc8a/download"
+  },
+  {
+    "name": "VIRAT_S_010204_11_001524_001607.mp4",
+    "id": "56f5880e8d777f753209cc8d",
+    "size_mb": 11.51,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5880e8d777f753209cc8d/download"
+  },
+  {
+    "name": "VIRAT_S_010205_01_000207_000288.mp4",
+    "id": "56f588108d777f753209cc90",
+    "size_mb": 8.34,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588108d777f753209cc90/download"
+  },
+  {
+    "name": "VIRAT_S_010205_02_000301_000345.mp4",
+    "id": "56f588118d777f753209cc93",
+    "size_mb": 4.73,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588118d777f753209cc93/download"
+  },
+  {
+    "name": "VIRAT_S_010205_03_000370_000395.mp4",
+    "id": "56f588118d777f753209cc96",
+    "size_mb": 2.91,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588118d777f753209cc96/download"
+  },
+  {
+    "name": "VIRAT_S_010205_04_000545_000576.mp4",
+    "id": "56f588128d777f753209cc99",
+    "size_mb": 3.46,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588128d777f753209cc99/download"
+  },
+  {
+    "name": "VIRAT_S_010205_06_000830_000904.mp4",
+    "id": "56f588128d777f753209cc9c",
+    "size_mb": 11.42,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588128d777f753209cc9c/download"
+  },
+  {
+    "name": "VIRAT_S_010206_00_000007_000035.mp4",
+    "id": "56f588138d777f753209cc9f",
+    "size_mb": 3.01,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588138d777f753209cc9f/download"
+  },
+  {
+    "name": "VIRAT_S_010206_01_000124_000206.mp4",
+    "id": "56f588148d777f753209cca2",
+    "size_mb": 13.04,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588148d777f753209cca2/download"
+  },
+  {
+    "name": "VIRAT_S_010206_02_000414_000439.mp4",
+    "id": "56f588158d777f753209cca5",
+    "size_mb": 3.63,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588158d777f753209cca5/download"
+  },
+  {
+    "name": "VIRAT_S_010206_03_000546_000580.mp4",
+    "id": "56f588168d777f753209cca8",
+    "size_mb": 4.26,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588168d777f753209cca8/download"
+  },
+  {
+    "name": "VIRAT_S_010206_04_000720_000767.mp4",
+    "id": "56f588178d777f753209ccab",
+    "size_mb": 5.84,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588178d777f753209ccab/download"
+  },
+  {
+    "name": "VIRAT_S_010206_05_000797_000823.mp4",
+    "id": "56f588178d777f753209ccae",
+    "size_mb": 3.96,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588178d777f753209ccae/download"
+  },
+  {
+    "name": "VIRAT_S_010207_01_000712_000752.mp4",
+    "id": "56f588188d777f753209ccb1",
+    "size_mb": 5.44,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588188d777f753209ccb1/download"
+  },
+  {
+    "name": "VIRAT_S_010207_02_000790_000816.mp4",
+    "id": "56f588188d777f753209ccb4",
+    "size_mb": 2.99,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588188d777f753209ccb4/download"
+  },
+  {
+    "name": "VIRAT_S_010207_03_000865_000911.mp4",
+    "id": "56f588198d777f753209ccb7",
+    "size_mb": 8.63,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588198d777f753209ccb7/download"
+  },
+  {
+    "name": "VIRAT_S_010207_04_000929_000954.mp4",
+    "id": "56f5881a8d777f753209ccba",
+    "size_mb": 2.72,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5881a8d777f753209ccba/download"
+  },
+  {
+    "name": "VIRAT_S_010207_05_001013_001038.mp4",
+    "id": "56f5881a8d777f753209ccbd",
+    "size_mb": 3.0,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5881a8d777f753209ccbd/download"
+  },
+  {
+    "name": "VIRAT_S_010207_06_001064_001097.mp4",
+    "id": "56f5881b8d777f753209ccc0",
+    "size_mb": 4.49,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5881b8d777f753209ccc0/download"
+  },
+  {
+    "name": "VIRAT_S_010207_07_001195_001260.mp4",
+    "id": "56f5881b8d777f753209ccc3",
+    "size_mb": 12.03,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5881b8d777f753209ccc3/download"
+  },
+  {
+    "name": "VIRAT_S_010207_08_001308_001332.mp4",
+    "id": "56f5881d8d777f753209ccc6",
+    "size_mb": 2.66,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5881d8d777f753209ccc6/download"
+  },
+  {
+    "name": "VIRAT_S_010207_09_001484_001510.mp4",
+    "id": "56f5881d8d777f753209ccc9",
+    "size_mb": 2.78,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5881d8d777f753209ccc9/download"
+  },
+  {
+    "name": "VIRAT_S_010207_10_001549_001596.mp4",
+    "id": "56f5881d8d777f753209cccc",
+    "size_mb": 7.71,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5881d8d777f753209cccc/download"
+  },
+  {
+    "name": "VIRAT_S_010208_00_000000_000049.mp4",
+    "id": "56f5881e8d777f753209cccf",
+    "size_mb": 3.78,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5881e8d777f753209cccf/download"
+  },
+  {
+    "name": "VIRAT_S_010208_02_000150_000180.mp4",
+    "id": "56f5881f8d777f753209ccd2",
+    "size_mb": 3.94,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5881f8d777f753209ccd2/download"
+  },
+  {
+    "name": "VIRAT_S_010208_03_000201_000232.mp4",
+    "id": "56f5881f8d777f753209ccd5",
+    "size_mb": 2.2,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5881f8d777f753209ccd5/download"
+  },
+  {
+    "name": "VIRAT_S_010208_05_000591_000631.mp4",
+    "id": "56f588208d777f753209ccd8",
+    "size_mb": 3.13,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588208d777f753209ccd8/download"
+  },
+  {
+    "name": "VIRAT_S_010208_06_000671_000744.mp4",
+    "id": "56f588208d777f753209ccdb",
+    "size_mb": 8.72,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588208d777f753209ccdb/download"
+  },
+  {
+    "name": "VIRAT_S_010208_07_000768_000791.mp4",
+    "id": "56f588218d777f753209ccde",
+    "size_mb": 1.3,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588218d777f753209ccde/download"
+  },
+  {
+    "name": "VIRAT_S_010208_08_000807_000831.mp4",
+    "id": "56f588228d777f753209cce1",
+    "size_mb": 2.51,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588228d777f753209cce1/download"
+  },
+  {
+    "name": "VIRAT_S_010208_09_000857_000886.mp4",
+    "id": "56f588228d777f753209cce4",
+    "size_mb": 3.02,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588228d777f753209cce4/download"
+  },
+  {
+    "name": "VIRAT_S_010208_10_000904_000991.mp4",
+    "id": "56f588228d777f753209cce7",
+    "size_mb": 8.42,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588228d777f753209cce7/download"
+  },
+  {
+    "name": "VIRAT_S_040000_00_000000_000036.mp4",
+    "id": "56f588238d777f753209ccea",
+    "size_mb": 77.4,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588238d777f753209ccea/download"
+  },
+  {
+    "name": "VIRAT_S_040000_00_000063_000085.mp4",
+    "id": "56f5882c8d777f753209cced",
+    "size_mb": 46.79,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5882c8d777f753209cced/download"
+  },
+  {
+    "name": "VIRAT_S_040000_01_000042_000099.mp4",
+    "id": "56f588318d777f753209ccf0",
+    "size_mb": 122.46,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588318d777f753209ccf0/download"
+  },
+  {
+    "name": "VIRAT_S_040000_02_000111_000145.mp4",
+    "id": "56f5883f8d777f753209ccf3",
+    "size_mb": 72.92,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5883f8d777f753209ccf3/download"
+  },
+  {
+    "name": "VIRAT_S_040000_03_000221_000372.mp4",
+    "id": "56f588468d777f753209ccf6",
+    "size_mb": 323.79,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588468d777f753209ccf6/download"
+  },
+  {
+    "name": "VIRAT_S_040000_04_000532_000622.mp4",
+    "id": "56f588698d777f753209ccf9",
+    "size_mb": 192.88,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588698d777f753209ccf9/download"
+  },
+  {
+    "name": "VIRAT_S_040000_05_000668_000703.mp4",
+    "id": "56f5887f8d777f753209ccfc",
+    "size_mb": 74.42,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5887f8d777f753209ccfc/download"
+  },
+  {
+    "name": "VIRAT_S_040000_06_000746_000964.mp4",
+    "id": "56f588878d777f753209ccff",
+    "size_mb": 467.88,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588878d777f753209ccff/download"
+  },
+  {
+    "name": "VIRAT_S_040000_07_000966_001071.mp4",
+    "id": "56f588ba8d777f753209cd02",
+    "size_mb": 224.85,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588ba8d777f753209cd02/download"
+  },
+  {
+    "name": "VIRAT_S_040000_08_001084_001190.mp4",
+    "id": "56f588d38d777f753209cd05",
+    "size_mb": 226.66,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588d38d777f753209cd05/download"
+  },
+  {
+    "name": "VIRAT_S_040000_09_001194_001574.mp4",
+    "id": "56f588eb8d777f753209cd08",
+    "size_mb": 794.39,
+    "download_url": "https://data.kitware.com/api/v1/item/56f588eb8d777f753209cd08/download"
+  },
+  {
+    "name": "VIRAT_S_040001_00_000035_000319.mp4",
+    "id": "56f589408d777f753209cd0b",
+    "size_mb": 608.82,
+    "download_url": "https://data.kitware.com/api/v1/item/56f589408d777f753209cd0b/download"
+  },
+  {
+    "name": "VIRAT_S_040001_01_000448_001101.mp4",
+    "id": "56f589818d777f753209cd0e",
+    "size_mb": 1401.19,
+    "download_url": "https://data.kitware.com/api/v1/item/56f589818d777f753209cd0e/download"
+  },
+  {
+    "name": "VIRAT_S_040001_02_001102_001530.mp4",
+    "id": "56f58a188d777f753209cd11",
+    "size_mb": 918.48,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58a188d777f753209cd11/download"
+  },
+  {
+    "name": "VIRAT_S_040001_03_001531_001595.mp4",
+    "id": "56f58a7b8d777f753209cd14",
+    "size_mb": 114.8,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58a7b8d777f753209cd14/download"
+  },
+  {
+    "name": "VIRAT_S_040002_03_001525_001569.mp4",
+    "id": "56f58a888d777f753209cd17",
+    "size_mb": 94.12,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58a888d777f753209cd17/download"
+  },
+  {
+    "name": "VIRAT_S_040003_00_000000_000072.mp4",
+    "id": "56f58a928d777f753209cd1a",
+    "size_mb": 155.63,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58a928d777f753209cd1a/download"
+  },
+  {
+    "name": "VIRAT_S_040003_01_000083_000193.mp4",
+    "id": "56f58aa38d777f753209cd1d",
+    "size_mb": 235.28,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58aa38d777f753209cd1d/download"
+  },
+  {
+    "name": "VIRAT_S_040003_02_000197_000552.mp4",
+    "id": "56f58abe8d777f753209cd20",
+    "size_mb": 761.73,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58abe8d777f753209cd20/download"
+  },
+  {
+    "name": "VIRAT_S_040003_03_000577_000741.mp4",
+    "id": "56f58b0f8d777f753209cd23",
+    "size_mb": 351.93,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58b0f8d777f753209cd23/download"
+  },
+  {
+    "name": "VIRAT_S_040003_04_000758_001118.mp4",
+    "id": "56f58b368d777f753209cd26",
+    "size_mb": 772.5,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58b368d777f753209cd26/download"
+  },
+  {
+    "name": "VIRAT_S_040003_05_001123_001437.mp4",
+    "id": "56f58b8a8d777f753209cd29",
+    "size_mb": 673.41,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58b8a8d777f753209cd29/download"
+  },
+  {
+    "name": "VIRAT_S_040003_06_001441_001518.mp4",
+    "id": "56f58bd38d777f753209cd2d",
+    "size_mb": 165.03,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58bd38d777f753209cd2d/download"
+  },
+  {
+    "name": "VIRAT_S_040004_00_000011_000093.mp4",
+    "id": "56f58be68d777f753209cd30",
+    "size_mb": 175.73,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58be68d777f753209cd30/download"
+  },
+  {
+    "name": "VIRAT_S_040005_00_000003_000058.mp4",
+    "id": "56f58bf98d777f753209cd33",
+    "size_mb": 117.51,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58bf98d777f753209cd33/download"
+  },
+  {
+    "name": "VIRAT_S_040005_06_000886_001016.mp4",
+    "id": "56f58c068d777f753209cd36",
+    "size_mb": 278.83,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58c068d777f753209cd36/download"
+  },
+  {
+    "name": "VIRAT_S_040005_07_001026_001223.mp4",
+    "id": "56f58c248d777f753209cd39",
+    "size_mb": 422.33,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58c248d777f753209cd39/download"
+  },
+  {
+    "name": "VIRAT_S_040005_08_001225_001276.mp4",
+    "id": "56f58c528d777f753209cd3c",
+    "size_mb": 108.86,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58c528d777f753209cd3c/download"
+  },
+  {
+    "name": "VIRAT_S_040103_00_000000_000120.mp4",
+    "id": "56f58c5d8d777f753209cd3f",
+    "size_mb": 258.6,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58c5d8d777f753209cd3f/download"
+  },
+  {
+    "name": "VIRAT_S_040103_01_000132_000195.mp4",
+    "id": "56f58c798d777f753209cd42",
+    "size_mb": 134.86,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58c798d777f753209cd42/download"
+  },
+  {
+    "name": "VIRAT_S_040103_02_000199_000279.mp4",
+    "id": "56f58c888d777f753209cd45",
+    "size_mb": 171.57,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58c888d777f753209cd45/download"
+  },
+  {
+    "name": "VIRAT_S_040103_03_000284_000425.mp4",
+    "id": "56f58c9a8d777f753209cd48",
+    "size_mb": 301.99,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58c9a8d777f753209cd48/download"
+  },
+  {
+    "name": "VIRAT_S_040103_05_000729_000804.mp4",
+    "id": "56f58cbb8d777f753209cd4b",
+    "size_mb": 160.51,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58cbb8d777f753209cd4b/download"
+  },
+  {
+    "name": "VIRAT_S_040103_06_000836_000909.mp4",
+    "id": "56f58ccd8d777f753209cd4e",
+    "size_mb": 156.39,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58ccd8d777f753209cd4e/download"
+  },
+  {
+    "name": "VIRAT_S_040103_07_001011_001093.mp4",
+    "id": "56f58cdd8d777f753209cd51",
+    "size_mb": 175.85,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58cdd8d777f753209cd51/download"
+  },
+  {
+    "name": "VIRAT_S_040103_08_001475_001512.mp4",
+    "id": "56f58cf08d777f753209cd54",
+    "size_mb": 79.03,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58cf08d777f753209cd54/download"
+  },
+  {
+    "name": "VIRAT_S_040104_00_000120_000224.mp4",
+    "id": "56f58cf98d777f753209cd57",
+    "size_mb": 222.97,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58cf98d777f753209cd57/download"
+  },
+  {
+    "name": "VIRAT_S_040104_01_000227_000457.mp4",
+    "id": "56f58d118d777f753209cd5a",
+    "size_mb": 493.63,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58d118d777f753209cd5a/download"
+  },
+  {
+    "name": "VIRAT_S_040104_02_000459_000721.mp4",
+    "id": "56f58d468d777f753209cd5d",
+    "size_mb": 561.62,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58d468d777f753209cd5d/download"
+  },
+  {
+    "name": "VIRAT_S_040104_04_000854_000934.mp4",
+    "id": "56f58d818d777f753209cd60",
+    "size_mb": 171.51,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58d818d777f753209cd60/download"
+  },
+  {
+    "name": "VIRAT_S_040104_05_000939_001116.mp4",
+    "id": "56f58d938d777f753209cd63",
+    "size_mb": 379.74,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58d938d777f753209cd63/download"
+  },
+  {
+    "name": "VIRAT_S_040104_06_001121_001241.mp4",
+    "id": "56f58dbc8d777f753209cd66",
+    "size_mb": 257.27,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58dbc8d777f753209cd66/download"
+  },
+  {
+    "name": "VIRAT_S_040104_07_001268_001348.mp4",
+    "id": "56f58dd98d777f753209cd69",
+    "size_mb": 171.45,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58dd98d777f753209cd69/download"
+  },
+  {
+    "name": "VIRAT_S_040104_08_001353_001470.mp4",
+    "id": "56f58deb8d777f753209cd6c",
+    "size_mb": 251.23,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58deb8d777f753209cd6c/download"
+  },
+  {
+    "name": "VIRAT_S_040104_09_001475_001583.mp4",
+    "id": "56f58e088d777f753209cd6f",
+    "size_mb": 229.78,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e088d777f753209cd6f/download"
+  },
+  {
+    "name": "VIRAT_S_050000_01_000207_000361.mp4",
+    "id": "56f58e218d777f753209cd72",
+    "size_mb": 188.48,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e218d777f753209cd72/download"
+  },
+  {
+    "name": "VIRAT_S_050000_02_000404_000486.mp4",
+    "id": "56f58e338d777f753209cd75",
+    "size_mb": 104.04,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e338d777f753209cd75/download"
+  },
+  {
+    "name": "VIRAT_S_050000_03_000585_000639.mp4",
+    "id": "56f58e3d8d777f753209cd78",
+    "size_mb": 66.96,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e3d8d777f753209cd78/download"
+  },
+  {
+    "name": "VIRAT_S_050000_04_000640_000690.mp4",
+    "id": "56f58e458d777f753209cd7b",
+    "size_mb": 63.25,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e458d777f753209cd7b/download"
+  },
+  {
+    "name": "VIRAT_S_050000_05_000696_000732.mp4",
+    "id": "56f58e4b8d777f753209cd7e",
+    "size_mb": 44.76,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e4b8d777f753209cd7e/download"
+  },
+  {
+    "name": "VIRAT_S_050000_06_000908_000970.mp4",
+    "id": "56f58e508d777f753209cd81",
+    "size_mb": 75.55,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e508d777f753209cd81/download"
+  },
+  {
+    "name": "VIRAT_S_050000_07_001014_001126.mp4",
+    "id": "56f58e578d777f753209cd84",
+    "size_mb": 137.33,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e578d777f753209cd84/download"
+  },
+  {
+    "name": "VIRAT_S_050000_08_001235_001295.mp4",
+    "id": "56f58e648d777f753209cd87",
+    "size_mb": 77.25,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e648d777f753209cd87/download"
+  },
+  {
+    "name": "VIRAT_S_050000_09_001310_001373.mp4",
+    "id": "56f58e6c8d777f753209cd8a",
+    "size_mb": 75.14,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e6c8d777f753209cd8a/download"
+  },
+  {
+    "name": "VIRAT_S_050000_10_001462_001491.mp4",
+    "id": "56f58e738d777f753209cd8d",
+    "size_mb": 37.29,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e738d777f753209cd8d/download"
+  },
+  {
+    "name": "VIRAT_S_050000_11_001530_001576.mp4",
+    "id": "56f58e778d777f753209cd90",
+    "size_mb": 55.76,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e778d777f753209cd90/download"
+  },
+  {
+    "name": "VIRAT_S_050000_12_001591_001619.mp4",
+    "id": "56f58e7c8d777f753209cd93",
+    "size_mb": 34.93,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e7c8d777f753209cd93/download"
+  },
+  {
+    "name": "VIRAT_S_050000_13_001722_001766.mp4",
+    "id": "56f58e808d777f753209cd96",
+    "size_mb": 55.23,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e808d777f753209cd96/download"
+  },
+  {
+    "name": "VIRAT_S_050000_16_001947_001989.mp4",
+    "id": "56f58e868d777f753209cd99",
+    "size_mb": 51.88,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e868d777f753209cd99/download"
+  },
+  {
+    "name": "VIRAT_S_050200_00_000106_000380.mp4",
+    "id": "56f58e8b8d777f753209cd9c",
+    "size_mb": 301.58,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58e8b8d777f753209cd9c/download"
+  },
+  {
+    "name": "VIRAT_S_050201_00_000012_000116.mp4",
+    "id": "56f58eaa8d777f753209cd9f",
+    "size_mb": 129.8,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58eaa8d777f753209cd9f/download"
+  },
+  {
+    "name": "VIRAT_S_050201_01_000147_000321.mp4",
+    "id": "56f58eb78d777f753209cda2",
+    "size_mb": 215.14,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58eb78d777f753209cda2/download"
+  },
+  {
+    "name": "VIRAT_S_050201_02_000395_000483.mp4",
+    "id": "56f58ecd8d777f753209cda5",
+    "size_mb": 110.06,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58ecd8d777f753209cda5/download"
+  },
+  {
+    "name": "VIRAT_S_050201_03_000573_000647.mp4",
+    "id": "56f58ed88d777f753209cda8",
+    "size_mb": 88.22,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58ed88d777f753209cda8/download"
+  },
+  {
+    "name": "VIRAT_S_050201_04_000669_000728.mp4",
+    "id": "56f58ee18d777f753209cdab",
+    "size_mb": 74.57,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58ee18d777f753209cdab/download"
+  },
+  {
+    "name": "VIRAT_S_050201_05_000890_000944.mp4",
+    "id": "56f58ee98d777f753209cdae",
+    "size_mb": 66.91,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58ee98d777f753209cdae/download"
+  },
+  {
+    "name": "VIRAT_S_050201_06_001168_001240.mp4",
+    "id": "56f58eef8d777f753209cdb1",
+    "size_mb": 85.69,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58eef8d777f753209cdb1/download"
+  },
+  {
+    "name": "VIRAT_S_050201_07_001348_001458.mp4",
+    "id": "56f58ef78d777f753209cdb4",
+    "size_mb": 135.95,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58ef78d777f753209cdb4/download"
+  },
+  {
+    "name": "VIRAT_S_050201_08_001567_001647.mp4",
+    "id": "56f58f048d777f753209cdb7",
+    "size_mb": 99.79,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f048d777f753209cdb7/download"
+  },
+  {
+    "name": "VIRAT_S_050201_09_001821_001876.mp4",
+    "id": "56f58f0e8d777f753209cdba",
+    "size_mb": 67.92,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f0e8d777f753209cdba/download"
+  },
+  {
+    "name": "VIRAT_S_050201_10_001992_002056.mp4",
+    "id": "56f58f158d777f753209cdbd",
+    "size_mb": 78.84,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f158d777f753209cdbd/download"
+  },
+  {
+    "name": "VIRAT_S_050201_11_002090_002220.mp4",
+    "id": "56f58f1d8d777f753209cdc0",
+    "size_mb": 156.22,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f1d8d777f753209cdc0/download"
+  },
+  {
+    "name": "VIRAT_S_050202_00_000000_000105.mp4",
+    "id": "56f58f2b8d777f753209cdc3",
+    "size_mb": 133.02,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f2b8d777f753209cdc3/download"
+  },
+  {
+    "name": "VIRAT_S_050202_01_000150_000280.mp4",
+    "id": "56f58f388d777f753209cdc6",
+    "size_mb": 162.99,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f388d777f753209cdc6/download"
+  },
+  {
+    "name": "VIRAT_S_050202_02_000447_000577.mp4",
+    "id": "56f58f488d777f753209cdc9",
+    "size_mb": 161.86,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f488d777f753209cdc9/download"
+  },
+  {
+    "name": "VIRAT_S_050202_03_000608_000684.mp4",
+    "id": "56f58f578d777f753209cdcc",
+    "size_mb": 94.03,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f578d777f753209cdcc/download"
+  },
+  {
+    "name": "VIRAT_S_050202_04_000690_000750.mp4",
+    "id": "56f58f608d777f753209cdcf",
+    "size_mb": 71.45,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f608d777f753209cdcf/download"
+  },
+  {
+    "name": "VIRAT_S_050202_05_000857_000912.mp4",
+    "id": "56f58f668d777f753209cdd2",
+    "size_mb": 67.09,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f668d777f753209cdd2/download"
+  },
+  {
+    "name": "VIRAT_S_050202_06_001048_001115.mp4",
+    "id": "56f58f6d8d777f753209cdd5",
+    "size_mb": 81.94,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f6d8d777f753209cdd5/download"
+  },
+  {
+    "name": "VIRAT_S_050202_07_001126_001301.mp4",
+    "id": "56f58f758d777f753209cdd8",
+    "size_mb": 214.27,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f758d777f753209cdd8/download"
+  },
+  {
+    "name": "VIRAT_S_050202_08_001410_001494.mp4",
+    "id": "56f58f8a8d777f753209cddb",
+    "size_mb": 98.92,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f8a8d777f753209cddb/download"
+  },
+  {
+    "name": "VIRAT_S_050202_09_001642_001712.mp4",
+    "id": "56f58f938d777f753209cdde",
+    "size_mb": 83.04,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f938d777f753209cdde/download"
+  },
+  {
+    "name": "VIRAT_S_050202_10_002159_002233.mp4",
+    "id": "56f58f9b8d777f753209cde1",
+    "size_mb": 82.83,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58f9b8d777f753209cde1/download"
+  },
+  {
+    "name": "VIRAT_S_050203_00_000023_000097.mp4",
+    "id": "56f58fa48d777f753209cde4",
+    "size_mb": 92.49,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58fa48d777f753209cde4/download"
+  },
+  {
+    "name": "VIRAT_S_050203_01_000147_000223.mp4",
+    "id": "56f58fac8d777f753209cde7",
+    "size_mb": 93.77,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58fac8d777f753209cde7/download"
+  },
+  {
+    "name": "VIRAT_S_050203_06_001202_001264.mp4",
+    "id": "56f58fb68d777f753209cdea",
+    "size_mb": 77.64,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58fb68d777f753209cdea/download"
+  },
+  {
+    "name": "VIRAT_S_050203_07_001288_001531.mp4",
+    "id": "56f58fbd8d777f753209cded",
+    "size_mb": 296.46,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58fbd8d777f753209cded/download"
+  },
+  {
+    "name": "VIRAT_S_050203_08_001686_001885.mp4",
+    "id": "56f58fdd8d777f753209cdf0",
+    "size_mb": 245.33,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58fdd8d777f753209cdf0/download"
+  },
+  {
+    "name": "VIRAT_S_050203_09_001960_002083.mp4",
+    "id": "56f58ff98d777f753209cdf3",
+    "size_mb": 148.75,
+    "download_url": "https://data.kitware.com/api/v1/item/56f58ff98d777f753209cdf3/download"
+  },
+  {
+    "name": "VIRAT_S_050300_00_000000_000067.mp4",
+    "id": "56f590078d777f753209cdf6",
+    "size_mb": 85.41,
+    "download_url": "https://data.kitware.com/api/v1/item/56f590078d777f753209cdf6/download"
+  },
+  {
+    "name": "VIRAT_S_050300_01_000148_000396.mp4",
+    "id": "56f5900f8d777f753209cdf9",
+    "size_mb": 305.86,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5900f8d777f753209cdf9/download"
+  },
+  {
+    "name": "VIRAT_S_050300_03_000726_000834.mp4",
+    "id": "56f5905f8d777f753209cdfd",
+    "size_mb": 132.87,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5905f8d777f753209cdfd/download"
+  },
+  {
+    "name": "VIRAT_S_050300_04_001057_001122.mp4",
+    "id": "56f590828d777f753209ce00",
+    "size_mb": 81.04,
+    "download_url": "https://data.kitware.com/api/v1/item/56f590828d777f753209ce00/download"
+  },
+  {
+    "name": "VIRAT_S_050300_05_001272_001330.mp4",
+    "id": "56f590998d777f753209ce03",
+    "size_mb": 70.04,
+    "download_url": "https://data.kitware.com/api/v1/item/56f590998d777f753209ce03/download"
+  },
+  {
+    "name": "VIRAT_S_050300_06_001427_001616.mp4",
+    "id": "56f590ac8d777f753209ce06",
+    "size_mb": 233.14,
+    "download_url": "https://data.kitware.com/api/v1/item/56f590ac8d777f753209ce06/download"
+  },
+  {
+    "name": "VIRAT_S_050300_07_001623_001690.mp4",
+    "id": "56f590e98d777f753209ce09",
+    "size_mb": 83.71,
+    "download_url": "https://data.kitware.com/api/v1/item/56f590e98d777f753209ce09/download"
+  },
+  {
+    "name": "VIRAT_S_050300_08_001705_001771.mp4",
+    "id": "56f591008d777f753209ce0c",
+    "size_mb": 80.89,
+    "download_url": "https://data.kitware.com/api/v1/item/56f591008d777f753209ce0c/download"
+  },
+  {
+    "name": "VIRAT_S_050300_09_001789_001858.mp4",
+    "id": "56f591188d777f753209ce0f",
+    "size_mb": 83.48,
+    "download_url": "https://data.kitware.com/api/v1/item/56f591188d777f753209ce0f/download"
+  },
+  {
+    "name": "VIRAT_S_050300_10_002176_002238.mp4",
+    "id": "56f5912f8d777f753209ce12",
+    "size_mb": 70.89,
+    "download_url": "https://data.kitware.com/api/v1/item/56f5912f8d777f753209ce12/download"
+  },
+  {
+    "name": "VIRAT_S_050301_00_000000_000036.mp4",
+    "id": "56f591418d777f753209ce15",
+    "size_mb": 62.0,
+    "download_url": "https://data.kitware.com/api/v1/item/56f591418d777f753209ce15/download"
+  },
+  {
+    "name": "VIRAT_S_050301_01_000083_000320.mp4",
+    "id": "56f591558d777f753209ce18",
+    "size_mb": 387.45,
+    "download_url": "https://data.kitware.com/api/v1/item/56f591558d777f753209ce18/download"
+  },
+  {
+    "name": "VIRAT_S_050301_02_000544_000607.mp4",
+    "id": "56f591d08d777f753209ce1b",
+    "size_mb": 89.08,
+    "download_url": "https://data.kitware.com/api/v1/item/56f591d08d777f753209ce1b/download"
+  },
+  {
+    "name": "VIRAT_S_050301_03_000933_001046.mp4",
+    "id": "56f591ec8d777f753209ce1e",
+    "size_mb": 185.17,
+    "download_url": "https://data.kitware.com/api/v1/item/56f591ec8d777f753209ce1e/download"
+  }
+]
