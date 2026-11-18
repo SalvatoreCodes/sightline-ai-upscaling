@@ -421,7 +421,9 @@
     .card-top {
       display: flex;
       align-items: center;
-      gap: 8px;
+      flex-wrap: wrap;
+      gap: 4px 6px;
+      min-width: 0;
     }
     .ts-badge {
       font-family: var(--mono);
@@ -442,6 +444,8 @@
       border: 1px solid var(--border);
       padding: 0 6px;
       border-radius: 4px;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
     .human-badge {
       font-family: var(--mono);
@@ -452,6 +456,8 @@
       padding: 0 5px;
       border-radius: 4px;
       font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
     .garment-line {
       display: flex;
@@ -505,6 +511,8 @@
       border: 1px solid rgba(245, 158, 11, 0.30);
       padding: 0 5px;
       border-radius: 4px;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     @media (max-width: 960px) {
