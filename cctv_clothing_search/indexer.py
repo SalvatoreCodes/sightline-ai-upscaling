@@ -160,17 +160,94 @@ def pil_to_b64_jpeg(img: Image.Image, max_size: int = 84, quality: int = 80) -> 
     return base64.b64encode(buf.getvalue()).decode("ascii")
 
 
-def sr_upscale_fast(sr_model: Any, pil_img: Image.Image, device: torch.device) -> Image.Image:
-    """Apply RealESRGAN_x2plus only while ROI min-side < 96px to keep inference light and fast."""
+def sr_upscale_fast(
+    sr_model: Any, pil_img: Image.Image, device: torch.device, force_2x: bool = False
+) -> Image.Image:
+    """Apply RealESRGAN_x2plus when ROI min-side < 96px or force_2x (< 64px pedestrian gate) is active."""
     w, h = pil_img.size
     m = min(w, h)
     if m < 30:
         out = tuned.sr_upscale_2x(sr_model, tuned.sr_upscale_2x(sr_model, pil_img, device), device)
         return out.filter(ImageFilter.UnsharpMask(radius=1.0, percent=35, threshold=2))
-    if m < 96:
+    if force_2x or m < 96:
         out = tuned.sr_upscale_2x(sr_model, pil_img, device)
         return out.filter(ImageFilter.UnsharpMask(radius=0.8, percent=25, threshold=2))
     return pil_img
+
+
+def crop_mask_frac(person_mask: np.ndarray, fracs: tuple[float, float, float, float]) -> np.ndarray:
+    """Crop normalized sub-region (x0, x1, y0, y1) from a person foreground mask."""
+    mh, mw = person_mask.shape[:2]
+    x0, x1, y0, y1 = fracs
+    c0 = max(0, min(mw - 2, int(round(mw * x0))))
+    c1 = max(c0 + 2, min(mw, int(round(mw * x1))))
+    r0 = max(0, min(mh - 2, int(round(mh * y0))))
+    r1 = max(r0 + 2, min(mh, int(round(mh * y1))))
+    return person_mask[r0:r1, c0:c1]
+
+
+def extract_flank_mask_composite(person_mask: np.ndarray) -> np.ndarray:
+    """Stitch left [0.18..0.36] and right [0.64..0.82] torso flank masks aligned with extract_flank_composite."""
+    left = crop_mask_frac(person_mask, (0.18, 0.36, 0.16, 0.54))
+    right = crop_mask_frac(person_mask, (0.64, 0.82, 0.16, 0.54))
+    h = max(left.shape[0], right.shape[0], 8)
+    l_res = cv2.resize(left.astype(np.float32), (max(1, left.shape[1]), h), interpolation=cv2.INTER_LINEAR)
+    r_res = cv2.resize(right.astype(np.float32), (max(1, right.shape[1]), h), interpolation=cv2.INTER_LINEAR)
+    return np.concatenate([l_res, r_res], axis=1)
+
+
+def extract_masked_core_lab(
+    roi_img: Image.Image, fg_mask: np.ndarray | None = None, sigma: float = 0.28
+) -> dict:
+    """Compute foreground-silhouette-masked Gaussian-core & clutter-trimmed CIELAB/HSV stats."""
+    if fg_mask is None or fg_mask.size == 0:
+        return tuned.extract_gaussian_core_lab(roi_img, sigma=sigma)
+
+    arr = np.asarray(roi_img.convert("RGB")).astype(np.uint8)
+    lab = cv2.cvtColor(arr, cv2.COLOR_RGB2LAB).astype(np.float32)
+    hsv = cv2.cvtColor(arr, cv2.COLOR_RGB2HSV).astype(np.float32)
+    L = lab[:, :, 0] * (100.0 / 255.0)
+    A = lab[:, :, 1] - 128.0
+    B = lab[:, :, 2] - 128.0
+    h, w = L.shape
+
+    m_fg = cv2.resize(fg_mask.astype(np.float32), (w, h), interpolation=cv2.INTER_LINEAR)
+    m_fg = np.clip(m_fg, 0.0, 1.0)
+
+    yg, xg = np.mgrid[0:h, 0:w]
+    w2 = np.exp(
+        -(
+            ((xg - (w - 1) / 2.0) / (sigma * w + 1e-4)) ** 2
+            + ((yg - (h - 1) / 2.0) / (1.07 * sigma * h + 1e-4)) ** 2
+        )
+    )
+    # Weight strongly by human foreground silhouette to exclude asphalt, grass, and metal barriers
+    w2 = w2 * (0.05 + 0.95 * m_fg)
+    fg_bin = m_fg >= 0.45
+    if float(fg_bin.mean()) >= 0.08:
+        core_mask = fg_bin & (w2 >= np.percentile(w2[fg_bin], 35))
+        if not np.any(core_mask):
+            core_mask = fg_bin
+    else:
+        core_mask = w2 >= np.percentile(w2, 55)
+
+    L0 = float(np.median(L[core_mask]))
+    A0 = float(np.median(A[core_mask]))
+    B0 = float(np.median(B[core_mask]))
+    dE = np.sqrt((L - L0) ** 2 + (A - A0) ** 2 + (B - B0) ** 2)
+    w_clean = w2 * np.exp(-0.5 * (dE / 22.0) ** 2)
+    w_clean /= w_clean.sum() + 1e-6
+
+    order = np.argsort(L.ravel())
+    cs = np.cumsum(w_clean.ravel()[order])
+    Lm = float(L.ravel()[order[min(len(order) - 1, int(np.searchsorted(cs, 0.50)))]])
+    L78 = float(L.ravel()[order[min(len(order) - 1, int(np.searchsorted(cs, 0.78)))]])
+    Am = float((A * w_clean).sum())
+    Bm = float((B * w_clean).sum())
+    Ch = float(np.hypot(Am, Bm))
+    Hm = float(np.median(hsv[:, :, 0][core_mask]))
+    Sm = float((hsv[:, :, 1] * w_clean).sum())
+    return {"L50": Lm, "L78": L78, "A": Am, "B": Bm, "C": Ch, "H": Hm, "S": Sm, "w_map": w_clean}
 
 
 def extract_flank_composite(rgb: np.ndarray, pbox: tuple[float, float, float, float]) -> Image.Image:
@@ -362,6 +439,7 @@ def classify_variable_type(
     quality: str,
     pbox_h_norm: float,
     trained_probs: np.ndarray | None = None,
+    person_h_px: float = 120.0,
 ) -> np.ndarray:
     """Open-vocabulary clothing type classification across all 21 types weighted by universal physical priors."""
     z_role = "lower" if zone == "lower" else "upper"
@@ -411,6 +489,34 @@ def classify_variable_type(
         # Hood/collar texture contrast helps hoodies slightly when grey/white/black/blue
         if clues["hood_std"] >= 38.0 and pred_color in ("white", "light grey / silver", "black", "navy blue", "blue"):
             logits[t_idx["hoodie / sweatshirt"]] += 0.35
+
+        # Scale-aware overhead regularization: small crops (< 64px) require >= 0.035 CLIP margin for niche labels
+        if person_h_px < 64.0:
+            std_upper = [
+                "zip-up jacket / bomber jacket",
+                "open jacket / coat",
+                "sweater / knitwear",
+                "hoodie / sweatshirt",
+                "dress shirt / blouse",
+                "t-shirt / polo shirt",
+                "windbreaker / rain jacket",
+                "puffer jacket",
+                "buttoned coat",
+            ]
+            if is_hivis_color:
+                std_upper.append("vest / safety vest")
+            best_std_sim = max(float(clip_type_sims[t_idx[n]]) for n in std_upper)
+            niche_upper = [
+                "tank top / sleeveless top",
+                "overalls / workwear",
+                "suit jacket / blazer",
+                "flannel / plaid shirt",
+            ]
+            if not is_hivis_color:
+                niche_upper.append("vest / safety vest")
+            for nt in niche_upper:
+                if (float(clip_type_sims[t_idx[nt]]) - best_std_sim) < 0.035:
+                    logits[t_idx[nt]] -= 1.50
     else:
         if pred_color in ("blue", "royal blue", "navy blue", "light blue"):
             logits[t_idx["blue denim jeans"]] += 0.85
@@ -419,6 +525,15 @@ def classify_variable_type(
             logits[t_idx["trousers / pants"]] += 0.55
             if (float(clip_type_sims[t_idx["dress / skirt"]]) - float(clip_type_sims[t_idx["trousers / pants"]])) < 0.03:
                 logits[t_idx["dress / skirt"]] -= 0.95
+
+        if person_h_px < 64.0:
+            best_std_low = max(
+                float(clip_type_sims[t_idx["trousers / pants"]]),
+                float(clip_type_sims[t_idx["blue denim jeans"]]),
+            )
+            for nt in ("shorts / cargo shorts", "joggers / track pants", "cargo pants", "dress / skirt"):
+                if (float(clip_type_sims[t_idx[nt]]) - best_std_low) < 0.035:
+                    logits[t_idx[nt]] -= 1.50
 
     # Light calibration for retail benchmark resolutions without starving open-world classes
     if quality in VIDEO_FILES and trained_probs is not None:
@@ -503,6 +618,8 @@ class ClothingSearchDB:
                     lab_b REAL NOT NULL,
                     human_conf REAL NOT NULL DEFAULT 95.0,
                     is_new_category INTEGER NOT NULL DEFAULT 0,
+                    track_id INTEGER NOT NULL DEFAULT 0,
+                    is_interpolated INTEGER NOT NULL DEFAULT 0,
                     thumb_b64 TEXT NOT NULL
                 )
                 """
@@ -512,6 +629,10 @@ class ClothingSearchDB:
                 conn.execute("ALTER TABLE detections ADD COLUMN human_conf REAL NOT NULL DEFAULT 95.0")
             if "is_new_category" not in cols:
                 conn.execute("ALTER TABLE detections ADD COLUMN is_new_category INTEGER NOT NULL DEFAULT 0")
+            if "track_id" not in cols:
+                conn.execute("ALTER TABLE detections ADD COLUMN track_id INTEGER NOT NULL DEFAULT 0")
+            if "is_interpolated" not in cols:
+                conn.execute("ALTER TABLE detections ADD COLUMN is_interpolated INTEGER NOT NULL DEFAULT 0")
             conn.execute(
                 """
                 CREATE TABLE IF NOT EXISTS clothing_categories (
@@ -539,6 +660,9 @@ class ClothingSearchDB:
             )
             conn.execute(
                 "CREATE INDEX IF NOT EXISTS idx_det_q_ts ON detections (video_quality, timestamp_sec)"
+            )
+            conn.execute(
+                "CREATE INDEX IF NOT EXISTS idx_det_q_interp_ts ON detections (video_quality, is_interpolated, timestamp_sec)"
             )
         self._sync_category_synonyms()
 
@@ -621,8 +745,8 @@ class ClothingSearchDB:
                     video_quality, frame_idx, timestamp_sec, timestamp_str, shopper_num,
                     zone, person_box_norm, sub_box_norm, clothing_type, clothing_color,
                     short_type, short_color, color_hex, type_conf, color_conf, joint_conf,
-                    lab_l, lab_a, lab_b, human_conf, is_new_category, thumb_b64
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    lab_l, lab_a, lab_b, human_conf, is_new_category, track_id, is_interpolated, thumb_b64
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 [
                     (
@@ -647,6 +771,8 @@ class ClothingSearchDB:
                         r["lab_b"],
                         r.get("human_conf", 95.0),
                         0,
+                        int(r.get("track_id", 0)),
+                        int(r.get("is_interpolated", 0)),
                         r["thumb_b64"],
                     )
                     for r in rows
@@ -663,7 +789,7 @@ class ClothingSearchDB:
         with self._connect() as conn:
             meta_row = conn.execute("SELECT * FROM video_meta WHERE video_quality = ?", (quality,)).fetchone()
             det_rows = conn.execute(
-                "SELECT * FROM detections WHERE video_quality = ? ORDER BY timestamp_sec ASC, shopper_num ASC, id ASC",
+                "SELECT * FROM detections WHERE video_quality = ? AND is_interpolated = 0 ORDER BY timestamp_sec ASC, shopper_num ASC, id ASC",
                 (quality,),
             ).fetchall()
 
@@ -680,6 +806,7 @@ class ClothingSearchDB:
                 "timestamp_sec": round(float(r["timestamp_sec"]), 2),
                 "frame_idx": int(r["frame_idx"]),
                 "person_num": int(r["shopper_num"]),
+                "track_id": int(r["track_id"]) if "track_id" in r.keys() else 0,
                 "human_conf": round(float(r["human_conf"]) if "human_conf" in r.keys() else 95.0, 1),
                 "zone": r["zone"],
                 "short_color": sc,
@@ -708,13 +835,13 @@ class ClothingSearchDB:
         with open(csv_file, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
             writer.writerow([
-                "timestamp_str", "timestamp_sec", "frame_idx", "person_num", "human_conf",
+                "timestamp_str", "timestamp_sec", "frame_idx", "person_num", "track_id", "human_conf",
                 "zone", "color", "clothing_type", "joint_conf", "color_conf", "type_conf",
                 "person_box_norm", "sub_box_norm",
             ])
             for d in det_list:
                 writer.writerow([
-                    d["timestamp_str"], d["timestamp_sec"], d["frame_idx"], d["person_num"], d["human_conf"],
+                    d["timestamp_str"], d["timestamp_sec"], d["frame_idx"], d["person_num"], d["track_id"], d["human_conf"],
                     d["zone"], d["short_color"], d["short_type"], d["joint_conf"], d["color_conf"], d["type_conf"],
                     json.dumps(d["person_box_norm"]), json.dumps(d["sub_box_norm"]),
                 ])
@@ -724,11 +851,57 @@ class ClothingSearchDB:
     def export_json_snapshot(self, out_path: Path = JSON_PATH):
         with self._connect() as conn:
             metas = [dict(r) for r in conn.execute("SELECT * FROM video_meta").fetchall()]
-            dets = [dict(r) for r in conn.execute("SELECT * FROM detections ORDER BY video_quality, timestamp_sec").fetchall()]
+            dets = [dict(r) for r in conn.execute("SELECT * FROM detections WHERE is_interpolated = 0 ORDER BY video_quality, timestamp_sec").fetchall()]
         for d in dets:
             d["person_box_norm"] = json.loads(d["person_box_norm"])
             d["sub_box_norm"] = json.loads(d["sub_box_norm"])
         out_path.write_text(json.dumps({"videos": metas, "detections": dets}), encoding="utf-8")
+
+    def get_all_detections_light(self, quality: str) -> dict:
+        """Return lightweight keyframe and interpolated track detections without thumbnails for live video overlay."""
+        with self._connect() as conn:
+            meta_row = conn.execute("SELECT duration_sec, fps FROM video_meta WHERE video_quality = ?", (quality,)).fetchone()
+            rows = conn.execute(
+                """
+                SELECT id, frame_idx, timestamp_sec, timestamp_str, shopper_num, track_id,
+                       is_interpolated, zone, person_box_norm, sub_box_norm,
+                       short_type, short_color, clothing_type, clothing_color,
+                       color_hex, joint_conf, human_conf
+                FROM detections
+                WHERE video_quality = ?
+                ORDER BY timestamp_sec ASC, track_id ASC, id ASC
+                """,
+                (quality,),
+            ).fetchall()
+        items = [
+            {
+                "id": int(r["id"]),
+                "frame_idx": int(r["frame_idx"]),
+                "timestamp_sec": round(float(r["timestamp_sec"]), 3),
+                "timestamp_str": r["timestamp_str"],
+                "shopper_num": int(r["shopper_num"]),
+                "track_id": int(r["track_id"]),
+                "is_interpolated": int(r["is_interpolated"]),
+                "zone": r["zone"],
+                "person_box_norm": json.loads(r["person_box_norm"]),
+                "sub_box_norm": json.loads(r["sub_box_norm"]),
+                "short_type": r["short_type"],
+                "short_color": r["short_color"],
+                "clothing_type": r["clothing_type"],
+                "clothing_color": r["clothing_color"],
+                "color_hex": r["color_hex"],
+                "joint_conf": round(float(r["joint_conf"]), 1),
+                "human_conf": round(float(r["human_conf"]), 1),
+            }
+            for r in rows
+        ]
+        return {
+            "quality": quality,
+            "duration_sec": float(meta_row["duration_sec"]) if meta_row else 0.0,
+            "fps": float(meta_row["fps"]) if meta_row else 0.0,
+            "count": len(items),
+            "detections": items,
+        }
 
     def get_stats(self, quality: str = "latest") -> dict:
         with self._connect() as conn:
@@ -738,12 +911,12 @@ class ClothingSearchDB:
                 quality = metas[0]["video_quality"] if metas else "144p"
             meta_q = next((m for m in metas if m["video_quality"] == quality), None)
             total_dets = conn.execute(
-                "SELECT COUNT(*) FROM detections WHERE video_quality = ?", (quality,)
+                "SELECT COUNT(*) FROM detections WHERE video_quality = ? AND is_interpolated = 0", (quality,)
             ).fetchone()[0]
             colors = [
                 {"color": r[0], "short_color": SHORT_COLOR_LABELS.get(r[0], r[0]), "hex": COLOR_HEX_MAP.get(r[0], "#94A3B8"), "count": r[1]}
                 for r in conn.execute(
-                    "SELECT clothing_color, COUNT(*) as c FROM detections WHERE video_quality = ? GROUP BY clothing_color ORDER BY c DESC",
+                    "SELECT clothing_color, COUNT(*) as c FROM detections WHERE video_quality = ? AND is_interpolated = 0 GROUP BY clothing_color ORDER BY c DESC",
                     (quality,),
                 ).fetchall()
             ]
@@ -755,7 +928,7 @@ class ClothingSearchDB:
                     "is_discovered": False,
                 }
                 for r in conn.execute(
-                    "SELECT clothing_type, COUNT(*) as c FROM detections WHERE video_quality = ? GROUP BY clothing_type ORDER BY c DESC",
+                    "SELECT clothing_type, COUNT(*) as c FROM detections WHERE video_quality = ? AND is_interpolated = 0 GROUP BY clothing_type ORDER BY c DESC",
                     (quality,),
                 ).fetchall()
             ]
@@ -855,6 +1028,7 @@ class ClothingSearchDB:
             "timestamp_str": r["timestamp_str"],
             "timeline_pct": round(100.0 * float(r["timestamp_sec"]) / max(1e-4, duration_sec), 2),
             "shopper_num": r["shopper_num"],
+            "track_id": int(r["track_id"]) if "track_id" in r.keys() else 0,
             "zone": r["zone"],
             "person_box_norm": json.loads(r["person_box_norm"]),
             "sub_box_norm": json.loads(r["sub_box_norm"]),
@@ -941,7 +1115,7 @@ class ClothingSearchDB:
         if type_filter:
             q_types = q_types & {type_filter} if q_types else {type_filter}
 
-        clauses = ["video_quality = ?"]
+        clauses = ["video_quality = ?", "is_interpolated = 0"]
         params: list[Any] = [quality]
 
         if min_conf > 0:
@@ -974,7 +1148,7 @@ class ClothingSearchDB:
             if not rows and (q_colors or q_types or leftovers or query.strip()):
                 all_quality_rows = [
                     dict(r)
-                    for r in conn.execute("SELECT * FROM detections WHERE video_quality = ?", (quality,)).fetchall()
+                    for r in conn.execute("SELECT * FROM detections WHERE video_quality = ? AND is_interpolated = 0", (quality,)).fetchall()
                 ]
 
         matches = [self._format_match_row(r, duration_sec) for r in rows]
@@ -1009,8 +1183,8 @@ class CCTVClothingIndexer:
     def __init__(self, device: torch.device | None = None):
         self.device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.sr_model = tuned.load_realesrgan_x2plus(self.device)
-        self.det_model = tv_det.fasterrcnn_resnet50_fpn_v2(
-            weights=tv_det.FasterRCNN_ResNet50_FPN_V2_Weights.DEFAULT
+        self.det_model = tv_det.maskrcnn_resnet50_fpn_v2(
+            weights=tv_det.MaskRCNN_ResNet50_FPN_V2_Weights.DEFAULT
         ).eval().to(self.device)
         self.det_tf = torchvision.transforms.ToTensor()
 
@@ -1051,7 +1225,7 @@ class CCTVClothingIndexer:
             return torch.nn.functional.normalize(feat, dim=-1)
 
     def _detect_persons(self, rgb: np.ndarray, quality: str) -> list[dict]:
-        """Stage 1: Identify and strictly verify genuine humans before categorizing clothing."""
+        """Stage 1: Identify and strictly verify genuine humans with silhouette masks before categorizing clothing."""
         H, W = rgb.shape[:2]
         use_sr = (H <= 280) or (quality in ("144p", "240p"))
         pil = Image.fromarray(rgb)
@@ -1064,18 +1238,20 @@ class CCTVClothingIndexer:
             scale = 1.0
             det_thr = 0.48
 
+        W_inp, H_inp = inp_img.size
         with torch.no_grad():
             out = self.det_model([self.det_tf(inp_img).to(self.device)])[0]
 
         boxes = out["boxes"].cpu().numpy() / scale
         labels = out["labels"].cpu().numpy()
         scores = out["scores"].cpu().numpy()
+        masks_np = out["masks"].cpu().numpy()[:, 0] if "masks" in out and len(out["masks"]) else None
 
         min_bh = 0.24 * H if quality in VIDEO_FILES else max(24.0, 0.06 * H)
         min_bw = 0.05 * W if quality in VIDEO_FILES else max(12.0, 0.015 * W)
 
-        raw_cands: list[tuple[float, float, tuple[float, float, float, float]]] = []
-        for box, lab, sc in zip(boxes, labels, scores):
+        raw_cands: list[tuple[float, float, tuple[float, float, float, float], int]] = []
+        for idx, (box, lab, sc) in enumerate(zip(boxes, labels, scores)):
             fsc = float(sc)
             if int(lab) != 1 or fsc < det_thr:
                 continue
@@ -1088,18 +1264,18 @@ class CCTVClothingIndexer:
                 continue
             if (x1 <= 3.0 or x2 >= W - 3.0) and bw < 0.045 * W:
                 continue
-            raw_cands.append((fsc * (bw * bh), fsc, (x1, y1, x2, y2)))
+            raw_cands.append((fsc * (bw * bh), fsc, (x1, y1, x2, y2), idx))
 
         # Sort by det_score * area and apply IoU + containment NMS (iou >= 0.45)
         raw_cands.sort(key=lambda x: -x[0])
-        kept_cands: list[tuple[float, tuple[float, float, float, float]]] = []
-        for _, fsc, cand_box in raw_cands:
+        kept_cands: list[tuple[float, tuple[float, float, float, float], int]] = []
+        for _, fsc, cand_box, raw_idx in raw_cands:
             if any(
                 (compute_box_iou(cand_box, kb)[0] >= 0.45 or compute_box_iou(cand_box, kb)[1] >= 0.72)
-                for _, kb in kept_cands
+                for _, kb, _ in kept_cands
             ):
                 continue
-            kept_cands.append((fsc, cand_box))
+            kept_cands.append((fsc, cand_box, raw_idx))
             if len(kept_cands) >= 10:
                 break
 
@@ -1110,9 +1286,11 @@ class CCTVClothingIndexer:
         geoms = []
         det_scores = []
         top_boxes = []
-        for fsc, (x1, y1, x2, y2) in kept_cands:
+        mask_crops: list[np.ndarray | None] = []
+        for fsc, (x1, y1, x2, y2), raw_idx in kept_cands:
             c = pil.crop((max(0, int(x1)), max(0, int(y1)), min(W, int(x2)), min(H, int(y2))))
-            crop_imgs.append(sr_upscale_fast(self.sr_model, c, self.device))
+            bh = y2 - y1
+            crop_imgs.append(sr_upscale_fast(self.sr_model, c, self.device, force_2x=(bh < 64.0)))
             geoms.append([
                 (y2 - y1) / max(1.0, x2 - x1),
                 (y2 - y1) / float(H),
@@ -1121,6 +1299,14 @@ class CCTVClothingIndexer:
             ])
             det_scores.append(fsc)
             top_boxes.append((x1, y1, x2, y2))
+            if masks_np is not None:
+                mx1 = max(0, min(W_inp - 1, int(round(x1 * scale))))
+                mx2 = max(mx1 + 1, min(W_inp, int(round(x2 * scale))))
+                my1 = max(0, min(H_inp - 1, int(round(y1 * scale))))
+                my2 = max(my1 + 1, min(H_inp, int(round(y2 * scale))))
+                mask_crops.append(masks_np[raw_idx, my1:my2, mx1:mx2].astype(np.float32))
+            else:
+                mask_crops.append(None)
 
         with torch.no_grad():
             h_feats = trainer.encode_clip_images(self.clip_model, self.clip_proc, crop_imgs, self.device)
@@ -1135,10 +1321,10 @@ class CCTVClothingIndexer:
                 trained_h_probs = clip_h_probs
 
         verified = []
-        for box, fsc, clip_hp, train_hp in zip(top_boxes, det_scores, clip_h_probs, trained_h_probs):
+        for box, fsc, clip_hp, train_hp, m_crop in zip(top_boxes, det_scores, clip_h_probs, trained_h_probs, mask_crops):
             human_conf = 0.35 * (fsc * 100.0) + 0.40 * float(clip_hp) + 0.25 * float(train_hp)
             if human_conf >= 64.0 and float(clip_hp) >= 52.0:
-                verified.append({"box": box, "human_conf": round(float(human_conf), 1)})
+                verified.append({"box": box, "human_conf": round(float(human_conf), 1), "mask": m_crop})
         return verified
 
     def _classify_zone_batch(self, zones_data: list[dict], quality: str) -> list[dict]:
@@ -1179,7 +1365,15 @@ class CCTVClothingIndexer:
             pbox_h_norm = float(pb[3] - pb[1])
             tr_p = trained_type_probs[i] if trained_type_probs is not None else None
             pt = classify_variable_type(
-                clip_type_sims[i], zd["zone"], c_label, zd["lab_stats"], clues, quality, pbox_h_norm, tr_p
+                clip_type_sims[i],
+                zd["zone"],
+                c_label,
+                zd["lab_stats"],
+                clues,
+                quality,
+                pbox_h_norm,
+                tr_p,
+                person_h_px=float(zd.get("person_h_px", 120.0)),
             )
 
             t_idx = int(np.argmax(pt))
@@ -1197,10 +1391,147 @@ class CCTVClothingIndexer:
             })
         return outputs
 
+    @staticmethod
+    def _associate_tracks(
+        verified_humans: list[dict],
+        width: int,
+        height: int,
+        ts_sec: float,
+        fidx: int,
+        active_tracks: list[dict],
+        next_track_id: int,
+    ) -> int:
+        """Two-stage ByteTrack-style velocity + IoU association across sampled frames."""
+        for h_info in verified_humans:
+            bx1, by1, bx2, by2 = h_info["box"]
+            h_info["pbox_norm"] = [
+                round(max(0.0, bx1 / max(1, width)), 4),
+                round(max(0.0, by1 / max(1, height)), 4),
+                round(min(1.0, bx2 / max(1, width)), 4),
+                round(min(1.0, by2 / max(1, height)), 4),
+            ]
+
+        eligible_tracks = [tr for tr in active_tracks if 0.0 <= (ts_sec - tr["last_ts"]) <= 2.4]
+        used_tracks: set[int] = set()
+        matched_det_to_tr: dict[int, dict] = {}
+
+        def match_stage(det_indices: list[int]):
+            cands: list[tuple[float, int, dict]] = []
+            for di in det_indices:
+                dbox = verified_humans[di]["pbox_norm"]
+                dcx, dcy = 0.5 * (dbox[0] + dbox[2]), 0.5 * (dbox[1] + dbox[3])
+                h_det = max(1e-4, dbox[3] - dbox[1])
+                for tr in eligible_tracks:
+                    tid = tr["track_id"]
+                    if tid in used_tracks:
+                        continue
+                    tb = tr["box"]
+                    dt = max(0.0, ts_sec - tr["last_ts"])
+                    sx = max(-0.08, min(0.08, tr["vx"] * dt))
+                    sy = max(-0.08, min(0.08, tr["vy"] * dt))
+                    pred_box = (tb[0] + sx, tb[1] + sy, tb[2] + sx, tb[3] + sy)
+
+                    iou_pred, _ = compute_box_iou(tuple(dbox), pred_box)
+                    iou_prev, _ = compute_box_iou(tuple(dbox), tuple(tb))
+                    best_iou = max(iou_pred, iou_prev)
+
+                    pcx, pcy = 0.5 * (pred_box[0] + pred_box[2]), 0.5 * (pred_box[1] + pred_box[3])
+                    cdist = float(np.hypot(dcx - pcx, dcy - pcy))
+                    h_tr = max(1e-4, tb[3] - tb[1])
+                    ratio = h_det / h_tr
+                    if not (0.55 <= ratio <= 1.80):
+                        continue
+                    max_cdist = min(0.11, 1.15 * max(0.04, 0.5 * (h_det + h_tr)))
+                    if best_iou >= 0.18 or cdist <= max_cdist:
+                        cands.append((best_iou * 2.0 - cdist, di, tr))
+
+            cands.sort(key=lambda x: -x[0])
+            for _, di, tr in cands:
+                tid = tr["track_id"]
+                if di in matched_det_to_tr or tid in used_tracks:
+                    continue
+                matched_det_to_tr[di] = tr
+                used_tracks.add(tid)
+
+        hi_idx = [i for i, h in enumerate(verified_humans) if h["human_conf"] >= 75.0]
+        lo_idx = [i for i, h in enumerate(verified_humans) if h["human_conf"] < 75.0]
+        match_stage(hi_idx)
+        match_stage(lo_idx)
+
+        for di, h_info in enumerate(verified_humans):
+            dbox = h_info["pbox_norm"]
+            dcx, dcy = 0.5 * (dbox[0] + dbox[2]), 0.5 * (dbox[1] + dbox[3])
+            if di in matched_det_to_tr:
+                tr = matched_det_to_tr[di]
+                ob = tr["box"]
+                ocx, ocy = 0.5 * (ob[0] + ob[2]), 0.5 * (ob[1] + ob[3])
+                dt = ts_sec - tr["last_ts"]
+                if dt > 0.05:
+                    tr["vx"] = 0.6 * ((dcx - ocx) / dt) + 0.4 * tr["vx"]
+                    tr["vy"] = 0.6 * ((dcy - ocy) / dt) + 0.4 * tr["vy"]
+                tr["box"] = dbox
+                tr["last_ts"] = ts_sec
+                tr["last_fidx"] = fidx
+            else:
+                next_track_id += 1
+                tr = {
+                    "track_id": next_track_id,
+                    "box": dbox,
+                    "vx": 0.0,
+                    "vy": 0.0,
+                    "last_ts": ts_sec,
+                    "last_fidx": fidx,
+                    "zone_ema": {},
+                }
+                active_tracks.append(tr)
+            h_info["track"] = tr
+
+        active_tracks[:] = [tr for tr in active_tracks if (ts_sec - tr["last_ts"]) <= 3.5]
+        return next_track_id
+
+    @staticmethod
+    def _interpolate_tracklets(raw_rows: list[dict], fps: float) -> list[dict]:
+        """Linearly interpolate person & garment boxes across intermediate frames (<= 1.6s gaps)."""
+        groups: dict[tuple[int, str], list[dict]] = {}
+        for r in raw_rows:
+            tid = int(r.get("track_id", 0))
+            if tid <= 0:
+                continue
+            groups.setdefault((tid, r["zone"]), []).append(r)
+
+        interp_step = max(1, int(round(fps * 0.2)))
+        interp_rows: list[dict] = []
+        for items in groups.values():
+            items.sort(key=lambda x: x["frame_idx"])
+            for r0, r1 in zip(items, items[1:]):
+                dt = float(r1["timestamp_sec"]) - float(r0["timestamp_sec"])
+                df = int(r1["frame_idx"]) - int(r0["frame_idx"])
+                if not (0.0 < dt <= 1.6 and df > 1):
+                    continue
+                for fi in range(int(r0["frame_idx"]) + interp_step, int(r1["frame_idx"]), interp_step):
+                    alpha = (fi - int(r0["frame_idx"])) / float(df)
+                    p_interp = [round((1.0 - alpha) * a + alpha * b, 4) for a, b in zip(r0["person_box_norm"], r1["person_box_norm"])]
+                    s_interp = [round((1.0 - alpha) * a + alpha * b, 4) for a, b in zip(r0["sub_box_norm"], r1["sub_box_norm"])]
+                    base = r0 if alpha < 0.5 else r1
+                    ts_i = fi / max(1e-4, fps)
+                    interp_rows.append({
+                        **base,
+                        "frame_idx": fi,
+                        "timestamp_sec": ts_i,
+                        "timestamp_str": format_timestamp(ts_i),
+                        "person_box_norm": p_interp,
+                        "sub_box_norm": s_interp,
+                        "is_interpolated": 1,
+                    })
+
+        all_rows = raw_rows + interp_rows
+        all_rows.sort(key=lambda x: (x["timestamp_sec"], x.get("track_id", 0), x["shopper_num"], x["zone"]))
+        return all_rows
+
     def scan_video(
         self,
         quality: str,
-        stride_frames: int = 24,
+        stride_frames: int = 0,
         db: ClothingSearchDB | None = None,
         video_path: Path | None = None,
         discover: bool = True,
@@ -1216,7 +1547,8 @@ class CCTVClothingIndexer:
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         duration_sec = total_frames / fps
 
-        grid = set(range(0, total_frames, stride_frames))
+        eff_stride = stride_frames if stride_frames > 0 else max(3, int(round(fps * 0.4)))
+        grid = set(range(0, total_frames, eff_stride))
         if quality in VIDEO_FILES:
             for kf in (20, 170, 384, 864, 1280):
                 if kf < total_frames:
@@ -1225,7 +1557,8 @@ class CCTVClothingIndexer:
 
         t_start = time.perf_counter()
         raw_rows: list[dict] = []
-        track_ema: list[dict] = []
+        active_tracks: list[dict] = []
+        next_track_id = 0
 
         for fidx in frame_indices:
             cap.set(cv2.CAP_PROP_POS_FRAMES, fidx)
@@ -1237,19 +1570,28 @@ class CCTVClothingIndexer:
             ts_str = format_timestamp(ts_sec)
 
             verified_humans = self._detect_persons(rgb, quality)
+            next_track_id = self._associate_tracks(
+                verified_humans, W, H, ts_sec, fidx, active_tracks, next_track_id
+            )
             zones_to_score = []
 
             for s_idx, h_info in enumerate(verified_humans, start=1):
                 pbox = h_info["box"]
                 hconf = h_info["human_conf"]
+                p_mask = h_info.get("mask")
+                pbox_norm = h_info["pbox_norm"]
                 bx1, by1, bx2, by2 = pbox
+                person_h_px = float(by2 - by1)
+                small_ped = person_h_px < 64.0
                 p_raw = tuned.crop_frac(rgb, pbox, (0.0, 1.0, 0.0, 1.0))
-                p_sr = sr_upscale_fast(self.sr_model, p_raw, self.device)
+                p_sr = sr_upscale_fast(self.sr_model, p_raw, self.device, force_2x=small_ped)
 
                 flank_raw = extract_flank_composite(rgb, pbox)
                 in_raw = tuned.crop_frac(rgb, pbox, (0.34, 0.66, 0.16, 0.52))
-                flank_stats = tuned.extract_gaussian_core_lab(flank_raw, sigma=0.35)
-                in_stats = tuned.extract_gaussian_core_lab(in_raw, sigma=0.32)
+                flank_mask = extract_flank_mask_composite(p_mask) if p_mask is not None else None
+                in_mask = crop_mask_frac(p_mask, (0.34, 0.66, 0.16, 0.52)) if p_mask is not None else None
+                flank_stats = extract_masked_core_lab(flank_raw, flank_mask, sigma=0.35)
+                in_stats = extract_masked_core_lab(in_raw, in_mask, sigma=0.32)
                 de_layers = float(np.linalg.norm([
                     flank_stats["L50"] - in_stats["L50"],
                     flank_stats["A"] - in_stats["A"],
@@ -1258,35 +1600,33 @@ class CCTVClothingIndexer:
                 upper_zones = ["outer_upper", "inner_upper"] if (de_layers > 22.0 and (bx2 - bx1) > 0.08 * W) else ["upper"]
 
                 candidate_zones = list(upper_zones)
-                if by2 < 0.97 * H:
+                if by2 < 0.992 * H:
                     candidate_zones.append("lower")
-
-                pbox_norm = [
-                    round(max(0.0, bx1 / W), 4),
-                    round(max(0.0, by1 / H), 4),
-                    round(min(1.0, bx2 / W), 4),
-                    round(min(1.0, by2 / H), 4),
-                ]
 
                 for zone in candidate_zones:
                     if zone == "outer_upper":
                         sub_raw = flank_raw
+                        sub_mask = flank_mask
                         ctx_raw = tuned.crop_frac(rgb, pbox, tuned.ZONE_GEOMETRY["outer_upper"]["ctx"])
                     elif zone == "inner_upper":
                         sub_raw = in_raw
+                        sub_mask = in_mask
                         ctx_raw = tuned.crop_frac(rgb, pbox, tuned.ZONE_GEOMETRY["inner_upper"]["ctx"])
                     else:
                         sub_raw = tuned.crop_frac(rgb, pbox, tuned.ZONE_GEOMETRY[zone]["sub"])
+                        sub_mask = crop_mask_frac(p_mask, tuned.ZONE_GEOMETRY[zone]["sub"]) if p_mask is not None else None
                         ctx_raw = tuned.crop_frac(rgb, pbox, tuned.ZONE_GEOMETRY[zone]["ctx"])
-                    sub_sr = sr_upscale_fast(self.sr_model, sub_raw, self.device)
-                    ctx_sr = sr_upscale_fast(self.sr_model, ctx_raw, self.device)
-                    lab_stats = tuned.extract_gaussian_core_lab(sub_sr, sigma=0.30 if zone == "outer_upper" else 0.28)
+                    sub_sr = sr_upscale_fast(self.sr_model, sub_raw, self.device, force_2x=small_ped)
+                    ctx_sr = sr_upscale_fast(self.sr_model, ctx_raw, self.device, force_2x=small_ped)
+                    lab_stats = extract_masked_core_lab(sub_sr, sub_mask, sigma=0.30 if zone == "outer_upper" else 0.28)
                     zones_to_score.append({
                         "shopper_num": s_idx,
+                        "track": h_info["track"],
                         "human_conf": hconf,
                         "zone": zone,
                         "pbox": pbox,
                         "pbox_norm": pbox_norm,
+                        "person_h_px": person_h_px,
                         "sub_box_norm": extract_sub_box_norm(pbox, zone, W, H),
                         "person_sr": p_sr,
                         "sub_sr": sub_sr,
@@ -1296,30 +1636,17 @@ class CCTVClothingIndexer:
 
             preds = self._classify_zone_batch(zones_to_score, quality)
 
-            # Temporal EMA smoothing across nearby tracks
+            # Track-level temporal EMA smoothing across associated frames
             for zd, pr in zip(zones_to_score, preds):
-                pb = zd["pbox_norm"]
-                cx, cy = 0.5 * (pb[0] + pb[2]), 0.5 * (pb[1] + pb[3])
-
-                best_tr = None
-                best_dist = 0.08
-                for tr in track_ema:
-                    if tr["zone"] == zd["zone"] and (ts_sec - tr["last_ts"]) <= 4.5:
-                        dist = float(np.hypot(cx - tr["cx"], cy - tr["cy"]))
-                        if dist < best_dist:
-                            best_dist = dist
-                            best_tr = tr
-                if best_tr is not None:
-                    pt = 0.55 * pr["pt"] + 0.45 * best_tr["pt"]
-                    pc = 0.55 * pr["pc"] + 0.45 * best_tr["pc"]
-                    best_tr["pt"] = pt
-                    best_tr["pc"] = pc
-                    best_tr["cx"] = cx
-                    best_tr["cy"] = cy
-                    best_tr["last_ts"] = ts_sec
+                tr = zd["track"]
+                z_key = zd["zone"]
+                prev_z = tr["zone_ema"].get(z_key)
+                if prev_z is not None:
+                    pt = 0.55 * pr["pt"] + 0.45 * prev_z["pt"]
+                    pc = 0.55 * pr["pc"] + 0.45 * prev_z["pc"]
                 else:
                     pt, pc = pr["pt"], pr["pc"]
-                    track_ema.append({"zone": zd["zone"], "cx": cx, "cy": cy, "last_ts": ts_sec, "pt": pt, "pc": pc})
+                tr["zone_ema"][z_key] = {"pt": pt, "pc": pc}
 
                 t_idx = int(np.argmax(pt))
                 c_idx = int(np.argmax(pc))
@@ -1335,6 +1662,8 @@ class CCTVClothingIndexer:
                     "timestamp_sec": ts_sec,
                     "timestamp_str": ts_str,
                     "shopper_num": zd["shopper_num"],
+                    "track_id": tr["track_id"],
+                    "is_interpolated": 0,
                     "human_conf": zd["human_conf"],
                     "is_new_category": 0,
                     "zone": zd["zone"],
@@ -1355,6 +1684,7 @@ class CCTVClothingIndexer:
                 })
 
         cap.release()
+        all_rows = self._interpolate_tracklets(raw_rows, fps)
         scan_ms = round((time.perf_counter() - t_start) * 1000.0, 1)
         meta = {
             "video_quality": quality,
@@ -1369,10 +1699,11 @@ class CCTVClothingIndexer:
             "scan_ms": scan_ms,
         }
         if db is not None:
-            db.save_quality_results(meta, raw_rows)
+            db.save_quality_results(meta, all_rows)
         return {
             "meta": meta,
             "detections": len(raw_rows),
+            "interpolated_detections": len(all_rows) - len(raw_rows),
             "discovered_categories": [],
         }
 
@@ -1400,7 +1731,7 @@ def main():
     parser.add_argument("--qualities", nargs="+", default=["144p", "240p", "360p", "480p", "720p"])
     parser.add_argument("--file", type=str, default="", help="Index a custom local video file")
     parser.add_argument("--label", type=str, default="", help="Custom source label for --file")
-    parser.add_argument("--stride", type=int, default=24)
+    parser.add_argument("--stride", type=int, default=0, help="Frame stride (0 = FPS-adaptive ~0.4s)")
     parser.add_argument("--discover", action="store_true", help="Enable open-vocabulary clothing scoring")
     parser.add_argument("--test-queries", action="store_true")
     args = parser.parse_args()

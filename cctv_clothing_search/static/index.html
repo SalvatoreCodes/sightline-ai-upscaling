@@ -606,10 +606,14 @@
       quality: 'latest',
       sort: 'time',
       matches: [],
+      tracks: [],
+      tracksByKey: new Map(),
       isFallback: false,
+      userSelected: false,
       selectedIdx: -1,
       durationSec: 110.9,
-      debounceTimer: null
+      debounceTimer: null,
+      rafId: null
     };
 
     const videoEl = document.getElementById('videoPlayer');
@@ -638,6 +642,30 @@
       return `${String(m).padStart(2, '0')}:${s}`;
     }
 
+    async function loadTracks(q) {
+      try {
+        const res = await fetch(`/api/tracks/${encodeURIComponent(q)}`);
+        if (!res.ok) {
+          state.tracks = [];
+          state.tracksByKey = new Map();
+          return;
+        }
+        const data = await res.json();
+        state.tracks = data.detections || [];
+        const byKey = new Map();
+        for (const d of state.tracks) {
+          const tid = d.track_id || 0;
+          const key = tid > 0 ? `t_${tid}` : `s_${d.shopper_num}`;
+          if (!byKey.has(key)) byKey.set(key, []);
+          byKey.get(key).push(d);
+        }
+        state.tracksByKey = byKey;
+      } catch {
+        state.tracks = [];
+        state.tracksByKey = new Map();
+      }
+    }
+
     async function loadStats() {
       const res = await fetch(`/api/stats?quality=${encodeURIComponent(state.quality)}`);
       const data = await res.json();
@@ -656,10 +684,13 @@
           scanFileLink.download = data.scan_json_file;
           scanFileLink.textContent = data.scan_json_file;
         }
+        await loadTracks(state.quality);
         updateTimeUI();
       } else {
         statusEl.textContent = `${state.quality} · unindexed`;
         scanFileLink.style.display = 'none';
+        state.tracks = [];
+        state.tracksByKey = new Map();
       }
 
       const prevC = colorEl.value;
@@ -684,6 +715,7 @@
     }
 
     async function runSearch(preserveTime = false) {
+      if (!preserveTime) state.userSelected = false;
       const params = new URLSearchParams({
         q: searchEl.value.trim(),
         quality: state.quality,
@@ -709,10 +741,13 @@
       renderMatches();
       renderTimelineTicks();
       if (!preserveTime && state.matches.length > 0) {
-        selectMatch(0, false);
+        selectMatch(0, false, false);
       } else if (state.matches.length === 0) {
         state.selectedIdx = -1;
+        state.userSelected = false;
         activeTagEl.textContent = 'No match selected';
+        drawOverlay();
+      } else {
         drawOverlay();
       }
     }
@@ -787,9 +822,10 @@
       ticksEl.appendChild(frag);
     }
 
-    function selectMatch(idx, seekVideo = true) {
+    function selectMatch(idx, seekVideo = true, isUserAction = seekVideo) {
       if (idx < 0 || idx >= state.matches.length) return;
       state.selectedIdx = idx;
+      if (isUserAction) state.userSelected = true;
       const m = state.matches[idx];
 
       document.querySelectorAll('.match-card.selected').forEach(el => el.classList.remove('selected'));
@@ -820,6 +856,119 @@
       return { x: (cw - rw) / 2, y: (ch - rh) / 2, w: rw, h: rh };
     }
 
+    function lerpBox(b0, b1, alpha) {
+      return [
+        b0[0] + (b1[0] - b0[0]) * alpha,
+        b0[1] + (b1[1] - b0[1]) * alpha,
+        b0[2] + (b1[2] - b0[2]) * alpha,
+        b0[3] + (b1[3] - b0[3]) * alpha
+      ];
+    }
+
+    function interpolateTrackZone(pts, curTime) {
+      if (!pts || !pts.length) return null;
+      let prev = null;
+      let next = null;
+      let best = null;
+      let bestDist = Infinity;
+      for (const p of pts) {
+        const dt = p.timestamp_sec - curTime;
+        const absDt = Math.abs(dt);
+        if (absDt < bestDist) {
+          bestDist = absDt;
+          best = p;
+        }
+        if (dt <= 0 && (!prev || p.timestamp_sec > prev.timestamp_sec)) prev = p;
+        if (dt >= 0 && (!next || p.timestamp_sec < next.timestamp_sec)) next = p;
+      }
+      if (prev && next && prev !== next && (next.timestamp_sec - prev.timestamp_sec) <= 1.25) {
+        const span = Math.max(1e-4, next.timestamp_sec - prev.timestamp_sec);
+        const alpha = (curTime - prev.timestamp_sec) / span;
+        const base = alpha < 0.5 ? prev : next;
+        return {
+          ...base,
+          person_box_norm: lerpBox(prev.person_box_norm, next.person_box_norm, alpha),
+          sub_box_norm: lerpBox(prev.sub_box_norm, next.sub_box_norm, alpha)
+        };
+      }
+      if (best && bestDist <= 0.45) return best;
+      return null;
+    }
+
+    function getActiveTracksAtTime(curTime) {
+      const result = [];
+      const zonePriority = { upper: 0, outer_upper: 1, inner_upper: 2, lower: 3 };
+      for (const rows of state.tracksByKey.values()) {
+        const byZone = new Map();
+        for (const r of rows) {
+          if (!byZone.has(r.zone)) byZone.set(r.zone, []);
+          byZone.get(r.zone).push(r);
+        }
+        const zonesSorted = [...byZone.keys()].sort((a, b) => (zonePriority[a] ?? 9) - (zonePriority[b] ?? 9));
+        for (const z of zonesSorted) {
+          const item = interpolateTrackZone(byZone.get(z), curTime);
+          if (item) {
+            result.push(item);
+            break;
+          }
+        }
+      }
+      return result;
+    }
+
+    function getSmoothBoxForMatch(m, curTime) {
+      if (!m || !m.track_id || !state.tracksByKey.has(`t_${m.track_id}`)) return m;
+      const zRows = state.tracksByKey.get(`t_${m.track_id}`).filter(r => r.zone === m.zone);
+      const interp = interpolateTrackZone(zRows, curTime);
+      if (!interp) return m;
+      return {
+        ...m,
+        person_box_norm: interp.person_box_norm,
+        sub_box_norm: interp.sub_box_norm
+      };
+    }
+
+    function drawBoxWithPill(ctx, vr, det, styleMode) {
+      const [px1, py1, px2, py2] = det.person_box_norm;
+      const [sx1, sy1, sx2, sy2] = det.sub_box_norm;
+      const px = vr.x + px1 * vr.w;
+      const py = vr.y + py1 * vr.h;
+      const pw = (px2 - px1) * vr.w;
+      const ph = (py2 - py1) * vr.h;
+      const isCyan = styleMode === 'cyan';
+
+      ctx.save();
+      ctx.strokeStyle = isCyan ? 'rgba(241, 245, 249, 0.72)' : 'rgba(148, 163, 184, 0.58)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([5, 4]);
+      ctx.strokeRect(px, py, pw, ph);
+      ctx.restore();
+
+      if (isCyan) {
+        const bx = vr.x + sx1 * vr.w;
+        const by = vr.y + sy1 * vr.h;
+        const bw = (sx2 - sx1) * vr.w;
+        const bh = (sy2 - sy1) * vr.h;
+        ctx.strokeStyle = '#38BDF8';
+        ctx.lineWidth = 2.5;
+        ctx.strokeRect(bx, by, bw, bh);
+      }
+
+      const confPart = isCyan ? ` (${Math.round(det.joint_conf)}%)` : '';
+      const label = `Human ${Math.round(det.human_conf ?? 95)}% · ${det.short_color} · ${det.short_type}${confPart}`;
+      ctx.font = isCyan ? '600 12px "Geist", system-ui, sans-serif' : '500 11.5px "Geist", system-ui, sans-serif';
+      const tw = ctx.measureText(label).width + 14;
+      const lx = Math.max(4, Math.min(overlayEl.width - tw - 4, px));
+      const ly = Math.max(24, py - 6);
+      ctx.fillStyle = isCyan ? 'rgba(11, 13, 17, 0.92)' : 'rgba(15, 23, 42, 0.78)';
+      ctx.fillRect(lx, ly - 18, tw, 20);
+      ctx.strokeStyle = isCyan ? '#38BDF8' : 'rgba(148, 163, 184, 0.55)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(lx, ly - 18, tw, 20);
+      ctx.fillStyle = isCyan ? '#F1F5F9' : 'rgba(226, 232, 240, 0.88)';
+      ctx.fillText(label, lx + 7, ly - 4);
+    }
+
     function drawOverlay() {
       const rect = overlayEl.getBoundingClientRect();
       if (overlayEl.width !== Math.round(rect.width) || overlayEl.height !== Math.round(rect.height)) {
@@ -828,45 +977,48 @@
       }
       const ctx = overlayEl.getContext('2d');
       ctx.clearRect(0, 0, overlayEl.width, overlayEl.height);
-      if (state.selectedIdx < 0 || state.selectedIdx >= state.matches.length) return;
 
-      const m = state.matches[state.selectedIdx];
-      // Show bounding box when playhead is near the matched timestamp (<= 2.5s)
-      if (Math.abs((videoEl.currentTime || 0) - m.timestamp_sec) > 2.5) return;
-
+      const curTime = videoEl.currentTime || 0;
       const vr = getVideoRenderRect();
-      const [px1, py1, px2, py2] = m.person_box_norm;
-      const [sx1, sy1, sx2, sy2] = m.sub_box_norm;
+      const activeHumans = getActiveTracksAtTime(curTime);
+      const hasFilter = Boolean(searchEl.value.trim() || colorEl.value || typeEl.value);
+      const selectedMatch = (state.selectedIdx >= 0 && state.selectedIdx < state.matches.length) ? state.matches[state.selectedIdx] : null;
 
-      // Subtle dashed person outline
-      ctx.save();
-      ctx.strokeStyle = 'rgba(241, 245, 249, 0.55)';
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([5, 4]);
-      ctx.strokeRect(vr.x + px1 * vr.w, vr.y + py1 * vr.h, (px2 - px1) * vr.w, (py2 - py1) * vr.h);
-      ctx.restore();
+      const cyanByTarget = new Map();
+      const highlightedTrackIds = new Set();
 
-      // Highlighted target garment sub-ROI box
-      const bx = vr.x + sx1 * vr.w;
-      const by = vr.y + sy1 * vr.h;
-      const bw = (sx2 - sx1) * vr.w;
-      const bh = (sy2 - sy1) * vr.h;
-      ctx.strokeStyle = '#38BDF8';
-      ctx.lineWidth = 2.5;
-      ctx.strokeRect(bx, by, bw, bh);
+      if (hasFilter && !state.isFallback) {
+        const bestDistByTarget = new Map();
+        for (const m of state.matches) {
+          const absDt = Math.abs(m.timestamp_sec - curTime);
+          if (absDt > 0.45) continue;
+          const key = m.track_id > 0 ? `t_${m.track_id}_${m.zone}` : `s_${m.shopper_num}_${m.zone}`;
+          if (!bestDistByTarget.has(key) || absDt < bestDistByTarget.get(key)) {
+            bestDistByTarget.set(key, absDt);
+            cyanByTarget.set(key, getSmoothBoxForMatch(m, curTime));
+            if (m.track_id > 0) highlightedTrackIds.add(m.track_id);
+          }
+        }
+      }
 
-      const label = `Human ${Math.round(m.human_conf ?? 95)}% · ${m.short_color} · ${m.short_type} (${Math.round(m.joint_conf)}%)`;
-      ctx.font = '600 12px "Geist", system-ui, sans-serif';
-      const tw = ctx.measureText(label).width + 14;
-      const lx = Math.max(4, Math.min(overlayEl.width - tw - 4, vr.x + px1 * vr.w));
-      const ly = Math.max(24, vr.y + py1 * vr.h - 6);
-      ctx.fillStyle = 'rgba(11, 13, 17, 0.92)';
-      ctx.fillRect(lx, ly - 18, tw, 20);
-      ctx.strokeStyle = '#38BDF8';
-      ctx.lineWidth = 1;
-      ctx.strokeRect(lx, ly - 18, tw, 20);
-      ctx.fillStyle = '#F1F5F9';
-      ctx.fillText(label, lx + 7, ly - 4);
+      if (state.userSelected && selectedMatch && Math.abs(curTime - selectedMatch.timestamp_sec) <= 2.5) {
+        const key = selectedMatch.track_id > 0 ? `t_${selectedMatch.track_id}_${selectedMatch.zone}` : `sel_${selectedMatch.id}`;
+        if (!cyanByTarget.has(key)) {
+          cyanByTarget.set(key, getSmoothBoxForMatch(selectedMatch, curTime));
+        }
+        if (selectedMatch.track_id > 0) highlightedTrackIds.add(selectedMatch.track_id);
+      }
+
+      // Pass 1: Render all humans present at currentTime in dimmed slate
+      for (const h of activeHumans) {
+        if (h.track_id > 0 && highlightedTrackIds.has(h.track_id)) continue;
+        drawBoxWithPill(ctx, vr, h, 'slate');
+      }
+
+      // Pass 2: Render active search targets / explicitly selected match in bright cyan on top
+      for (const cm of cyanByTarget.values()) {
+        drawBoxWithPill(ctx, vr, cm, 'cyan');
+      }
     }
 
     function updateTimeUI() {
@@ -901,6 +1053,7 @@
       searchEl.value = '';
       colorEl.value = '';
       typeEl.value = '';
+      state.userSelected = false;
       runSearch();
     });
 
@@ -911,13 +1064,17 @@
       uploadBtn.textContent = 'Scanning...';
       statusEl.textContent = `Scanning ${file.name}...`;
       try {
-        const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}&stride=24`, {
+        const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}&stride=0`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/octet-stream' },
           body: file
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.detail || 'Upload failed');
+        searchEl.value = '';
+        colorEl.value = '';
+        typeEl.value = '';
+        state.userSelected = false;
         setVideoQuality(data.quality);
       } catch (err) {
         statusEl.textContent = `Upload error: ${err.message}`;
@@ -967,7 +1124,7 @@
       scanBtn.disabled = true;
       scanBtn.textContent = 'Scanning...';
       try {
-        await fetch(`/api/scan?quality=${encodeURIComponent(state.quality)}&stride=24`, { method: 'POST' });
+        await fetch(`/api/scan?quality=${encodeURIComponent(state.quality)}&stride=0`, { method: 'POST' });
         await loadStats();
         await runSearch(true);
       } finally {
@@ -976,6 +1133,32 @@
       }
     });
 
+    function tickPlayback() {
+      updateTimeUI();
+      if (!videoEl.paused && !videoEl.ended) {
+        state.rafId = requestAnimationFrame(tickPlayback);
+      } else {
+        state.rafId = null;
+      }
+    }
+
+    videoEl.addEventListener('play', () => {
+      if (!state.rafId) state.rafId = requestAnimationFrame(tickPlayback);
+    });
+    videoEl.addEventListener('pause', () => {
+      if (state.rafId) {
+        cancelAnimationFrame(state.rafId);
+        state.rafId = null;
+      }
+      drawOverlay();
+    });
+    videoEl.addEventListener('ended', () => {
+      if (state.rafId) {
+        cancelAnimationFrame(state.rafId);
+        state.rafId = null;
+      }
+      drawOverlay();
+    });
     videoEl.addEventListener('timeupdate', updateTimeUI);
     videoEl.addEventListener('seeked', drawOverlay);
     window.addEventListener('resize', drawOverlay);

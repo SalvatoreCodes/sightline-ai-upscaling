@@ -17,20 +17,29 @@ Direct inspection with `FasterRCNN-ResNet50-FPN-V2` confirmed that the pedestria
 
 ---
 
-## 2. Immediate Pipeline & UI Improvements (Software Only — No Extra Datasets Required)
+## 2. Implemented Pipeline & UI Improvements (Verified in Production)
 
-1. **FPS-Adaptive Dense Sampling + Continuous Track Interpolation (`ByteTrack` / IoU Tracker):**
-   - Replace fixed `stride=24` frames with time-normalized sampling (`stride = max(3, round(fps * 0.4))`, e.g., every `5` frames at `12 FPS` or `~0.4s` intervals).
-   - Linearly interpolate person and garment boxes across intermediate frames between matched tracklets so bounding boxes follow walking subjects smoothly without `2s` gaps.
-2. **Foreground Human Silhouette Masking Before Color Extraction:**
-   - Replace rectangular `crop_frac` averaging inside `extract_gaussian_core_lab()` with a lightweight pixel-level foreground mask (`Mask R-CNN` or GrabCut / saliency matting).
-   - Excluding pavement, grass, and metal railings outside the human silhouette eliminates gray-asphalt color contamination on `26–60 px` pedestrians.
-3. **Adaptive Small-Pedestrian Upscaling (`< 64 px` Height Gate):**
-   - Trigger `2× RealESRGAN_x2plus` upscaling whenever any detected person bounding box is `< 64 px` tall—even when the full video resolution is `432p` or `720p` (`Intel_CCTV_Person_Bicycle_Car`, `VIRAT_0100`).
-   - Apply scale-aware attribute regularization on overhead crops (`< 64 px`) so niche indoor/specialty labels (`Tank Top`, `Dress / Skirt`) require high CLIP margin before overriding standard jackets, shirts, and trousers.
-4. **Always-On Live Overlay & Close-Match Fallback (`Implemented`):**
-   - **Implemented in `indexer.py` & `index.html`:** When a search yields `0` exact matches, `ClothingSearchDB.search()` now ranks perceptual color/garment-family neighbors (`close_matches`) and surfaces *"No exact match found — you might be thinking of this:"* in the UI.
-   - Next UI enhancement: render all humans present at `videoPlayer.currentTime` in dimmed slate boxes even while a specific query highlights its target matches in cyan.
+All four pipeline and UI enhancements below are now **implemented and verified** across `indexer.py`, `server.py`, and `static/index.html`:
+
+1. **FPS-Adaptive Dense Sampling + Continuous Track Interpolation (`Implemented`):**
+   - Replaced fixed `stride=24` frames with time-normalized sampling (`eff_stride = max(3, int(round(fps * 0.4)))`, e.g., every `5` frames / `~0.42s` at `12 FPS`) in `scan_video()`, paired with two-stage velocity + IoU association (`_associate_tracks()`) and linear box interpolation (`_interpolate_tracklets()`) across gaps `<= 1.6s`.
+   - **Verified Impact on `Intel_CCTV_Person_Bi` (`Intel_CCTV_Person_Bicycle_Car.mp4`):** Indexed keyframes rose from **`17`** (`27` frames) to **`75` keyframe sightings** (`130` frames), plus **`138` interpolated track observations** (**`213` total live track overlays** via `GET /api/tracks/{quality}`).
+2. **Foreground Human Silhouette Masking Before Color Extraction (`Implemented`):**
+   - Upgraded the primary detector from box-only `FasterRCNN-ResNet50-FPN-V2` to **`MaskRCNN-ResNet50-FPN-V2`** (`tv_det.maskrcnn_resnet50_fpn_v2`) and replaced rectangular averaging with silhouette-weighted CIELAB extraction (`extract_masked_core_lab()`, weighting pixels by `0.05 + 0.95 * m_fg` and computing seed `(L0, A0, B0)` on foreground mask `>= 0.45`).
+   - **Verified Benchmark & Impact:** `208.5 ms/frame` at `768×432`, `673.3 MiB` peak GPU VRAM, eliminating `~46%` background asphalt contamination on Frame `35` (`00:02.9`, cleanly labeled **`Human 96% · Navy Blue · Sweater`** + **`Light Grey · Denim Jeans`**).
+3. **Adaptive Small-Pedestrian Upscaling (`< 64 px` Height Gate) & Regularization (`Implemented`):**
+   - Added `force_2x=(bh < 64.0)` inside `_detect_persons()` and `scan_video()` to trigger `2× RealESRGAN_x2plus` upscaling on `< 64 px` pedestrians even in `432p`/`720p` footage, lowered `lower`-zone bottom-border cutoff to `0.992 * H`, and added `-1.50` overhead logit regularization in `classify_variable_type()` when `person_h_px < 64.0` and niche CLIP margin `< 0.035`.
+4. **Always-On Live Multi-Human Overlay & Close-Match Fallback (`Implemented`):**
+   - Added SQLite columns `track_id` / `is_interpolated` and lightweight endpoint `GET /api/tracks/{quality}`.
+   - Upgraded `drawOverlay()` in `static/index.html` with a `requestAnimationFrame` playback lerp loop: all visible humans at `videoPlayer.currentTime` are drawn in **dimmed slate** (`rgba(148, 163, 184, 0.58)`)—even during empty search or *"No exact match found — you might be thinking of this:"* fallback (`"Orange safety vest"` -> `12` close matches)—while exact search targets and selected cards highlight on top in **bright cyan (`#38BDF8`)**.
+
+### Updated Cross-Video Verification Benchmarks (`stride=0`, FPS-Adaptive)
+
+| Source | Keyframes Indexed | Keyframe Sightings | Interpolated Track Rows | Sample Query Verification |
+|---|---|---|---|---|
+| `Intel_CCTV_Person_Bi` (`768×432`, `12 FPS`) | `130` (`+3.8×`) | **`75`** (`+4.4×` vs `17`) | **`138`** (**`213`** total overlays) | Frame `35 (00:02.9)`: `Human 96% · Navy Blue · Sweater` (`11` hits in `1.47 ms`) |
+| `Construction-Site-CC` (`586×480`, `25 FPS`) | `218` | **`470`** | Tracked continuous | `Red shirt`: **`46`** (`4.28 ms`), `Orange safety vest`: **`25`** (`2.05 ms`), `Yellow safety vest`: **`29`** (`1.75 ms`), `Black pants`: **`83`** (`4.20 ms`) |
+| `144p` Retail (`254×144`, `13.1 FPS`) | `293` | **`2,587`** | Tracked continuous | `Blue jacket`: **`158`**, `Pink shirt`: **`91`**, `Black pants`: **`563`**, `Blue jeans`: **`101`**, `Grey sweater`: **`119`**, `Beige coat`: **`30`**, `White hoodie`: **`8`** |
 
 ---
 

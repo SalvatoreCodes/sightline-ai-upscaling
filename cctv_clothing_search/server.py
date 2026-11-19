@@ -101,7 +101,7 @@ def api_search(
 
 
 @app.post("/api/scan")
-def api_scan(quality: str = Query("144p"), stride: int = Query(24, ge=8, le=120)):
+def api_scan(quality: str = Query("144p"), stride: int = Query(0, ge=0, le=120)):
     try:
         vpath = resolve_video_path(quality, db)
     except FileNotFoundError as exc:
@@ -112,11 +112,20 @@ def api_scan(quality: str = Query("144p"), stride: int = Query(24, ge=8, le=120)
     return {"ok": True, "scan": res, "stats": db.get_stats(quality)}
 
 
+@app.get("/api/tracks/{quality}")
+def api_tracks(quality: str):
+    stats = db.get_stats(quality)
+    resolved_q = stats["quality"]
+    if not stats.get("video"):
+        raise HTTPException(status_code=404, detail=f"No track data found for {quality}")
+    return db.get_all_detections_light(resolved_q)
+
+
 @app.post("/api/upload")
 async def api_upload(
     request: Request,
     filename: str = Query("footage.mp4"),
-    stride: int = Query(24, ge=8, le=120),
+    stride: int = Query(0, ge=0, le=120),
 ):
     safe_name = re.sub(r"[^A-Za-z0-9._-]", "_", Path(filename).name) or f"clip_{int(time.time())}.mp4"
     dest_path = UPLOADS_DIR / safe_name
