@@ -1,12 +1,49 @@
 {
-  "epochs": 65,
-  "train_time_sec": 101.16,
-  "human_train_samples": 538,
-  "human_val_samples": 152,
-  "human_val_acc_pct": 96.1,
-  "garment_train_samples": 336,
-  "garment_val_samples": 24,
+  "arch_version": 2,
+  "vlm_model_id": "google/siglip-base-patch16-384",
+  "embed_dim": 768,
+  "epochs": 60,
+  "train_time_sec": 3845.07,
+  "human_train_samples": 610,
+  "human_val_samples": 144,
+  "human_val_acc_pct": 99.3,
+  "garment_train_samples": 9776,
+  "garment_val_samples": 1784,
+  "par_dataset_counts": {
+    "pa100k_train_zones": 4800,
+    "pa100k_val_zones": 800,
+    "market1501_train_zones": 4000,
+    "market1501_val_zones": 800,
+    "simuletic_train_zones": 640,
+    "simuletic_val_zones": 160,
+    "optional_local_hooks": {
+      "PETA_local": false,
+      "RAPv2_local": false
+    }
+  },
   "type_val_acc_144_240_pct": 100.0,
   "color_val_acc_144_240_pct": 100.0,
-  "final_loss": 0.6747
+  "val_by_dataset": {
+    "retail_144_240": {
+      "samples": 24,
+      "type_acc_pct": 100.0,
+      "color_acc_pct": 100.0
+    },
+    "pa100k_val": {
+      "samples": 800,
+      "type_acc_pct": 81.5,
+      "color_acc_pct": null
+    },
+    "market1501_test_ids": {
+      "samples": 800,
+      "type_acc_pct": 88.9,
+      "color_acc_pct": 67.4
+    },
+    "simuletic_val_ids": {
+      "samples": 160,
+      "type_acc_pct": 96.9,
+      "color_acc_pct": 98.1
+    }
+  },
+  "final_loss": 0.4891
 }

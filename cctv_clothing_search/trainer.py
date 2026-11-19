@@ -1,8 +1,10 @@
-"""Multi-task PyTorch trainer for Human ID + Low-Res Clothing Type/Color + Open-World Discovery."""
+"""Multi-task GPU trainer: Human Verifier + Multi-Dataset PAR Clothing Type + Shadow-Invariant Chromaticity Heads on SigLIP-384."""
 
 from __future__ import annotations
 
+import io
 import json
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -12,158 +14,87 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import torchvision
-import torchvision.models.detection as tv_det
 from PIL import Image, ImageFilter
-from transformers import CLIPModel, CLIPProcessor
 
 ROOT_DIR = Path(r"D:\projects\sightline-ai-upscaling")
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 import generate_cctv_clothing_tuning_report as tuned  # noqa: E402
+from . import color_constancy, par_datasets, pose_utils, vlm_backbone  # noqa: E402
+from .vocab import (  # noqa: E402
+    COLOR_NAMES,
+    COLOR_PROMPTS_MAP,
+    HUMAN_NEG_PROMPTS,
+    HUMAN_POS_PROMPTS,
+    TYPE_NAMES,
+    TYPE_PROMPTS_MAP,
+    TYPE_ROLES,
+)
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 MODEL_PATH = DATA_DIR / "sightline_trained_model.pt"
 METRICS_PATH = DATA_DIR / "training_metrics.json"
-VIRAT_DIR = Path(r"D:\Projects\sightline-ai-upscaling\Assets\VIRAT")
+VIRAT_DIR = Path(r"D:\projects\sightline-ai-upscaling\Assets\VIRAT")
+WEIGHTS_DIR = ROOT_DIR / "datasets_cache" / "weights"
+WEIGHTS_DIR.mkdir(parents=True, exist_ok=True)
+FEATURE_CACHE_PATH = ROOT_DIR / "datasets_cache" / "siglip384_par_features.pt"
 
-EXPANDED_COLORS = list(tuned.CLOTHING_COLORS) + [
-    "red",
-    "green",
-    "yellow / orange",
-    "brown",
-    "purple",
-]
+FEATURE_SCHEMA_VERSION = 2
 
-EXPANDED_COLOR_PROMPTS = {
-    **tuned.TUNED_COLOR_PROMPTS,
-    "red": ["red clothing garment", "bright red colored fabric"],
-    "green": ["green olive clothing garment", "dark or bright green fabric"],
-    "yellow / orange": ["yellow or orange clothing garment", "bright orange amber fabric"],
-    "brown": ["brown tan leather clothing garment", "chocolate brown fabric"],
-    "purple": ["purple violet clothing garment", "plum lavender fabric"],
-}
-
-# Open-world discovery bank: garment types not in the initial 10 indoor winter store classes
-OPEN_WORLD_CANDIDATES = [
-    {
-        "name": "t-shirt / polo shirt",
-        "short": "T-Shirt / Polo",
-        "zone_role": "upper",
-        "prompts": [
-            "a person wearing a short sleeve t-shirt outdoors",
-            "casual polo shirt short sleeves visible bare arms",
-        ],
-        "synonyms": ["t-shirt", "tshirt", "tee", "polo", "short sleeve", "polo shirt"],
-    },
-    {
-        "name": "shorts / cargo shorts",
-        "short": "Shorts",
-        "zone_role": "lower",
-        "prompts": [
-            "person wearing above-the-knee shorts outdoors showing bare lower legs",
-            "casual knee-length cargo shorts on walking pedestrian",
-        ],
-        "synonyms": ["shorts", "cargo shorts", "short pants"],
-    },
-    {
-        "name": "windbreaker / rain jacket",
-        "short": "Windbreaker",
-        "zone_role": "upper",
-        "prompts": [
-            "lightweight nylon windbreaker shell jacket worn outdoors",
-            "outdoor waterproof rain jacket zip front",
-        ],
-        "synonyms": ["windbreaker", "rain jacket", "anorak", "shell"],
-    },
-    {
-        "name": "vest / safety vest",
-        "short": "Vest",
-        "zone_role": "upper",
-        "prompts": [
-            "sleeveless utility vest or high visibility vest over shirt",
-            "quilted gilet or sleeveless outdoor vest",
-        ],
-        "synonyms": ["vest", "safety vest", "gilet", "waistcoat"],
-    },
-    {
-        "name": "suit jacket / blazer",
-        "short": "Blazer",
-        "zone_role": "upper",
-        "prompts": [
-            "tailored structured blazer or formal suit jacket",
-            "business suit coat with structured lapels",
-        ],
-        "synonyms": ["blazer", "suit", "suit jacket"],
-    },
-    {
-        "name": "dress / skirt",
-        "short": "Dress / Skirt",
-        "zone_role": "lower",
-        "prompts": [
-            "person wearing a flowing skirt or knee length dress",
-            "pleated casual skirt outfit",
-        ],
-        "synonyms": ["dress", "skirt", "midi skirt"],
-    },
-    {
-        "name": "cargo pants",
-        "short": "Cargo Pants",
-        "zone_role": "lower",
-        "prompts": [
-            "relaxed utility cargo pants with side leg pockets",
-            "baggy outdoor work cargo trousers",
-        ],
-        "synonyms": ["cargo pants", "cargo trousers", "work pants"],
-    },
-    {
-        "name": "joggers / track pants",
-        "short": "Joggers",
-        "zone_role": "lower",
-        "prompts": [
-            "athletic drawstring sweatpants joggers or track pants",
-            "tapered sport track pants legs",
-        ],
-        "synonyms": ["joggers", "track pants", "sweatpants"],
-    },
-    {
-        "name": "flannel / plaid shirt",
-        "short": "Plaid Shirt",
-        "zone_role": "upper",
-        "prompts": [
-            "checkered plaid pattern flannel button down shirt",
-            "tartan plaid woven overshirt",
-        ],
-        "synonyms": ["flannel", "plaid", "plaid shirt", "checkered"],
-    },
-    {
-        "name": "tank top / sleeveless top",
-        "short": "Tank Top",
-        "zone_role": "upper",
-        "prompts": [
-            "sleeveless summer tank top with bare shoulders",
-            "casual sleeveless singlet top",
-        ],
-        "synonyms": ["tank top", "sleeveless", "singlet"],
-    },
-    {
-        "name": "overalls / workwear",
-        "short": "Workwear",
-        "zone_role": "upper",
-        "prompts": [
-            "industrial one piece coveralls workwear jumpsuit",
-            "utility bib overalls outdoor worker",
-        ],
-        "synonyms": ["overalls", "workwear", "coveralls", "jumpsuit"],
-    },
-]
-
+UPPER_TYPE_IDXS = [i for i, r in enumerate(TYPE_ROLES) if r == "upper"]
+LOWER_TYPE_IDXS = [i for i, r in enumerate(TYPE_ROLES) if r == "lower"]
 ZONES_LIST = ["upper", "outer_upper", "inner_upper", "lower"]
 
+RETAIL_TO_VAR_TYPE = {
+    "puffer jacket / quilted coat": "puffer jacket",
+    "hoodie / hooded sweatshirt": "hoodie / sweatshirt",
+    "sweater / sweatshirt": "sweater / knitwear",
+    "jacket / sweater": "zip-up jacket / bomber jacket",
+    "open jacket / coat": "open jacket / coat",
+    "shirt / blouse": "dress shirt / blouse",
+    "long coat / overcoat": "long overcoat",
+    "buttoned coat / jacket": "buttoned coat",
+    "jeans / denim pants": "blue denim jeans",
+    "pants / trousers": "trousers / pants",
+}
+RETAIL_TO_VAR_COLOR = {
+    "light grey": "light grey / silver",
+}
 
-def extract_structural_vec(person_sr: Image.Image, zone: str) -> np.ndarray:
+
+def load_yolo_model(filename: str):
+    """Load a YOLO weight from datasets_cache/weights (moving cleanly if downloaded to CWD)."""
+    from ultralytics import YOLO
+
+    target = WEIGHTS_DIR / filename
+    if target.exists():
+        return YOLO(str(target))
+    m = YOLO(filename)
+    cwd_file = Path.cwd() / filename
+    if cwd_file.exists() and cwd_file != target:
+        shutil.move(str(cwd_file), str(target))
+    return m
+
+
+def sr_fast(sr_model, pil_img: Image.Image, device: torch.device, force_2x: bool = False) -> Image.Image:
+    w, h = pil_img.size
+    m = min(w, h)
+    if m < 30:
+        return tuned.sr_upscale_2x(sr_model, tuned.sr_upscale_2x(sr_model, pil_img, device), device).filter(
+            ImageFilter.UnsharpMask(1.0, 35, 2)
+        )
+    if force_2x or m < 96:
+        return tuned.sr_upscale_2x(sr_model, pil_img, device).filter(ImageFilter.UnsharpMask(0.8, 25, 2))
+    return pil_img
+
+
+def extract_structural_vec(
+    person_sr: Image.Image,
+    zone: str,
+    zone_fracs: dict | None = None,
+) -> np.ndarray:
     """18-D numeric representation of zone role, hood/hem CIELAB continuity, and edge energy."""
     arr = np.asarray(person_sr.convert("RGB")).astype(np.uint8)
     lab = cv2.cvtColor(arr, cv2.COLOR_RGB2LAB).astype(np.float32)
@@ -186,13 +117,21 @@ def extract_structural_vec(person_sr: Image.Image, zone: str) -> np.ndarray:
             float(np.median(B[r0:r1, c0:c1])),
         ])
 
-    sub_f = tuned.ZONE_GEOMETRY[zone]["sub"]
+    if zone_fracs is not None and zone in zone_fracs:
+        sub_f = zone_fracs[zone]["sub"]
+        outer_f = zone_fracs.get("outer_upper", {}).get("sub", tuned.ZONE_GEOMETRY["outer_upper"]["sub"])
+        inner_f = zone_fracs.get("inner_upper", {}).get("sub", tuned.ZONE_GEOMETRY["inner_upper"]["sub"])
+    else:
+        sub_f = tuned.ZONE_GEOMETRY[zone]["sub"]
+        outer_f = tuned.ZONE_GEOMETRY["outer_upper"]["sub"]
+        inner_f = tuned.ZONE_GEOMETRY["inner_upper"]["sub"]
+
     torso = rs(sub_f)
     hem = rs((0.28, 0.72, 0.53, 0.67))
     thigh_c = rs((0.26, 0.58, 0.54, 0.72))
     lthigh = rs((0.28, 0.72, 0.68, 0.80))
-    outer_r = rs(tuned.ZONE_GEOMETRY["outer_upper"]["sub"])
-    inner_r = rs(tuned.ZONE_GEOMETRY["inner_upper"]["sub"])
+    outer_r = rs(outer_f)
+    inner_r = rs(inner_f)
 
     hr0, hr1 = max(0, int(round(H * 0.02))), max(1, min(H, int(round(H * 0.20))))
     hc0, hc1 = max(0, int(round(W * 0.35))), max(1, min(W, int(round(W * 0.90))))
@@ -211,7 +150,7 @@ def extract_structural_vec(person_sr: Image.Image, zone: str) -> np.ndarray:
         gx = cv2.Sobel(gray_sub, cv2.CV_32F, 1, 0, ksize=3)
         gy = cv2.Sobel(gray_sub, cv2.CV_32F, 0, 1, ksize=3)
         cw = gray_sub.shape[1]
-        cen_strip = gx[:, max(0, cw // 2 - max(1, cw // 6)):min(cw, cw // 2 + max(1, cw // 6))]
+        cen_strip = gx[:, max(0, cw // 2 - max(1, cw // 6)) : min(cw, cw // 2 + max(1, cw // 6))]
         cen_grad = float(np.mean(np.abs(cen_strip))) if cen_strip.size else 0.0
         quilt_ratio = float(np.mean(np.abs(gy)) / (np.mean(np.abs(gx)) + 1e-4))
         edge_mean = float(np.mean(np.abs(gx)) + np.mean(np.abs(gy)))
@@ -241,121 +180,147 @@ def extract_structural_vec(person_sr: Image.Image, zone: str) -> np.ndarray:
     return np.asarray(feats, dtype=np.float32)
 
 
-def extract_color_feature_vec(lab_stats: dict, zone: str) -> np.ndarray:
-    """9-D illuminant-normalized CIELAB + HSV feature vector."""
-    h_rad = float(lab_stats["H"]) * (np.pi / 90.0)
-    return np.asarray(
-        [
-            lab_stats["L50"] / 100.0,
-            lab_stats["L78"] / 100.0,
-            lab_stats["A"] / 80.0,
-            lab_stats["B"] / 80.0,
-            lab_stats["C"] / 90.0,
-            float(np.sin(h_rad)),
-            float(np.cos(h_rad)),
-            lab_stats["S"] / 255.0,
-            1.0 if zone == "lower" else 0.0,
-        ],
-        dtype=np.float32,
-    )
-
-
 class SightlineTrainedModel(nn.Module):
-    """Multi-task network: Human Verification + Open-World Clothing Type & Color Adapters."""
+    """Multi-task SigLIP-384 network: Human Verification + Open-World Type + Shadow-Invariant Chromaticity Heads."""
 
-    def __init__(self, type_protos: torch.Tensor, color_protos: torch.Tensor, logit_scale: float = 22.0):
+    def __init__(
+        self,
+        embed_dim: int,
+        type_protos: torch.Tensor,
+        color_protos: torch.Tensor,
+        logit_scale: float = 45.0,
+    ):
         super().__init__()
+        self.embed_dim = int(embed_dim)
         self.logit_scale = nn.Parameter(torch.tensor(float(logit_scale)))
 
-        # Task 1: Human vs. non-human verification head (512 CLIP + 4 geom = 516)
+        # Task 1: Human vs non-human verifier (embed_dim + 4 bbox geom + 2 pose visibility)
         self.human_head = nn.Sequential(
-            nn.Linear(516, 128),
-            nn.LayerNorm(128),
-            nn.GELU(),
-            nn.Dropout(0.15),
-            nn.Linear(128, 1),
-        )
-
-        # Task 2: Residual clothing-type projection anchored to 512-d CLIP space (1042 -> 512)
-        self.type_mlp = nn.Sequential(
-            nn.Linear(1042, 256),
-            nn.LayerNorm(256),
-            nn.GELU(),
-            nn.Dropout(0.18),
-            nn.Linear(256, 512),
-        )
-        self.type_protos = nn.Parameter(type_protos.clone())  # [N_types, 512]
-
-        # Task 3: Residual clothing-color projection anchored to 512-d CLIP space (521 -> 512)
-        self.color_mlp = nn.Sequential(
-            nn.Linear(521, 192),
+            nn.Linear(embed_dim + 6, 192),
             nn.LayerNorm(192),
             nn.GELU(),
             nn.Dropout(0.15),
-            nn.Linear(192, 512),
+            nn.Linear(192, 1),
         )
-        self.color_protos = nn.Parameter(color_protos.clone())  # [N_colors, 512]
 
-    def forward_human(self, feat_512: torch.Tensor, geom_4: torch.Tensor) -> torch.Tensor:
-        x = torch.cat([feat_512, geom_4], dim=-1)
-        return self.human_head(x).squeeze(-1)
+        # Task 2: Residual open-vocabulary clothing-type projection (2*embed_dim + 18 -> embed_dim)
+        self.type_mlp = nn.Sequential(
+            nn.Linear(embed_dim * 2 + 18, 384),
+            nn.LayerNorm(384),
+            nn.GELU(),
+            nn.Dropout(0.18),
+            nn.Linear(384, embed_dim),
+        )
+        self.type_protos = nn.Parameter(type_protos.clone())  # [21, embed_dim]
 
-    def encode_type(self, sub_512: torch.Tensor, ctx_512: torch.Tensor, struct_18: torch.Tensor) -> torch.Tensor:
-        base = F.normalize(0.35 * sub_512 + 0.65 * ctx_512, dim=-1)
-        delta = self.type_mlp(torch.cat([sub_512, ctx_512, struct_18], dim=-1))
+        # Task 3: Shadow-invariant chromaticity head (embed_dim + 16 -> embed_dim)
+        self.color_mlp = nn.Sequential(
+            nn.Linear(embed_dim + 16, 256),
+            nn.LayerNorm(256),
+            nn.GELU(),
+            nn.Dropout(0.15),
+            nn.Linear(256, embed_dim),
+        )
+        self.color_protos = nn.Parameter(color_protos.clone())  # [17, embed_dim]
+
+    def forward_human(self, feat_emb: torch.Tensor, geom_6: torch.Tensor) -> torch.Tensor:
+        return self.human_head(torch.cat([feat_emb, geom_6], dim=-1)).squeeze(-1)
+
+    def encode_type(self, sub_emb: torch.Tensor, ctx_emb: torch.Tensor, struct_18: torch.Tensor) -> torch.Tensor:
+        base = F.normalize(0.35 * sub_emb + 0.65 * ctx_emb, dim=-1)
+        delta = self.type_mlp(torch.cat([sub_emb, ctx_emb, struct_18], dim=-1))
         return F.normalize(base + 0.55 * delta, dim=-1)
 
-    def forward_type(self, sub_512: torch.Tensor, ctx_512: torch.Tensor, struct_18: torch.Tensor, extra_protos: torch.Tensor | None = None):
-        emb = self.encode_type(sub_512, ctx_512, struct_18)
+    def forward_type(
+        self,
+        sub_emb: torch.Tensor,
+        ctx_emb: torch.Tensor,
+        struct_18: torch.Tensor,
+        extra_protos: torch.Tensor | None = None,
+    ):
+        emb = self.encode_type(sub_emb, ctx_emb, struct_18)
         protos = F.normalize(self.type_protos, dim=-1)
         if extra_protos is not None and extra_protos.numel() > 0:
             protos = torch.cat([protos, F.normalize(extra_protos, dim=-1)], dim=0)
-        scale = self.logit_scale.clamp(5.0, 50.0)
+        scale = self.logit_scale.clamp(10.0, 90.0)
         return scale * (emb @ protos.T), emb
 
-    def encode_color(self, sub_512: torch.Tensor, col_9: torch.Tensor) -> torch.Tensor:
-        delta = self.color_mlp(torch.cat([sub_512, col_9], dim=-1))
-        return F.normalize(sub_512 + 0.65 * delta, dim=-1)
+    def encode_color(self, sub_emb: torch.Tensor, col_16: torch.Tensor) -> torch.Tensor:
+        delta = self.color_mlp(torch.cat([sub_emb, col_16], dim=-1))
+        return F.normalize(sub_emb + 0.60 * delta, dim=-1)
 
-    def forward_color(self, sub_512: torch.Tensor, col_9: torch.Tensor):
-        emb = self.encode_color(sub_512, col_9)
+    def forward_color(self, sub_emb: torch.Tensor, col_16: torch.Tensor):
+        emb = self.encode_color(sub_emb, col_16)
         protos = F.normalize(self.color_protos, dim=-1)
-        scale = self.logit_scale.clamp(5.0, 50.0)
+        scale = self.logit_scale.clamp(10.0, 90.0)
         return scale * (emb @ protos.T), emb
 
 
-def encode_clip_images(clip_m: CLIPModel, clip_proc: CLIPProcessor, imgs: list[Image.Image], device: torch.device) -> torch.Tensor:
-    if not imgs:
-        return torch.empty((0, 512), device=device)
-    feats = []
-    bs = 64
-    with torch.no_grad():
-        for i in range(0, len(imgs), bs):
-            chunk = imgs[i : i + bs]
-            inputs = clip_proc(images=chunk, return_tensors="pt").to(device)
-            out = clip_m.get_image_features(**inputs)
-            im_f = out.pooler_output if hasattr(out, "pooler_output") else out
-            feats.append(F.normalize(im_f, dim=-1))
-    return torch.cat(feats, dim=0)
+def encode_clip_images(vlm_m, vlm_proc, imgs: list[Image.Image], device: torch.device) -> torch.Tensor:
+    """Shared wrapper encoding PIL crops via SigLIP-384."""
+    return vlm_backbone.encode_vlm_images(vlm_m, vlm_proc, imgs, device, batch_size=16)
 
 
-def sr_fast(sr_model, pil_img: Image.Image, device: torch.device) -> Image.Image:
-    w, h = pil_img.size
-    m = min(w, h)
-    if m < 30:
-        return tuned.sr_upscale_2x(sr_model, tuned.sr_upscale_2x(sr_model, pil_img, device), device).filter(
-            ImageFilter.UnsharpMask(1.0, 35, 2)
-        )
-    if m < 96:
-        return tuned.sr_upscale_2x(sr_model, pil_img, device).filter(ImageFilter.UnsharpMask(0.8, 25, 2))
-    return pil_img
+def _degrade_surveillance_pil(crop: Image.Image, rng: np.random.Generator) -> Image.Image:
+    """Apply realistic low-res downscale + JPEG artifact augmentation."""
+    w0, h0 = crop.size
+    scale = float(rng.uniform(0.32, 0.62))
+    dw, dh = max(8, int(round(w0 * scale))), max(8, int(round(h0 * scale)))
+    low = crop.resize((dw, dh), Image.BILINEAR)
+    buf = io.BytesIO()
+    low.save(buf, format="JPEG", quality=int(rng.integers(38, 72)))
+    buf.seek(0)
+    with Image.open(buf) as j_im:
+        return j_im.convert("RGB")
 
 
-def collect_human_dataset(det_model, sr_model, clip_m, clip_proc, device: torch.device):
-    """Build positive pedestrian & hard-negative background crops across retail + VIRAT CCTV."""
-    det_tf = torchvision.transforms.ToTensor()
+def _extract_zone_tuple(
+    rgb_vlm: np.ndarray,
+    rgb_cc: np.ndarray,
+    pbox: tuple[float, float, float, float],
+    kpts: np.ndarray | None,
+    zone: str,
+    sr_model,
+    device: torch.device,
+    frame_stats: dict | None,
+    low_res_aug: bool = False,
+    rng: np.random.Generator | None = None,
+) -> tuple[Image.Image, Image.Image, np.ndarray, np.ndarray]:
+    """Extract aligned (sub_sr, ctx_sr, struct_18, col_16) using pose geometry + silhouette mask + constancy."""
+    small_ped = (pbox[3] - pbox[1]) < 64.0
+    zone_fracs = pose_utils.compute_pose_zone_fracs(pbox, kpts)
+    sub_f = zone_fracs[zone]["sub"]
+    ctx_f = zone_fracs[zone]["ctx"]
+
+    person_raw = tuned.crop_frac(rgb_vlm, pbox, (0.0, 1.0, 0.0, 1.0))
+    sub_raw_vlm = tuned.crop_frac(rgb_vlm, pbox, sub_f)
+    ctx_raw_vlm = tuned.crop_frac(rgb_vlm, pbox, ctx_f)
+    sub_raw_cc = tuned.crop_frac(rgb_cc, pbox, sub_f)
+
+    if low_res_aug and rng is not None:
+        sub_raw_vlm = _degrade_surveillance_pil(sub_raw_vlm, rng)
+        ctx_raw_vlm = _degrade_surveillance_pil(ctx_raw_vlm, rng)
+        sub_raw_cc = _degrade_surveillance_pil(sub_raw_cc, rng)
+
+    person_sr = sr_fast(sr_model, person_raw, device, force_2x=small_ped)
+    sub_sr = sr_fast(sr_model, sub_raw_vlm, device, force_2x=small_ped)
+    ctx_sr = sr_fast(sr_model, ctx_raw_vlm, device, force_2x=small_ped)
+    sub_cc_sr = sr_fast(sr_model, sub_raw_cc, device, force_2x=small_ped)
+
+    p_mask = pose_utils.build_pose_silhouette_mask(pbox, kpts)
+    sub_mask = color_constancy.crop_mask_frac(p_mask, sub_f) if p_mask is not None else None
+
+    st_vec = extract_structural_vec(person_sr, zone, zone_fracs=zone_fracs)
+    lab_stats = color_constancy.extract_masked_core_lab(sub_cc_sr, sub_mask, sigma=0.28)
+    col_vec = color_constancy.extract_shadow_invariant_color_vec(
+        sub_cc_sr, sub_mask, lab_stats, frame_stats, zone
+    )
+    return sub_sr, ctx_sr, st_vec, col_vec
+
+
+def _prepare_human_samples(pose_model, sr_model, device: torch.device, par_tr_recs: list[dict], par_va_recs: list[dict]):
+    """Collect Retail + VIRAT + PAR human positive & hard-negative crops (before VLM encoding)."""
     rng = np.random.default_rng(42)
-
     train_imgs, train_g, train_y = [], [], []
     val_imgs, val_g, val_y = [], [], []
 
@@ -364,8 +329,8 @@ def collect_human_dataset(det_model, sr_model, clip_m, clip_proc, device: torch.
         ("retail_144p_val", tuned.RES_FILES["144p"], [20, 170, 384, 864, 1280], True),
     ]
     virat_clips = sorted(VIRAT_DIR.glob("VIRAT_S_*.mp4"))
-    for i, vp in enumerate(virat_clips):
-        is_val = (vp.name.startswith("VIRAT_S_010204") or vp.name.startswith("VIRAT_S_010000"))
+    for vp in virat_clips:
+        is_val = vp.name.startswith("VIRAT_S_010204") or vp.name.startswith("VIRAT_S_010000")
         frames = [60, 180, 340, 480] if not is_val else [48, 144, 288, 432]
         sources.append((vp.stem[:14], vp, frames, is_val))
 
@@ -384,35 +349,28 @@ def collect_human_dataset(det_model, sr_model, clip_m, clip_proc, device: torch.
             rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
             H, W = rgb.shape[:2]
             pil = Image.fromarray(rgb)
-            inp = tuned.sr_upscale_2x(sr_model, pil, device) if H <= 240 else pil
+            inp_rgb = np.asarray(tuned.sr_upscale_2x(sr_model, pil, device)) if H <= 240 else rgb
             scale = 2.0 if H <= 240 else 1.0
-            with torch.no_grad():
-                out = det_model([det_tf(inp).to(device)])[0]
+            res = pose_model.predict(inp_rgb, imgsz=896 if H >= 600 else 640, classes=[0], conf=0.22, verbose=False, device=0 if device.type == "cuda" else "cpu")[0]
 
-            pos_boxes = []
+            pos_items = []
             all_persons = []
-            neg_boxes = []
-            for b, lab, sc in zip(out["boxes"].cpu().numpy() / scale, out["labels"].cpu().numpy(), out["scores"].cpu().numpy()):
-                x1, y1, x2, y2 = [float(v) for v in b]
-                bw, bh = x2 - x1, y2 - y1
-                if int(lab) == 1 and float(sc) >= 0.20:
+            if res.boxes is not None and len(res.boxes):
+                boxes_np = res.boxes.xyxy.cpu().numpy() / scale
+                confs_np = res.boxes.conf.cpu().numpy()
+                kpts_np = res.keypoints.data.cpu().numpy() / np.array([scale, scale, 1.0], dtype=np.float32) if res.keypoints is not None else [None] * len(boxes_np)
+                for b, sc, kpts in zip(boxes_np, confs_np, kpts_np):
+                    x1, y1, x2, y2 = [float(v) for v in b]
+                    bw, bh = x2 - x1, y2 - y1
                     all_persons.append((x1, y1, x2, y2))
-                    if float(sc) >= 0.72 and bh >= max(24.0, 0.06 * H):
-                        pos_boxes.append((x1, y1, x2, y2))
-                elif int(lab) != 1 and float(sc) >= 0.55 and bw >= 16 and bh >= 16:
-                    neg_boxes.append((x1, y1, x2, y2))
+                    if float(sc) >= 0.58 and bh >= max(20.0, 0.05 * H):
+                        pos_items.append(((x1, y1, x2, y2), kpts))
 
-            # Filter out non-human objects overlapping real persons & synthesize hard background crops
-            clean_negs = [
-                (x1, y1, x2, y2) for (x1, y1, x2, y2) in neg_boxes
-                if not any(
-                    max(0.0, min(x2, px2) - max(x1, px1)) * max(0.0, min(y2, py2) - max(y1, py1)) > 0.05 * (x2 - x1) * (y2 - y1)
-                    for px1, py1, px2, py2 in all_persons
-                )
-            ]
-            for _ in range(max(4, len(pos_boxes) * 2)):
-                rw = float(rng.uniform(0.08 * W, 0.24 * W))
-                rh = float(rng.uniform(0.12 * H, 0.36 * H))
+            # Non-overlapping random background negative boxes
+            neg_boxes = []
+            for _ in range(max(4, len(pos_items) * 2)):
+                rw = float(rng.uniform(0.06 * W, 0.22 * W))
+                rh = float(rng.uniform(0.10 * H, 0.34 * H))
                 rx1 = float(rng.uniform(0, max(1.0, W - rw)))
                 ry1 = float(rng.uniform(0, max(1.0, H - rh)))
                 rx2, ry2 = rx1 + rw, ry1 + rh
@@ -421,246 +379,486 @@ def collect_human_dataset(det_model, sr_model, clip_m, clip_proc, device: torch.
                     for px1, py1, px2, py2 in all_persons
                 )
                 if not overlaps:
-                    clean_negs.append((rx1, ry1, rx2, ry2))
-            neg_boxes = clean_negs
+                    neg_boxes.append((rx1, ry1, rx2, ry2))
 
-            tgt_imgs, tgt_g, tgt_y = (val_imgs, val_g, val_y) if is_val else (train_imgs, train_g, train_y)
-            for label_val, box_list in [(1.0, pos_boxes), (0.0, neg_boxes[: max(6, len(pos_boxes) * 2)])]:
-                for x1, y1, x2, y2 in box_list:
-                    crop = pil.crop((max(0, int(x1)), max(0, int(y1)), min(W, int(x2)), min(H, int(y2))))
-                    if min(crop.size) < 8:
-                        continue
-                    geom = [
-                        (y2 - y1) / max(1.0, x2 - x1),
-                        (y2 - y1) / float(H),
-                        (x2 - x1) / float(W),
-                        0.5 * (y1 + y2) / float(H),
-                    ]
-                    tgt_imgs.append(sr_fast(sr_model, crop, device))
+            tgt_i, tgt_g, tgt_y = (val_imgs, val_g, val_y) if is_val else (train_imgs, train_g, train_y)
+            for (x1, y1, x2, y2), kpts in pos_items:
+                crop = pil.crop((max(0, int(x1)), max(0, int(y1)), min(W, int(x2)), min(H, int(y2))))
+                if min(crop.size) < 8:
+                    continue
+                k_vis, has_torso = pose_utils.compute_pose_stats(kpts)
+                geom = [(y2 - y1) / max(1.0, x2 - x1), (y2 - y1) / float(H), (x2 - x1) / float(W), 0.5 * (y1 + y2) / float(H), k_vis, has_torso]
+                tgt_i.append(sr_fast(sr_model, crop, device, force_2x=((y2 - y1) < 64.0)))
+                tgt_g.append(geom)
+                tgt_y.append(1.0)
+                if not is_val:
+                    tgt_i.append(_degrade_surveillance_pil(crop, rng))
                     tgt_g.append(geom)
-                    tgt_y.append(label_val)
-                    # Low-res blur/JPEG augmentation on training set
-                    if not is_val:
-                        w0, h0 = crop.size
-                        dw, dh = max(8, w0 // 3), max(8, h0 // 3)
-                        low = crop.resize((dw, dh), Image.BILINEAR).resize((w0, h0), Image.BILINEAR)
-                        tgt_imgs.append(low)
-                        tgt_g.append(geom)
-                        tgt_y.append(label_val)
+                    tgt_y.append(1.0)
+
+            for x1, y1, x2, y2 in neg_boxes[: max(6, len(pos_items) * 2)]:
+                crop = pil.crop((max(0, int(x1)), max(0, int(y1)), min(W, int(x2)), min(H, int(y2))))
+                if min(crop.size) < 8:
+                    continue
+                geom = [(y2 - y1) / max(1.0, x2 - x1), (y2 - y1) / float(H), (x2 - x1) / float(W), 0.5 * (y1 + y2) / float(H), 0.0, 0.0]
+                tgt_i.append(sr_fast(sr_model, crop, device))
+                tgt_g.append(geom)
+                tgt_y.append(0.0)
         cap.release()
 
-    x_tr = encode_clip_images(clip_m, clip_proc, train_imgs, device)
-    x_va = encode_clip_images(clip_m, clip_proc, val_imgs, device)
-    return (
-        x_tr,
-        torch.tensor(train_g, dtype=torch.float32, device=device),
-        torch.tensor(train_y, dtype=torch.float32, device=device),
-        x_va,
-        torch.tensor(val_g, dtype=torch.float32, device=device),
-        torch.tensor(val_y, dtype=torch.float32, device=device),
-    )
+    # Add unique outdoor PAR positives (weighted cleanly) so verifier sees diverse outdoor angles
+    seen_pids = set()
+    par_samples = [(r, False) for r in par_tr_recs[:800]] + [(r, True) for r in par_va_recs[:160]]
+    for rec, is_val in par_samples:
+        pid = rec["person_id"]
+        if pid in seen_pids:
+            continue
+        seen_pids.add(pid)
+        crop = rec["pil"]
+        pw, ph = crop.size
+        kpts = rec.get("kpts")
+        k_vis, has_torso = pose_utils.compute_pose_stats(kpts)
+        geom = [ph / max(1.0, pw), 0.25, 0.08, 0.5, k_vis, has_torso]
+        tgt_i, tgt_g, tgt_y = (val_imgs, val_g, val_y) if is_val else (train_imgs, train_g, train_y)
+        tgt_i.append(sr_fast(sr_model, crop, device, force_2x=(ph < 64)))
+        tgt_g.append(geom)
+        tgt_y.append(1.0)
+
+    return train_imgs, train_g, train_y, val_imgs, val_g, val_y
 
 
-def collect_garment_dataset(sr_model, clip_m, clip_proc, device: torch.device):
-    """Collect multi-resolution garment crops (train on non-center + HD frames, val on unseen 144p/240p center)."""
+def _attach_batch_pose(records: list[dict], pose_model, device: torch.device):
+    """Run fast batched YOLO11m-pose on unique pedestrian images across PAR records."""
+    unique: dict[str, np.ndarray] = {}
+    for r in records:
+        pid = r["person_id"]
+        if pid not in unique:
+            unique[pid] = np.asarray(r["pil"])
+
+    pids = list(unique.keys())
+    imgs = [unique[p] for p in pids]
+    kpts_by_pid: dict[str, np.ndarray | None] = {}
+    bs = 48
+    dev_arg = 0 if device.type == "cuda" else "cpu"
+    for i in range(0, len(imgs), bs):
+        chunk = imgs[i : i + bs]
+        chunk_pids = pids[i : i + bs]
+        results = pose_model.predict(chunk, imgsz=256, classes=[0], conf=0.20, verbose=False, device=dev_arg)
+        for pid, res in zip(chunk_pids, results):
+            if res.keypoints is not None and len(res.keypoints.data):
+                # Pick highest-confidence person box in crop
+                best_idx = int(res.boxes.conf.argmax().item()) if res.boxes is not None and len(res.boxes) else 0
+                kpts_by_pid[pid] = res.keypoints.data[best_idx].cpu().numpy()
+            else:
+                kpts_by_pid[pid] = None
+
+    for r in records:
+        r["kpts"] = kpts_by_pid.get(r["person_id"])
+
+
+def _prepare_garment_samples(pose_model, sr_model, device: torch.device, par_tr_recs: list[dict], par_va_recs: list[dict]):
+    """Collect Retail (calibrated + full-frame WB) and PAR multi-dataset garment crops + pose/color vectors."""
+    rng = np.random.default_rng(77)
+    type_idx = {n: i for i, n in enumerate(TYPE_NAMES)}
+    color_idx = {n: i for i, n in enumerate(COLOR_NAMES)}
+
     needed = {sp["frame"] + dt for sp in tuned.GARMENT_SPECS for dt in (-3, -2, -1, 0, 1, 2, 3)}
     res_frames = {rk: tuned.preload_video_frames(rk, needed) for rk in tuned.RES_ORDER}
 
-    tr_sub_imgs, tr_ctx_imgs, tr_struct, tr_col9, tr_yt, tr_yc = [], [], [], [], [], []
-    va_sub_imgs, va_ctx_imgs, va_struct, va_col9, va_yt, va_yc = [], [], [], [], [], []
+    # Precompute frame-level Shades-of-Gray + Retinex for every retail frame (never on cropped garments)
+    frame_stats_cache: dict[tuple[str, int], dict] = {}
+    cc_frames_cache: dict[tuple[str, int], np.ndarray] = {}
+    for rk, fmap in res_frames.items():
+        for fi, rgb in fmap.items():
+            fs = color_constancy.compute_frame_illuminant_gains(rgb)
+            frame_stats_cache[(rk, fi)] = fs
+            cc_frames_cache[(rk, fi)] = color_constancy.apply_color_constancy(rgb, fs)
 
+    # Also extract pose keypoints once for 720p retail keyframes so training & inference share pose alignment
+    retail_pose_cache: dict[tuple[int, int], np.ndarray | None] = {}
+    dev_arg = 0 if device.type == "cuda" else "cpu"
+    for fi, rgb720 in res_frames["720p"].items():
+        H7, W7 = rgb720.shape[:2]
+        res = pose_model.predict(rgb720, imgsz=960, classes=[0], conf=0.25, verbose=False, device=dev_arg)[0]
+        pboxes = res.boxes.xyxy.cpu().numpy() if res.boxes is not None and len(res.boxes) else np.zeros((0, 4))
+        pkpts = res.keypoints.data.cpu().numpy() if res.keypoints is not None and len(res.keypoints.data) else None
+        for sp_idx, sp in enumerate(tuned.GARMENT_SPECS):
+            if sp["frame"] - 3 <= fi <= sp["frame"] + 3 and pkpts is not None and len(pboxes):
+                sx0, sy0, sx1, sy1 = sp["box"]
+                best_k = None
+                best_iou = 0.25
+                for bi, pb in enumerate(pboxes):
+                    ix1, iy1 = max(sx0, pb[0]), max(sy0, pb[1])
+                    ix2, iy2 = min(sx1, pb[2]), min(sy1, pb[3])
+                    inter = max(0.0, ix2 - ix1) * max(0.0, iy2 - iy1)
+                    union = max(1.0, (sx1 - sx0) * (sy1 - sy0) + (pb[2] - pb[0]) * (pb[3] - pb[1]) - inter)
+                    if inter / union > best_iou:
+                        best_iou = inter / union
+                        best_k = pkpts[bi]
+                if best_k is not None:
+                    # Normalize kpts to [0..1] relative to image so any resolution works!
+                    kn = best_k.copy()
+                    kn[:, 0] /= float(W7)
+                    kn[:, 1] /= float(H7)
+                    retail_pose_cache[(sp_idx, fi)] = kn
+
+    data: dict[str, dict[str, list]] = {
+        "train": {"sub": [], "ctx": [], "struct": [], "col": [], "tmask": [], "cmask": [], "weight": [], "source": []},
+        "val": {"sub": [], "ctx": [], "struct": [], "col": [], "tmask": [], "cmask": [], "weight": [], "source": []},
+    }
+
+    def add_row(split: str, sub_sr, ctx_sr, st_vec, col_vec, t_idxs: list[int], c_idxs: list[int], weight: float, src: str):
+        tmask = np.zeros(len(TYPE_NAMES), dtype=np.float32)
+        for ti in t_idxs:
+            tmask[ti] = 1.0
+        cmask = np.zeros(len(COLOR_NAMES), dtype=np.float32)
+        for ci in c_idxs:
+            cmask[ci] = 1.0
+        b = data[split]
+        b["sub"].append(sub_sr)
+        b["ctx"].append(ctx_sr)
+        b["struct"].append(st_vec)
+        b["col"].append(col_vec)
+        b["tmask"].append(tmask)
+        b["cmask"].append(cmask)
+        b["weight"].append(weight)
+        b["source"].append(src)
+
+    # 1. Retail benchmark samples (preserve strict held-out 144p/240p dt==0 val split)
     for rk in tuned.RES_ORDER:
-        for sp in tuned.GARMENT_SPECS:
+        for sp_idx, sp in enumerate(tuned.GARMENT_SPECS):
             zone = sp["zone"]
-            yt = tuned.CLOTHING_TYPES.index(sp["gt_type"])
-            yc = tuned.CLOTHING_COLORS.index(sp["gt_color"])
+            vt_name = RETAIL_TO_VAR_TYPE.get(sp["gt_type"], sp["gt_type"])
+            vc_name = RETAIL_TO_VAR_COLOR.get(sp["gt_color"], sp["gt_color"])
+            yt = [type_idx[vt_name]]
+            yc = [color_idx[vc_name]]
             fc = sp["frame"]
             dts = [0] if rk in ("144p", "240p") else (-3, -2, -1, 1, 2, 3)
 
             for dt in dts:
-                # Strict split: center frames at 144p & 240p are held-out validation only!
                 fi = fc + dt
                 rgb = res_frames[rk][fi]
+                rgb_cc = cc_frames_cache[(rk, fi)]
+                fs = frame_stats_cache[(rk, fi)]
                 H, W = rgb.shape[:2]
                 pbox = tuned.scale_box(sp["box"], W, H)
-                sub_raw = tuned.crop_frac(rgb, pbox, tuned.ZONE_GEOMETRY[zone]["sub"])
-                ctx_raw = tuned.crop_frac(rgb, pbox, tuned.ZONE_GEOMETRY[zone]["ctx"])
-                person_raw = tuned.crop_frac(rgb, pbox, (0.0, 1.0, 0.0, 1.0))
+                kn = retail_pose_cache.get((sp_idx, fi))
+                kpts = None
+                if kn is not None:
+                    kpts = kn.copy()
+                    kpts[:, 0] *= float(W)
+                    kpts[:, 1] *= float(H)
 
-                sub_sr = sr_fast(sr_model, sub_raw, device)
-                ctx_sr = sr_fast(sr_model, ctx_raw, device)
-                person_sr = sr_fast(sr_model, person_raw, device)
-
-                st_vec = extract_structural_vec(person_sr, zone)
-                lab_stats = tuned.extract_gaussian_core_lab(sub_sr, sigma=0.28)
-                col_vec = extract_color_feature_vec(lab_stats, zone)
-
+                sub_sr, ctx_sr, st_v, col_v = _extract_zone_tuple(
+                    rgb, rgb_cc, pbox, kpts, zone, sr_model, device, fs, low_res_aug=False
+                )
                 if rk in ("144p", "240p"):
-                    va_sub_imgs.append(sub_sr)
-                    va_ctx_imgs.append(ctx_sr)
-                    va_struct.append(st_vec)
-                    va_col9.append(col_vec)
-                    va_yt.append(yt)
-                    va_yc.append(yc)
+                    add_row("val", sub_sr, ctx_sr, st_v, col_v, yt, yc, 1.0, f"retail_{rk}")
                 else:
-                    tr_sub_imgs.append(sub_sr)
-                    tr_ctx_imgs.append(ctx_sr)
-                    tr_struct.append(st_vec)
-                    tr_col9.append(col_vec)
-                    tr_yt.append(yt)
-                    tr_yc.append(yc)
-                    # Add synthetic extreme-low-res downscale-upscale version during training (non-center frames at 360p)
+                    add_row("train", sub_sr, ctx_sr, st_v, col_v, yt, yc, 3.0, f"retail_{rk}")
                     if rk == "360p" and dt in (-2, 2):
-                        sw, sh = sub_raw.size
-                        cw, ch = ctx_raw.size
-                        low_sub = sr_fast(sr_model, sub_raw.resize((max(6, sw // 2), max(6, sh // 2)), Image.BILINEAR), device)
-                        low_ctx = sr_fast(sr_model, ctx_raw.resize((max(10, cw // 2), max(10, ch // 2)), Image.BILINEAR), device)
-                        tr_sub_imgs.append(low_sub)
-                        tr_ctx_imgs.append(low_ctx)
-                        tr_struct.append(st_vec)
-                        tr_col9.append(col_vec)
-                        tr_yt.append(yt)
-                        tr_yc.append(yc)
+                        s2, c2, st2, col2 = _extract_zone_tuple(
+                            rgb, rgb_cc, pbox, kpts, zone, sr_model, device, fs, low_res_aug=True, rng=rng
+                        )
+                        add_row("train", s2, c2, st2, col2, yt, yc, 2.5, "retail_360_lowaug")
 
-                # Also add training samples from 144p/240p strictly at offset frames dt != 0 (never dt == 0!)
                 if rk in ("144p", "240p") and dt == 0:
                     for tr_dt in (-3, -1, 1, 3):
-                        rgb2 = res_frames[rk][fc + tr_dt]
+                        fi2 = fc + tr_dt
+                        rgb2 = res_frames[rk][fi2]
+                        rgb2_cc = cc_frames_cache[(rk, fi2)]
+                        fs2 = frame_stats_cache[(rk, fi2)]
                         pbox2 = tuned.scale_box(sp["box"], rgb2.shape[1], rgb2.shape[0])
-                        sr_s2 = sr_fast(sr_model, tuned.crop_frac(rgb2, pbox2, tuned.ZONE_GEOMETRY[zone]["sub"]), device)
-                        sr_c2 = sr_fast(sr_model, tuned.crop_frac(rgb2, pbox2, tuned.ZONE_GEOMETRY[zone]["ctx"]), device)
-                        sr_p2 = sr_fast(sr_model, tuned.crop_frac(rgb2, pbox2, (0.0, 1.0, 0.0, 1.0)), device)
-                        tr_sub_imgs.append(sr_s2)
-                        tr_ctx_imgs.append(sr_c2)
-                        tr_struct.append(extract_structural_vec(sr_p2, zone))
-                        tr_col9.append(extract_color_feature_vec(tuned.extract_gaussian_core_lab(sr_s2, 0.28), zone))
-                        tr_yt.append(yt)
-                        tr_yc.append(yc)
+                        s2, c2, st2, col2 = _extract_zone_tuple(
+                            rgb2, rgb2_cc, pbox2, kpts, zone, sr_model, device, fs2
+                        )
+                        add_row("train", s2, c2, st2, col2, yt, yc, 3.2, f"retail_{rk}_offset")
 
-    return {
-        "tr_sub": encode_clip_images(clip_m, clip_proc, tr_sub_imgs, device),
-        "tr_ctx": encode_clip_images(clip_m, clip_proc, tr_ctx_imgs, device),
-        "tr_struct": torch.tensor(np.array(tr_struct), dtype=torch.float32, device=device),
-        "tr_col9": torch.tensor(np.array(tr_col9), dtype=torch.float32, device=device),
-        "tr_yt": torch.tensor(tr_yt, dtype=torch.long, device=device),
-        "tr_yc": torch.tensor(tr_yc, dtype=torch.long, device=device),
-        "va_sub": encode_clip_images(clip_m, clip_proc, va_sub_imgs, device),
-        "va_ctx": encode_clip_images(clip_m, clip_proc, va_ctx_imgs, device),
-        "va_struct": torch.tensor(np.array(va_struct), dtype=torch.float32, device=device),
-        "va_col9": torch.tensor(np.array(va_col9), dtype=torch.float32, device=device),
-        "va_yt": torch.tensor(va_yt, dtype=torch.long, device=device),
-        "va_yc": torch.tensor(va_yc, dtype=torch.long, device=device),
+    # 2. Outdoor Surveillance PAR Datasets (PA-100K + Market-1501 + Simuletic CCTV-1K)
+    for rec in par_tr_recs + par_va_recs:
+        arr = np.asarray(rec["pil"])
+        H, W = arr.shape[:2]
+        pbox = (0.0, 0.0, float(W), float(H))
+        is_tr = rec["split"] == "train"
+        aug = bool(is_tr and rng.random() < 0.30)
+        # Note: frame_stats=None on pre-cropped PAR images to avoid estimating white balance from single-garment crops!
+        sub_sr, ctx_sr, st_v, col_v = _extract_zone_tuple(
+            arr, arr, pbox, rec.get("kpts"), rec["zone"], sr_model, device, frame_stats=None, low_res_aug=aug, rng=rng
+        )
+        # Weight Simuletic higher on color/type since all labels are fine-grained 1-hot / exact pairs
+        w_val = 2.0 if rec["source"].startswith("simuletic") else 1.0
+        add_row(rec["split"], sub_sr, ctx_sr, st_v, col_v, rec["type_idxs"], rec["color_idxs"], w_val, rec["source"])
+
+    return data
+
+
+def _extract_all_features(device: torch.device) -> dict:
+    """Extract and cache SigLIP-384 + YOLO11m-pose + 16-D chromaticity tensors cleanly in low VRAM."""
+    if FEATURE_CACHE_PATH.exists():
+        cached = torch.load(str(FEATURE_CACHE_PATH), map_location="cpu", weights_only=False)
+        if cached.get("schema_version") == FEATURE_SCHEMA_VERSION:
+            print(f"Loaded cached SigLIP-384 + PAR feature bundle from {FEATURE_CACHE_PATH}")
+            return cached
+
+    par_tr, par_va, par_summary = par_datasets.load_all_par_datasets()
+
+    # Phase A: Load YOLO11m-pose -> estimate COCO-17 joints on all PAR crops, Retail & VIRAT frames
+    print("Stage A: Extracting COCO-17 pose keypoints across PAR + Retail + VIRAT...")
+    pose_model = load_yolo_model("yolo11m-pose.pt")
+    sr_model = tuned.load_realesrgan_x2plus(device)
+
+    _attach_batch_pose(par_tr + par_va, pose_model, device)
+    hx_tr_imgs, hg_tr, hy_tr, hx_va_imgs, hg_va, hy_va = _prepare_human_samples(
+        pose_model, sr_model, device, par_tr, par_va
+    )
+    gdata = _prepare_garment_samples(pose_model, sr_model, device, par_tr, par_va)
+
+    del pose_model, sr_model
+    torch.cuda.empty_cache()
+
+    # Phase B: Load google/siglip-base-patch16-384 (fp16 CUDA) and batch-encode all images & prompts
+    print(f"Stage B: Encoding crops with {vlm_backbone.VLM_MODEL_ID} (fp16)...")
+    vlm_m, vlm_proc, embed_dim = vlm_backbone.load_vlm(device)
+
+    type_tmat = vlm_backbone.build_vlm_text_matrix(vlm_m, vlm_proc, TYPE_PROMPTS_MAP, TYPE_NAMES, device)
+    color_tmat = vlm_backbone.build_vlm_text_matrix(vlm_m, vlm_proc, COLOR_PROMPTS_MAP, COLOR_NAMES, device)
+    h_pos_tmat = vlm_backbone.encode_vlm_texts(vlm_m, vlm_proc, HUMAN_POS_PROMPTS, device)
+    h_neg_tmat = vlm_backbone.encode_vlm_texts(vlm_m, vlm_proc, HUMAN_NEG_PROMPTS, device)
+
+    bundle = {
+        "schema_version": FEATURE_SCHEMA_VERSION,
+        "vlm_model_id": vlm_backbone.VLM_MODEL_ID,
+        "embed_dim": embed_dim,
+        "par_summary": par_summary,
+        "type_tmat": type_tmat.cpu(),
+        "color_tmat": color_tmat.cpu(),
+        "h_pos_tmat": h_pos_tmat.cpu(),
+        "h_neg_tmat": h_neg_tmat.cpu(),
+        "human": {
+            "tr_x": encode_clip_images(vlm_m, vlm_proc, hx_tr_imgs, device).cpu(),
+            "tr_g": torch.tensor(hg_tr, dtype=torch.float32),
+            "tr_y": torch.tensor(hy_tr, dtype=torch.float32),
+            "va_x": encode_clip_images(vlm_m, vlm_proc, hx_va_imgs, device).cpu(),
+            "va_g": torch.tensor(hg_va, dtype=torch.float32),
+            "va_y": torch.tensor(hy_va, dtype=torch.float32),
+        },
+        "garment": {},
     }
 
+    for sp in ("train", "val"):
+        b = gdata[sp]
+        bundle["garment"][sp] = {
+            "sub": encode_clip_images(vlm_m, vlm_proc, b["sub"], device).cpu(),
+            "ctx": encode_clip_images(vlm_m, vlm_proc, b["ctx"], device).cpu(),
+            "struct": torch.tensor(np.array(b["struct"]), dtype=torch.float32),
+            "col": torch.tensor(np.array(b["col"]), dtype=torch.float32),
+            "tmask": torch.tensor(np.array(b["tmask"]), dtype=torch.float32),
+            "cmask": torch.tensor(np.array(b["cmask"]), dtype=torch.float32),
+            "weight": torch.tensor(np.array(b["weight"]), dtype=torch.float32),
+            "source": b["source"],
+        }
 
-def train_model(epochs: int = 45) -> dict:
+    del vlm_m
+    torch.cuda.empty_cache()
+
+    torch.save(bundle, str(FEATURE_CACHE_PATH))
+    print(f"Saved SigLIP-384 + PAR feature bundle to {FEATURE_CACHE_PATH}")
+    return bundle
+
+
+def group_ce_loss(
+    logits: torch.Tensor,
+    target_mask: torch.Tensor,
+    sample_weights: torch.Tensor | None = None,
+    valid_role_mask: torch.Tensor | None = None,
+    label_smoothing: float = 0.04,
+) -> torch.Tensor:
+    """Group-marginalized Log-Sum-Exp cross-entropy supporting both fine 1-hot & coarse multi-label targets."""
+    has_label = target_mask.sum(dim=-1) > 0.5
+    if not bool(has_label.any()):
+        return logits.sum() * 0.0
+
+    lg = logits[has_label]
+    tm = target_mask[has_label]
+    if valid_role_mask is not None:
+        vm = valid_role_mask[has_label]
+        lg = lg.masked_fill(vm <= 0.5, -1e4)
+        tm = tm * vm
+        num_valid = vm.sum(dim=-1).clamp(min=1.0)
+        log_denom = torch.logsumexp(lg, dim=-1)
+        log_p_mean = ((F.log_softmax(lg, dim=-1)) * vm).sum(dim=-1) / num_valid
+    else:
+        log_denom = torch.logsumexp(lg, dim=-1)
+        log_p_mean = F.log_softmax(lg, dim=-1).mean(dim=-1)
+
+    pos_logits = lg.masked_fill(tm <= 0.5, -1e4)
+    log_pos_prob = torch.logsumexp(pos_logits, dim=-1) - log_denom
+    per_sample = (1.0 - label_smoothing) * (-log_pos_prob) + label_smoothing * (-log_p_mean)
+    if sample_weights is not None:
+        sw = sample_weights[has_label]
+        return (per_sample * sw).sum() / (sw.sum() + 1e-6)
+    return per_sample.mean()
+
+
+def train_model(epochs: int = 60, batch_size: int = 256) -> dict:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     t0 = time.perf_counter()
 
-    sr_model = tuned.load_realesrgan_x2plus(device)
-    det_model = tv_det.fasterrcnn_resnet50_fpn_v2(
-        weights=tv_det.FasterRCNN_ResNet50_FPN_V2_Weights.DEFAULT
-    ).eval().to(device)
-    clip_id = "wkcn/TinyCLIP-ViT-61M-32-Text-29M-LAION400M"
-    clip_proc = CLIPProcessor.from_pretrained(clip_id)
-    clip_m = CLIPModel.from_pretrained(clip_id, use_safetensors=True).eval().to(device)
+    bundle = _extract_all_features(device)
+    embed_dim = int(bundle["embed_dim"])
+    type_tmat = bundle["type_tmat"].to(device)
+    color_tmat = bundle["color_tmat"].to(device)
 
-    print("Collecting human vs. non-human dataset (Retail + VIRAT)...")
-    hx_tr, hg_tr, hy_tr, hx_va, hg_va, hy_va = collect_human_dataset(det_model, sr_model, clip_m, clip_proc, device)
-    del det_model
-    torch.cuda.empty_cache()
+    hum = bundle["human"]
+    hx_tr, hg_tr, hy_tr = hum["tr_x"].to(device), hum["tr_g"].to(device), hum["tr_y"].to(device)
+    hx_va, hg_va, hy_va = hum["va_x"].to(device), hum["va_g"].to(device), hum["va_y"].to(device)
 
-    print("Collecting multi-resolution garment dataset...")
-    gd = collect_garment_dataset(sr_model, clip_m, clip_proc, device)
-    del sr_model
-    torch.cuda.empty_cache()
+    gtr = bundle["garment"]["train"]
+    tr_sub, tr_ctx = gtr["sub"].to(device), gtr["ctx"].to(device)
+    tr_struct, tr_col = gtr["struct"].to(device), gtr["col"].to(device)
+    tr_tmask, tr_cmask = gtr["tmask"].to(device), gtr["cmask"].to(device)
+    tr_w = gtr["weight"].to(device)
 
-    type_tmat = tuned.build_text_matrix(clip_m, clip_proc, tuned.TUNED_TYPE_PROMPTS, tuned.CLOTHING_TYPES, device)
-    color_tmat = tuned.build_text_matrix(clip_m, clip_proc, EXPANDED_COLOR_PROMPTS, EXPANDED_COLORS, device)
-    open_world_prompts = {c["name"]: c["prompts"] for c in OPEN_WORLD_CANDIDATES}
-    open_world_tmat = tuned.build_text_matrix(clip_m, clip_proc, open_world_prompts, [c["name"] for c in OPEN_WORLD_CANDIDATES], device)
+    # Precompute anatomical role masks per sample (1 for upper indices on upper zones, lower indices on lower zone)
+    tr_is_lower = tr_struct[:, 3] > 0.5
+    tr_role_mask = torch.zeros_like(tr_tmask)
+    tr_role_mask[~tr_is_lower[:, None].expand_as(tr_tmask)] = 0.0
+    upper_row = torch.zeros(len(TYPE_NAMES), device=device)
+    upper_row[UPPER_TYPE_IDXS] = 1.0
+    lower_row = torch.zeros(len(TYPE_NAMES), device=device)
+    lower_row[LOWER_TYPE_IDXS] = 1.0
+    tr_role_mask = torch.where(tr_is_lower[:, None], lower_row[None, :], upper_row[None, :])
 
-    model = SightlineTrainedModel(type_tmat, color_tmat, logit_scale=22.0).to(device)
-    opt = torch.optim.AdamW(model.parameters(), lr=2.5e-3, weight_decay=2e-2)
+    gva = bundle["garment"]["val"]
+    va_sub, va_ctx = gva["sub"].to(device), gva["ctx"].to(device)
+    va_struct, va_col = gva["struct"].to(device), gva["col"].to(device)
+    va_tmask, va_cmask = gva["tmask"].to(device), gva["cmask"].to(device)
+    va_sources = gva["source"]
+
+    model = SightlineTrainedModel(embed_dim, type_tmat, color_tmat, logit_scale=45.0).to(device)
+    opt = torch.optim.AdamW(model.parameters(), lr=1.8e-3, weight_decay=2.5e-2)
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=epochs)
 
-    # Regularize prototypes near initial CLIP text embeddings to preserve open-world compatibility
     type_anchor = type_tmat.detach().clone()
     color_anchor = color_tmat.detach().clone()
 
+    n_gar = tr_sub.size(0)
+    rng = torch.Generator(device=device).manual_seed(2026)
     loss_history = []
+
     for ep in range(1, epochs + 1):
         model.train()
-        opt.zero_grad()
+        perm = torch.randperm(n_gar, generator=rng, device=device)
+        ep_loss = 0.0
+        steps = 0
 
-        h_logits = model.forward_human(hx_tr, hg_tr)
-        loss_h = F.binary_cross_entropy_with_logits(h_logits, hy_tr)
+        for start in range(0, n_gar, batch_size):
+            idx = perm[start : start + batch_size]
+            opt.zero_grad()
 
-        t_logits, t_emb = model.forward_type(gd["tr_sub"], gd["tr_ctx"], gd["tr_struct"])
-        loss_t = F.cross_entropy(t_logits, gd["tr_yt"], label_smoothing=0.06)
+            # Full small human batch paired with garment mini-batch
+            h_logits = model.forward_human(hx_tr, hg_tr)
+            loss_h = F.binary_cross_entropy_with_logits(h_logits, hy_tr)
 
-        c_logits, _ = model.forward_color(gd["tr_sub"], gd["tr_col9"])
-        loss_c = F.cross_entropy(c_logits, gd["tr_yc"], label_smoothing=0.05)
+            t_logits, _ = model.forward_type(tr_sub[idx], tr_ctx[idx], tr_struct[idx])
+            loss_t = group_ce_loss(t_logits, tr_tmask[idx], tr_w[idx], tr_role_mask[idx], label_smoothing=0.04)
 
-        reg_t = F.mse_loss(F.normalize(model.type_protos, dim=-1), type_anchor)
-        reg_c = F.mse_loss(F.normalize(model.color_protos, dim=-1), color_anchor)
+            c_logits, _ = model.forward_color(tr_sub[idx], tr_col[idx])
+            loss_c = group_ce_loss(c_logits, tr_cmask[idx], tr_w[idx], None, label_smoothing=0.04)
 
-        loss = loss_h + loss_t + loss_c + 1.8 * reg_t + 1.8 * reg_c
-        loss.backward()
-        opt.step()
+            reg_t = F.mse_loss(F.normalize(model.type_protos, dim=-1), type_anchor)
+            reg_c = F.mse_loss(F.normalize(model.color_protos, dim=-1), color_anchor)
+
+            loss = loss_h + loss_t + loss_c + 1.6 * reg_t + 1.6 * reg_c
+            loss.backward()
+            opt.step()
+            ep_loss += float(loss.item())
+            steps += 1
+
         sched.step()
-        loss_history.append(round(float(loss.item()), 4))
+        loss_history.append(round(ep_loss / max(1, steps), 4))
 
     model.eval()
     with torch.no_grad():
         hv_prob = torch.sigmoid(model.forward_human(hx_va, hg_va))
         human_val_acc = float(((hv_prob >= 0.5).float() == hy_va).float().mean().item()) * 100.0
 
-        vt_logits, _ = model.forward_type(gd["va_sub"], gd["va_ctx"], gd["va_struct"])
-        # Evaluate with zone masking on held-out 144p/240p center frames
-        va_zone_is_lower = gd["va_struct"][:, 3] > 0.5
-        mask = torch.zeros_like(vt_logits)
-        for i in range(vt_logits.size(0)):
-            if va_zone_is_lower[i]:
-                mask[i, tuned.UPPER_TYPE_IDXS] = -1e4
-            else:
-                mask[i, tuned.LOWER_TYPE_IDXS] = -1e4
-        type_preds = (vt_logits + mask).argmax(dim=-1)
-        type_val_acc = float((type_preds == gd["va_yt"]).float().mean().item()) * 100.0
+        vt_logits, _ = model.forward_type(va_sub, va_ctx, va_struct)
+        va_is_lower = va_struct[:, 3] > 0.5
+        va_role_mask = torch.where(va_is_lower[:, None], lower_row[None, :], upper_row[None, :])
+        vt_masked = vt_logits.masked_fill(va_role_mask <= 0.5, -1e4)
+        va_tpreds = vt_masked.argmax(dim=-1)
 
-        vc_logits, _ = model.forward_color(gd["va_sub"], gd["va_col9"])
-        # Limit to the 9 ground-truth colors for held-out benchmark evaluation
-        color_preds = vc_logits[:, : len(tuned.CLOTHING_COLORS)].argmax(dim=-1)
-        color_val_acc = float((color_preds == gd["va_yc"]).float().mean().item()) * 100.0
+        vc_logits, _ = model.forward_color(va_sub, va_col)
+        va_cpreds = vc_logits.argmax(dim=-1)
 
-    ckpt = {
-        "model_state": model.state_dict(),
-        "base_types": list(tuned.CLOTHING_TYPES),
-        "expanded_colors": list(EXPANDED_COLORS),
-        "open_world_candidates": OPEN_WORLD_CANDIDATES,
-        "open_world_embs": open_world_tmat.cpu(),
-        "metrics": {
-            "epochs": epochs,
-            "train_time_sec": round(time.perf_counter() - t0, 2),
-            "human_train_samples": int(hx_tr.size(0)),
-            "human_val_samples": int(hx_va.size(0)),
-            "human_val_acc_pct": round(human_val_acc, 1),
-            "garment_train_samples": int(gd["tr_sub"].size(0)),
-            "garment_val_samples": int(gd["va_sub"].size(0)),
-            "type_val_acc_144_240_pct": round(type_val_acc, 1),
-            "color_val_acc_144_240_pct": round(color_val_acc, 1),
-            "final_loss": loss_history[-1],
+        def eval_subset(prefix: str):
+            sel = np.array([s.startswith(prefix) for s in va_sources], dtype=bool)
+            if not np.any(sel):
+                return {"samples": 0, "type_acc_pct": None, "color_acc_pct": None}
+            sel_t = torch.tensor(sel, device=device)
+            tm_sub = va_tmask[sel_t]
+            tp_sub = va_tpreds[sel_t]
+            t_has = tm_sub.sum(dim=-1) > 0.5
+            t_hit = tm_sub[torch.arange(tp_sub.size(0), device=device), tp_sub] > 0.5
+            t_acc = float(t_hit[t_has].float().mean().item()) * 100.0 if bool(t_has.any()) else None
+
+            cm_sub = va_cmask[sel_t]
+            cp_sub = va_cpreds[sel_t]
+            c_has = cm_sub.sum(dim=-1) > 0.5
+            c_hit = cm_sub[torch.arange(cp_sub.size(0), device=device), cp_sub] > 0.5
+            c_acc = float(c_hit[c_has].float().mean().item()) * 100.0 if bool(c_has.any()) else None
+            return {
+                "samples": int(sel.sum()),
+                "type_acc_pct": round(t_acc, 1) if t_acc is not None else None,
+                "color_acc_pct": round(c_acc, 1) if c_acc is not None else None,
+            }
+
+        m_retail = eval_subset("retail_")
+        m_pa = eval_subset("pa100k_")
+        m_mk = eval_subset("market_")
+        m_sim = eval_subset("simuletic_")
+
+    metrics = {
+        "arch_version": 2,
+        "vlm_model_id": vlm_backbone.VLM_MODEL_ID,
+        "embed_dim": embed_dim,
+        "epochs": epochs,
+        "train_time_sec": round(time.perf_counter() - t0, 2),
+        "human_train_samples": int(hx_tr.size(0)),
+        "human_val_samples": int(hx_va.size(0)),
+        "human_val_acc_pct": round(human_val_acc, 1),
+        "garment_train_samples": int(tr_sub.size(0)),
+        "garment_val_samples": int(va_sub.size(0)),
+        "par_dataset_counts": bundle.get("par_summary", {}),
+        "type_val_acc_144_240_pct": m_retail["type_acc_pct"],
+        "color_val_acc_144_240_pct": m_retail["color_acc_pct"],
+        "val_by_dataset": {
+            "retail_144_240": m_retail,
+            "pa100k_val": m_pa,
+            "market1501_test_ids": m_mk,
+            "simuletic_val_ids": m_sim,
         },
+        "final_loss": loss_history[-1],
+    }
+    ckpt = {
+        "arch_version": 2,
+        "vlm_model_id": vlm_backbone.VLM_MODEL_ID,
+        "embed_dim": embed_dim,
+        "type_names": list(TYPE_NAMES),
+        "color_names": list(COLOR_NAMES),
+        "model_state": model.state_dict(),
+        "metrics": metrics,
     }
     torch.save(ckpt, str(MODEL_PATH))
-    METRICS_PATH.write_text(json.dumps(ckpt["metrics"], indent=2), encoding="utf-8")
+    METRICS_PATH.write_text(json.dumps(metrics, indent=2), encoding="utf-8")
     print("Training complete:")
-    print(json.dumps(ckpt["metrics"], indent=2))
-    return ckpt["metrics"]
+    print(json.dumps(metrics, indent=2))
+    return metrics
 
 
 def main():
-    train_model(epochs=65)
+    train_model(epochs=60)
 
 
 if __name__ == "__main__":

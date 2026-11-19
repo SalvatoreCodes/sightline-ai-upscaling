@@ -9,3 +9,5 @@ cctv_clothing_search/uploads/*.mov
 cctv_clothing_search/uploads/*.avi
 cctv_clothing_search/uploads/*.mkv
 cctv_clothing_search/uploads/*.webm
+datasets_cache/
+yolo*.pt

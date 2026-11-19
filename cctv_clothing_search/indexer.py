@@ -18,17 +18,39 @@ from typing import Any
 import cv2
 import numpy as np
 import torch
-import torchvision
-import torchvision.models.detection as tv_det
 from PIL import Image, ImageFilter
-from transformers import CLIPModel, CLIPProcessor
 
 ROOT_DIR = Path(r"D:\projects\sightline-ai-upscaling")
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 import generate_cctv_clothing_tuning_report as tuned  # noqa: E402
-from . import trainer  # noqa: E402
+from . import color_constancy, pose_utils, trainer, vlm_backbone  # noqa: E402
+from .color_constancy import (  # noqa: F401, E402
+    crop_mask_frac,
+    extract_flank_mask_composite,
+    extract_masked_core_lab,
+)
+from .pose_utils import (  # noqa: F401, E402
+    build_pose_silhouette_mask,
+    compute_pose_zone_fracs,
+)
+from .vocab import (  # noqa: E402
+    COLOR_HEX_MAP,
+    COLOR_NAMES,
+    COLOR_PROMPTS_MAP,
+    HUMAN_NEG_PROMPTS,
+    HUMAN_POS_PROMPTS,
+    QUERY_COLOR_SYNONYMS,
+    QUERY_TYPE_SYNONYMS,
+    SHORT_COLOR_LABELS,
+    SHORT_TYPE_LABELS,
+    TYPE_NAMES,
+    TYPE_PROMPTS_MAP,
+    TYPE_ROLES,
+    VARIABLE_COLORS,
+    VARIABLE_TYPES,
+)
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -41,88 +63,6 @@ JSON_PATH = DATA_DIR / "clothing_index.json"
 
 VIDEO_FILES = tuned.RES_FILES
 QUALITIES = tuned.RES_ORDER  # ['720p', '480p', '360p', '240p', '144p']
-
-# Stage 1 human-vs-fixture zero-shot verification prompts
-HUMAN_POS_PROMPTS = [
-    "a CCTV photo of a standing or walking human person",
-    "a surveillance view of a person, worker, or shopper wearing clothes",
-    "a human body with torso, arms, or legs visible outdoors or indoors",
-]
-HUMAN_NEG_PROMPTS = [
-    "an empty construction fence, metal barrier, scaffolding, or building wall with no person",
-    "machinery, traffic cone, tarp, excavator, or vehicle with no human",
-    "an indoor store shelf, mannequin, shopping cart, or floor with no person",
-]
-
-# Universal open-vocabulary 17 clothing color families
-VARIABLE_COLORS: list[dict[str, Any]] = [
-    {"name": "black", "short": "Black", "hex": "#1E293B", "prompts": ["black clothing garment", "deep black fabric"], "synonyms": ["black"]},
-    {"name": "dark grey / charcoal", "short": "Dark Grey", "hex": "#475569", "prompts": ["dark grey charcoal clothing", "charcoal grey fabric"], "synonyms": ["dark grey", "dark gray", "charcoal", "grey", "gray"]},
-    {"name": "light grey / silver", "short": "Light Grey", "hex": "#94A3B8", "prompts": ["light grey clothing", "pale silver grey fabric"], "synonyms": ["light grey", "light gray", "silver", "grey", "gray"]},
-    {"name": "white", "short": "White", "hex": "#F1F5F9", "prompts": ["white clothing garment", "clean white fabric"], "synonyms": ["white", "cream", "off white"]},
-    {"name": "red", "short": "Red", "hex": "#EF4444", "prompts": ["red clothing garment", "bright red or crimson fabric"], "synonyms": ["red", "crimson", "scarlet", "maroon"]},
-    {"name": "orange", "short": "Orange", "hex": "#F97316", "prompts": ["orange clothing garment", "bright high-visibility orange fabric"], "synonyms": ["orange", "hi-vis orange", "safety orange"]},
-    {"name": "yellow", "short": "Yellow", "hex": "#EAB308", "prompts": ["yellow clothing garment", "bright high-visibility neon yellow fabric"], "synonyms": ["yellow", "neon yellow", "hi-vis yellow", "gold"]},
-    {"name": "green", "short": "Green", "hex": "#22C55E", "prompts": ["green clothing garment", "green fabric"], "synonyms": ["green", "olive", "lime", "emerald"]},
-    {"name": "teal / cyan", "short": "Teal", "hex": "#06B6D4", "prompts": ["teal cyan clothing garment", "turquoise fabric"], "synonyms": ["teal", "cyan", "turquoise", "aqua"]},
-    {"name": "light blue", "short": "Light Blue", "hex": "#38BDF8", "prompts": ["light blue clothing garment", "sky blue fabric"], "synonyms": ["light blue", "sky blue", "baby blue", "blue"]},
-    {"name": "blue", "short": "Blue", "hex": "#2563EB", "prompts": ["blue denim or medium blue clothing", "blue fabric"], "synonyms": ["blue"]},
-    {"name": "royal blue", "short": "Royal Blue", "hex": "#1D4ED8", "prompts": ["royal blue cobalt clothing", "bright cobalt blue jacket"], "synonyms": ["royal blue", "royal", "cobalt", "blue"]},
-    {"name": "navy blue", "short": "Navy Blue", "hex": "#1E3A8A", "prompts": ["navy blue dark blue clothing", "deep navy fabric"], "synonyms": ["navy blue", "navy", "indigo", "blue"]},
-    {"name": "purple / violet", "short": "Purple", "hex": "#8B5CF6", "prompts": ["purple violet clothing", "lavender violet fabric"], "synonyms": ["purple", "violet", "lavender", "plum"]},
-    {"name": "pink / magenta", "short": "Pink", "hex": "#EC4899", "prompts": ["pink magenta clothing garment", "hot pink fuchsia shirt"], "synonyms": ["pink", "magenta", "fuchsia", "rose"]},
-    {"name": "brown", "short": "Brown", "hex": "#78350F", "prompts": ["brown clothing garment", "chocolate dark brown fabric"], "synonyms": ["brown", "chocolate", "chestnut"]},
-    {"name": "beige / khaki", "short": "Beige / Khaki", "hex": "#D6B88D", "prompts": ["beige khaki tan clothing", "tan khaki trench fabric"], "synonyms": ["beige", "khaki", "tan", "sand", "camel"]},
-]
-
-# Universal open-vocabulary 21 clothing types
-VARIABLE_TYPES: list[dict[str, Any]] = [
-    {"name": "vest / safety vest", "short": "Safety Vest", "role": "upper", "prompts": ["high-visibility safety vest", "reflective construction vest waistcoat", "sleeveless utility safety vest"], "synonyms": ["vest", "safety vest", "hi-vis", "hivis", "high visibility", "reflective vest", "construction vest", "waistcoat"]},
-    {"name": "t-shirt / polo shirt", "short": "T-Shirt / Polo", "role": "upper", "prompts": ["short-sleeve t-shirt", "polo shirt tee", "casual t-shirt top"], "synonyms": ["t-shirt", "tshirt", "t shirt", "tee", "polo", "polo shirt", "shirt", "top"]},
-    {"name": "dress shirt / blouse", "short": "Shirt / Blouse", "role": "upper", "prompts": ["long-sleeve button-up shirt", "casual blouse or work shirt", "collared cotton shirt worn by a person"], "synonyms": ["shirt", "blouse", "dress shirt", "button shirt", "work shirt", "top"]},
-    {"name": "flannel / plaid shirt", "short": "Plaid Shirt", "role": "upper", "prompts": ["plaid flannel button shirt", "checkered long sleeve shirt"], "synonyms": ["flannel", "plaid", "plaid shirt", "checkered shirt", "shirt"]},
-    {"name": "tank top / sleeveless top", "short": "Tank Top", "role": "upper", "prompts": ["sleeveless tank top", "singlet undershirt"], "synonyms": ["tank top", "sleeveless", "singlet", "top"]},
-    {"name": "sweater / knitwear", "short": "Sweater", "role": "upper", "prompts": ["crewneck sweater", "knitted pullover sweatshirt jumper"], "synonyms": ["sweater", "jumper", "pullover", "knitwear", "sweatshirt"]},
-    {"name": "hoodie / sweatshirt", "short": "Hoodie", "role": "upper", "prompts": ["hoodie sweatshirt with hood", "pullover hooded sweatshirt"], "synonyms": ["hoodie", "hooded", "sweatshirt", "top"]},
-    {"name": "zip-up jacket / bomber jacket", "short": "Jacket", "role": "upper", "prompts": ["zip-up casual jacket or work jacket", "bomber jacket outerwear"], "synonyms": ["jacket", "zip jacket", "bomber", "work jacket", "coat"]},
-    {"name": "open jacket / coat", "short": "Open Jacket", "role": "upper", "prompts": ["open front casual jacket worn over shirt", "unzipped colorful coat or cardigan"], "synonyms": ["open jacket", "cardigan", "jacket", "coat"]},
-    {"name": "puffer jacket", "short": "Puffer Jacket", "role": "upper", "prompts": ["quilted puffer jacket", "padded down winter jacket"], "synonyms": ["puffer", "puffer jacket", "quilted", "jacket", "coat"]},
-    {"name": "buttoned coat", "short": "Buttoned Coat", "role": "upper", "prompts": ["buttoned car coat jacket", "single breasted mid-length coat"], "synonyms": ["buttoned coat", "coat", "jacket"]},
-    {"name": "long overcoat", "short": "Long Overcoat", "role": "upper", "prompts": ["long winter overcoat", "knee-length wool overcoat coat"], "synonyms": ["overcoat", "long coat", "coat"]},
-    {"name": "windbreaker / rain jacket", "short": "Windbreaker", "role": "upper", "prompts": ["nylon windbreaker shell jacket", "waterproof high-vis rain work jacket"], "synonyms": ["windbreaker", "rain jacket", "raincoat", "shell jacket", "jacket", "coat"]},
-    {"name": "suit jacket / blazer", "short": "Blazer", "role": "upper", "prompts": ["tailored suit jacket or blazer", "formal sport coat blazer"], "synonyms": ["blazer", "suit jacket", "suit", "jacket"]},
-    {"name": "overalls / workwear", "short": "Work Overalls", "role": "upper", "prompts": ["industrial work coveralls or overalls", "boiler suit uniform"], "synonyms": ["overalls", "workwear", "coveralls", "jumpsuit"]},
-    {"name": "trousers / pants", "short": "Trousers / Pants", "role": "lower", "prompts": ["casual plain fabric trousers or work pants", "dark or khaki slacks trousers"], "synonyms": ["trousers", "pants", "slacks", "work pants"]},
-    {"name": "blue denim jeans", "short": "Denim Jeans", "role": "lower", "prompts": ["blue denim jeans", "indigo denim pants legs"], "synonyms": ["jeans", "denim jeans", "denim", "pants"]},
-    {"name": "shorts / cargo shorts", "short": "Shorts", "role": "lower", "prompts": ["person wearing knee-length shorts", "summer casual shorts or cargo shorts"], "synonyms": ["shorts", "cargo shorts", "short pants"]},
-    {"name": "joggers / track pants", "short": "Joggers", "role": "lower", "prompts": ["person wearing sweatpants joggers", "athletic track pants with cuffs"], "synonyms": ["joggers", "track pants", "sweatpants", "pants"]},
-    {"name": "cargo pants", "short": "Cargo Pants", "role": "lower", "prompts": ["utility cargo pants with pockets", "heavy work cargo trousers"], "synonyms": ["cargo pants", "cargo", "pants", "trousers"]},
-    {"name": "dress / skirt", "short": "Dress / Skirt", "role": "lower", "prompts": ["person wearing a skirt or dress hem", "flowing skirt or dress"], "synonyms": ["dress", "skirt"]},
-]
-
-COLOR_NAMES = [c["name"] for c in VARIABLE_COLORS]
-SHORT_COLOR_LABELS = {c["name"]: c["short"] for c in VARIABLE_COLORS}
-COLOR_HEX_MAP = {c["name"]: c["hex"] for c in VARIABLE_COLORS}
-COLOR_PROMPTS_MAP = {c["name"]: c["prompts"] for c in VARIABLE_COLORS}
-
-TYPE_NAMES = [t["name"] for t in VARIABLE_TYPES]
-TYPE_ROLES = [t["role"] for t in VARIABLE_TYPES]
-SHORT_TYPE_LABELS = {t["name"]: t["short"] for t in VARIABLE_TYPES}
-TYPE_PROMPTS_MAP = {t["name"]: t["prompts"] for t in VARIABLE_TYPES}
-
-QUERY_COLOR_SYNONYMS: dict[str, set[str]] = {}
-for _c in VARIABLE_COLORS:
-    QUERY_COLOR_SYNONYMS.setdefault(_c["name"].lower(), set()).add(_c["name"])
-    QUERY_COLOR_SYNONYMS.setdefault(_c["short"].lower(), set()).add(_c["name"])
-    for _syn in _c["synonyms"]:
-        QUERY_COLOR_SYNONYMS.setdefault(_syn.lower(), set()).add(_c["name"])
-
-QUERY_TYPE_SYNONYMS: dict[str, set[str]] = {}
-for _t in VARIABLE_TYPES:
-    QUERY_TYPE_SYNONYMS.setdefault(_t["name"].lower(), set()).add(_t["name"])
-    QUERY_TYPE_SYNONYMS.setdefault(_t["short"].lower(), set()).add(_t["name"])
-    for _syn in _t["synonyms"]:
-        QUERY_TYPE_SYNONYMS.setdefault(_syn.lower(), set()).add(_t["name"])
 
 
 def resolve_video_path(quality: str, db: ClothingSearchDB | None = None) -> Path:
@@ -175,85 +115,15 @@ def sr_upscale_fast(
     return pil_img
 
 
-def crop_mask_frac(person_mask: np.ndarray, fracs: tuple[float, float, float, float]) -> np.ndarray:
-    """Crop normalized sub-region (x0, x1, y0, y1) from a person foreground mask."""
-    mh, mw = person_mask.shape[:2]
-    x0, x1, y0, y1 = fracs
-    c0 = max(0, min(mw - 2, int(round(mw * x0))))
-    c1 = max(c0 + 2, min(mw, int(round(mw * x1))))
-    r0 = max(0, min(mh - 2, int(round(mh * y0))))
-    r1 = max(r0 + 2, min(mh, int(round(mh * y1))))
-    return person_mask[r0:r1, c0:c1]
-
-
-def extract_flank_mask_composite(person_mask: np.ndarray) -> np.ndarray:
-    """Stitch left [0.18..0.36] and right [0.64..0.82] torso flank masks aligned with extract_flank_composite."""
-    left = crop_mask_frac(person_mask, (0.18, 0.36, 0.16, 0.54))
-    right = crop_mask_frac(person_mask, (0.64, 0.82, 0.16, 0.54))
-    h = max(left.shape[0], right.shape[0], 8)
-    l_res = cv2.resize(left.astype(np.float32), (max(1, left.shape[1]), h), interpolation=cv2.INTER_LINEAR)
-    r_res = cv2.resize(right.astype(np.float32), (max(1, right.shape[1]), h), interpolation=cv2.INTER_LINEAR)
-    return np.concatenate([l_res, r_res], axis=1)
-
-
-def extract_masked_core_lab(
-    roi_img: Image.Image, fg_mask: np.ndarray | None = None, sigma: float = 0.28
-) -> dict:
-    """Compute foreground-silhouette-masked Gaussian-core & clutter-trimmed CIELAB/HSV stats."""
-    if fg_mask is None or fg_mask.size == 0:
-        return tuned.extract_gaussian_core_lab(roi_img, sigma=sigma)
-
-    arr = np.asarray(roi_img.convert("RGB")).astype(np.uint8)
-    lab = cv2.cvtColor(arr, cv2.COLOR_RGB2LAB).astype(np.float32)
-    hsv = cv2.cvtColor(arr, cv2.COLOR_RGB2HSV).astype(np.float32)
-    L = lab[:, :, 0] * (100.0 / 255.0)
-    A = lab[:, :, 1] - 128.0
-    B = lab[:, :, 2] - 128.0
-    h, w = L.shape
-
-    m_fg = cv2.resize(fg_mask.astype(np.float32), (w, h), interpolation=cv2.INTER_LINEAR)
-    m_fg = np.clip(m_fg, 0.0, 1.0)
-
-    yg, xg = np.mgrid[0:h, 0:w]
-    w2 = np.exp(
-        -(
-            ((xg - (w - 1) / 2.0) / (sigma * w + 1e-4)) ** 2
-            + ((yg - (h - 1) / 2.0) / (1.07 * sigma * h + 1e-4)) ** 2
-        )
-    )
-    # Weight strongly by human foreground silhouette to exclude asphalt, grass, and metal barriers
-    w2 = w2 * (0.05 + 0.95 * m_fg)
-    fg_bin = m_fg >= 0.45
-    if float(fg_bin.mean()) >= 0.08:
-        core_mask = fg_bin & (w2 >= np.percentile(w2[fg_bin], 35))
-        if not np.any(core_mask):
-            core_mask = fg_bin
-    else:
-        core_mask = w2 >= np.percentile(w2, 55)
-
-    L0 = float(np.median(L[core_mask]))
-    A0 = float(np.median(A[core_mask]))
-    B0 = float(np.median(B[core_mask]))
-    dE = np.sqrt((L - L0) ** 2 + (A - A0) ** 2 + (B - B0) ** 2)
-    w_clean = w2 * np.exp(-0.5 * (dE / 22.0) ** 2)
-    w_clean /= w_clean.sum() + 1e-6
-
-    order = np.argsort(L.ravel())
-    cs = np.cumsum(w_clean.ravel()[order])
-    Lm = float(L.ravel()[order[min(len(order) - 1, int(np.searchsorted(cs, 0.50)))]])
-    L78 = float(L.ravel()[order[min(len(order) - 1, int(np.searchsorted(cs, 0.78)))]])
-    Am = float((A * w_clean).sum())
-    Bm = float((B * w_clean).sum())
-    Ch = float(np.hypot(Am, Bm))
-    Hm = float(np.median(hsv[:, :, 0][core_mask]))
-    Sm = float((hsv[:, :, 1] * w_clean).sum())
-    return {"L50": Lm, "L78": L78, "A": Am, "B": Bm, "C": Ch, "H": Hm, "S": Sm, "w_map": w_clean}
-
-
-def extract_flank_composite(rgb: np.ndarray, pbox: tuple[float, float, float, float]) -> Image.Image:
-    """Stitch left [0.18..0.36] and right [0.64..0.82] torso flanks vertically aligned over y in [0.16..0.54]."""
-    left = tuned.crop_frac(rgb, pbox, (0.18, 0.36, 0.16, 0.54))
-    right = tuned.crop_frac(rgb, pbox, (0.64, 0.82, 0.16, 0.54))
+def extract_flank_composite(
+    rgb: np.ndarray,
+    pbox: tuple[float, float, float, float],
+    left_frac: tuple[float, float, float, float] = (0.18, 0.36, 0.16, 0.54),
+    right_frac: tuple[float, float, float, float] = (0.64, 0.82, 0.16, 0.54),
+) -> Image.Image:
+    """Stitch left and right torso flanks vertically aligned (supports pose-aligned fractions)."""
+    left = tuned.crop_frac(rgb, pbox, left_frac)
+    right = tuned.crop_frac(rgb, pbox, right_frac)
     h = max(left.height, right.height, 8)
     w = max(1, left.width + right.width)
     canvas = Image.new("RGB", (w, h))
@@ -262,9 +132,17 @@ def extract_flank_composite(rgb: np.ndarray, pbox: tuple[float, float, float, fl
     return canvas
 
 
-def extract_sub_box_norm(pbox: tuple[float, float, float, float], zone: str, w: int, h: int) -> list[float]:
+def extract_sub_box_norm(
+    pbox: tuple[float, float, float, float],
+    zone: str,
+    w: int,
+    h: int,
+    custom_fracs: dict | None = None,
+) -> list[float]:
     bx1, by1, bx2, by2 = pbox
-    if zone == "outer_upper":
+    if custom_fracs is not None and zone in custom_fracs:
+        x0, x1, y0, y1 = custom_fracs[zone]["sub"]
+    elif zone == "outer_upper":
         x0, x1, y0, y1 = 0.18, 0.82, 0.16, 0.54
     elif zone == "inner_upper":
         x0, x1, y0, y1 = 0.34, 0.66, 0.16, 0.52
@@ -290,8 +168,13 @@ def compute_box_iou(a: tuple[float, float, float, float], b: tuple[float, float,
     return inter / (area_a + area_b - inter), inter / min(area_a, area_b)
 
 
-def classify_variable_color(lab_stats: dict, zone: str, clip_color_probs: np.ndarray) -> np.ndarray:
-    """Compute continuous perceptual color probabilities across all 17 variable colors using CIELAB + LCh + CLIP."""
+def classify_variable_color(
+    lab_stats: dict,
+    zone: str,
+    clip_color_probs: np.ndarray,
+    trained_color_probs: np.ndarray | None = None,
+) -> np.ndarray:
+    """Compute continuous perceptual color probabilities across 17 colors using Constancy CIELAB + SigLIP + Chromaticity Head."""
     L = float(lab_stats["L50"])
     A = float(lab_stats["A"])
     B = float(lab_stats["B"])
@@ -299,7 +182,11 @@ def classify_variable_color(lab_stats: dict, zone: str, clip_color_probs: np.nda
     h = float(np.degrees(np.arctan2(B, A)) % 360.0)
 
     clip_p = np.clip(clip_color_probs.astype(np.float64), 1e-4, 1.0)
-    log_clip = np.log(clip_p)
+    log_clip_raw = np.log(clip_p)
+    log_clip = log_clip_raw
+    if trained_color_probs is not None and len(trained_color_probs) == len(COLOR_NAMES):
+        tr_cp = np.clip(trained_color_probs.astype(np.float64), 1e-4, 1.0)
+        log_clip = 0.65 * log_clip_raw + 0.35 * np.log(tr_cp)
     scores = np.full(len(COLOR_NAMES), -30.0, dtype=np.float64)
     idx_map = {n: i for i, n in enumerate(COLOR_NAMES)}
 
@@ -340,7 +227,7 @@ def classify_variable_color(lab_stats: dict, zone: str, clip_color_probs: np.nda
 
     # Orange (high-chroma warm amber/hi-vis orange: h in [31, 66], A >= 22, B >= 20, C >= 26)
     if C >= 26.0 and A >= 22.0 and B >= 20.0 and 31.0 <= h <= 66.0:
-        s = gauss(A, 56.0, 18.0) + gauss(B, 46.0, 16.0) + gauss(L, 52.0, 15.0) + 0.55 * log_clip[idx_map["orange"]]
+        s = gauss(A, 56.0, 18.0) + gauss(B, 46.0, 16.0) + gauss(L, 52.0, 15.0) + 0.55 * log_clip_raw[idx_map["orange"]]
         scores[idx_map["orange"]] = max(scores[idx_map["orange"]], s)
 
     # Yellow (vivid yellow / hi-vis yellow-lime: h in [66, 132], B >= 18, C >= 20; excludes muted beige C < 20)
@@ -384,8 +271,8 @@ def classify_variable_color(lab_stats: dict, zone: str, clip_color_probs: np.nda
         s = gauss(L, 26.0, 10.0) + gauss(A, 12.0, 8.0) + gauss(B, 16.0, 9.0) + 0.60 * log_clip[idx_map["brown"]]
         scores[idx_map["brown"]] = max(scores[idx_map["brown"]], s)
 
-    # Beige / Khaki (warm neutral tan: L in [26, 88], C in [6.0, 22.5], A in [-6, 12], B in [5.5, 22])
-    if 26.0 <= L <= 88.0 and -6.0 <= A <= 12.0 and 5.5 <= B <= 22.0 and 6.0 <= C <= 22.5:
+    # Beige / Khaki (warm neutral tan: L up to 91.5 when warm +B* >= 7.5 is clear)
+    if 26.0 <= L <= 91.5 and -6.0 <= A <= 12.0 and 5.5 <= B <= 22.0 and 6.0 <= C <= 22.5 and (L <= 86.0 or B >= 7.5):
         s = gauss(L, 64.0, 18.0) + gauss(A, -1.0, 5.5) + gauss(B, 13.0, 6.5) + 0.55 * log_clip[idx_map["beige / khaki"]]
         scores[idx_map["beige / khaki"]] = max(scores[idx_map["beige / khaki"]], s)
 
@@ -441,9 +328,9 @@ def classify_variable_type(
     trained_probs: np.ndarray | None = None,
     person_h_px: float = 120.0,
 ) -> np.ndarray:
-    """Open-vocabulary clothing type classification across all 21 types weighted by universal physical priors."""
+    """Open-vocabulary clothing type classification across all 21 types weighted by universal physical priors & PAR adapter."""
     z_role = "lower" if zone == "lower" else "upper"
-    logits = (clip_type_sims.astype(np.float64) * 22.0).copy()
+    logits = (clip_type_sims.astype(np.float64) * vlm_backbone.SIGLIP_TYPE_TEMP).copy()
     t_idx = {n: i for i, n in enumerate(TYPE_NAMES)}
 
     # Anatomical role mask
@@ -490,7 +377,7 @@ def classify_variable_type(
         if clues["hood_std"] >= 38.0 and pred_color in ("white", "light grey / silver", "black", "navy blue", "blue"):
             logits[t_idx["hoodie / sweatshirt"]] += 0.35
 
-        # Scale-aware overhead regularization: small crops (< 64px) require >= 0.035 CLIP margin for niche labels
+        # Scale-aware overhead regularization: small crops (< 64px) require >= 0.025 SigLIP margin for niche labels
         if person_h_px < 64.0:
             std_upper = [
                 "zip-up jacket / bomber jacket",
@@ -515,7 +402,7 @@ def classify_variable_type(
             if not is_hivis_color:
                 niche_upper.append("vest / safety vest")
             for nt in niche_upper:
-                if (float(clip_type_sims[t_idx[nt]]) - best_std_sim) < 0.035:
+                if (float(clip_type_sims[t_idx[nt]]) - best_std_sim) < 0.025:
                     logits[t_idx[nt]] -= 1.50
     else:
         if pred_color in ("blue", "royal blue", "navy blue", "light blue"):
@@ -523,7 +410,7 @@ def classify_variable_type(
             logits[t_idx["trousers / pants"]] -= 0.15
         elif pred_color in ("black", "dark grey / charcoal", "navy blue"):
             logits[t_idx["trousers / pants"]] += 0.55
-            if (float(clip_type_sims[t_idx["dress / skirt"]]) - float(clip_type_sims[t_idx["trousers / pants"]])) < 0.03:
+            if (float(clip_type_sims[t_idx["dress / skirt"]]) - float(clip_type_sims[t_idx["trousers / pants"]])) < 0.022:
                 logits[t_idx["dress / skirt"]] -= 0.95
 
         if person_h_px < 64.0:
@@ -532,27 +419,32 @@ def classify_variable_type(
                 float(clip_type_sims[t_idx["blue denim jeans"]]),
             )
             for nt in ("shorts / cargo shorts", "joggers / track pants", "cargo pants", "dress / skirt"):
-                if (float(clip_type_sims[t_idx[nt]]) - best_std_low) < 0.035:
+                if (float(clip_type_sims[t_idx[nt]]) - best_std_low) < 0.025:
                     logits[t_idx[nt]] -= 1.50
 
-    # Light calibration for retail benchmark resolutions without starving open-world classes
-    if quality in VIDEO_FILES and trained_probs is not None:
-        base_map = {
-            "puffer jacket / quilted coat": "puffer jacket",
-            "hoodie / hooded sweatshirt": "hoodie / sweatshirt",
-            "sweater / sweatshirt": "sweater / knitwear",
-            "jacket / sweater": "zip-up jacket / bomber jacket",
-            "open jacket / coat": "open jacket / coat",
-            "shirt / blouse": "dress shirt / blouse",
-            "long coat / overcoat": "long overcoat",
-            "buttoned coat / jacket": "buttoned coat",
-            "jeans / denim pants": "blue denim jeans",
-            "pants / trousers": "trousers / pants",
-        }
-        for k, base_name in enumerate(tuned.CLOTHING_TYPES):
-            target = base_map.get(base_name)
-            if target in t_idx:
-                logits[t_idx[target]] += 1.85 * float(trained_probs[k])
+    # Fuse trained multi-dataset PAR adapter probabilities across all 21 types
+    if trained_probs is not None:
+        if len(trained_probs) == len(TYPE_NAMES):
+            tr_w = 1.90 if quality in VIDEO_FILES else 1.15
+            for k in range(len(TYPE_NAMES)):
+                logits[k] += tr_w * float(trained_probs[k])
+        elif quality in VIDEO_FILES:
+            base_map = {
+                "puffer jacket / quilted coat": "puffer jacket",
+                "hoodie / hooded sweatshirt": "hoodie / sweatshirt",
+                "sweater / sweatshirt": "sweater / knitwear",
+                "jacket / sweater": "zip-up jacket / bomber jacket",
+                "open jacket / coat": "open jacket / coat",
+                "shirt / blouse": "dress shirt / blouse",
+                "long coat / overcoat": "long overcoat",
+                "buttoned coat / jacket": "buttoned coat",
+                "jeans / denim pants": "blue denim jeans",
+                "pants / trousers": "trousers / pants",
+            }
+            for k, base_name in enumerate(tuned.CLOTHING_TYPES):
+                target = base_map.get(base_name)
+                if target in t_idx:
+                    logits[t_idx[target]] += 1.85 * float(trained_probs[k])
 
     valid_vals = logits[logits > -5e3]
     logits -= float(np.max(valid_vals)) if valid_vals.size else 0.0
@@ -1183,100 +1075,135 @@ class CCTVClothingIndexer:
     def __init__(self, device: torch.device | None = None):
         self.device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.sr_model = tuned.load_realesrgan_x2plus(self.device)
-        self.det_model = tv_det.maskrcnn_resnet50_fpn_v2(
-            weights=tv_det.MaskRCNN_ResNet50_FPN_V2_Weights.DEFAULT
-        ).eval().to(self.device)
-        self.det_tf = torchvision.transforms.ToTensor()
+        self.pose_model = trainer.load_yolo_model("yolo11m-pose.pt")
+        self.seg_model = trainer.load_yolo_model("yolo11n-seg.pt")
 
-        clip_id = "wkcn/TinyCLIP-ViT-61M-32-Text-29M-LAION400M"
-        self.clip_proc = CLIPProcessor.from_pretrained(clip_id)
-        self.clip_model = CLIPModel.from_pretrained(clip_id, use_safetensors=True).eval().to(self.device)
+        self.vlm_model, self.vlm_proc, self.embed_dim = vlm_backbone.load_vlm(self.device)
 
-        # Open-vocabulary text banks (human verifier, 21 variable types, 17 variable colors)
-        self.human_pos_tmat = self._encode_prompt_list(HUMAN_POS_PROMPTS)
-        self.human_neg_tmat = self._encode_prompt_list(HUMAN_NEG_PROMPTS)
-        self.var_type_tmat = tuned.build_text_matrix(
-            self.clip_model, self.clip_proc, TYPE_PROMPTS_MAP, TYPE_NAMES, self.device
+        # Open-vocabulary SigLIP-384 text banks (human verifier, 21 variable types, 17 variable colors)
+        self.human_pos_tmat = vlm_backbone.encode_vlm_texts(
+            self.vlm_model, self.vlm_proc, HUMAN_POS_PROMPTS, self.device
         )
-        self.var_color_tmat = tuned.build_text_matrix(
-            self.clip_model, self.clip_proc, COLOR_PROMPTS_MAP, COLOR_NAMES, self.device
+        self.human_neg_tmat = vlm_backbone.encode_vlm_texts(
+            self.vlm_model, self.vlm_proc, HUMAN_NEG_PROMPTS, self.device
+        )
+        self.var_type_tmat = vlm_backbone.build_vlm_text_matrix(
+            self.vlm_model, self.vlm_proc, TYPE_PROMPTS_MAP, TYPE_NAMES, self.device
+        )
+        self.var_color_tmat = vlm_backbone.build_vlm_text_matrix(
+            self.vlm_model, self.vlm_proc, COLOR_PROMPTS_MAP, COLOR_NAMES, self.device
         )
 
-        # Optional trained Sightline human verifier + retail calibration adapter
+        # Multi-dataset PAR + human verifier + shadow-invariant chromaticity adapter (v2)
         self.trained_model = None
         if trainer.MODEL_PATH.exists():
             ckpt = torch.load(str(trainer.MODEL_PATH), map_location=self.device, weights_only=False)
-            base_tmat = tuned.build_text_matrix(
-                self.clip_model, self.clip_proc, tuned.TUNED_TYPE_PROMPTS, tuned.CLOTHING_TYPES, self.device
-            )
-            cmat = tuned.build_text_matrix(
-                self.clip_model, self.clip_proc, trainer.EXPANDED_COLOR_PROMPTS, trainer.EXPANDED_COLORS, self.device
-            )
-            self.trained_model = trainer.SightlineTrainedModel(base_tmat, cmat, logit_scale=22.0).to(self.device)
-            self.trained_model.load_state_dict(ckpt["model_state"])
-            self.trained_model.eval()
-
-    def _encode_prompt_list(self, prompts: list[str]) -> torch.Tensor:
-        with torch.no_grad():
-            tok = self.clip_proc(text=prompts, return_tensors="pt", padding=True).to(self.device)
-            feat = self.clip_model.get_text_features(**tok)
-            if not isinstance(feat, torch.Tensor):
-                feat = feat.pooler_output
-            return torch.nn.functional.normalize(feat, dim=-1)
+            if ckpt.get("arch_version") == 2 and int(ckpt.get("embed_dim", 0)) == self.embed_dim:
+                self.trained_model = trainer.SightlineTrainedModel(
+                    self.embed_dim, self.var_type_tmat, self.var_color_tmat, logit_scale=45.0
+                ).to(self.device)
+                self.trained_model.load_state_dict(ckpt["model_state"])
+                self.trained_model.eval()
 
     def _detect_persons(self, rgb: np.ndarray, quality: str) -> list[dict]:
-        """Stage 1: Identify and strictly verify genuine humans with silhouette masks before categorizing clothing."""
+        """Stage 1: Fuse YOLO11m-pose + YOLO11n-seg for full close & far-field human recall."""
         H, W = rgb.shape[:2]
         use_sr = (H <= 280) or (quality in ("144p", "240p"))
         pil = Image.fromarray(rgb)
         if use_sr:
             inp_img = tuned.sr_upscale_2x(self.sr_model, pil, self.device)
+            inp_rgb = np.asarray(inp_img)
             scale = 2.0
-            det_thr = 0.45
+            det_thr = 0.32
         else:
-            inp_img = pil
+            inp_rgb = rgb
             scale = 1.0
-            det_thr = 0.48
+            det_thr = 0.32 if quality in VIDEO_FILES else 0.22
 
-        W_inp, H_inp = inp_img.size
-        with torch.no_grad():
-            out = self.det_model([self.det_tf(inp_img).to(self.device)])[0]
+        if quality in VIDEO_FILES:
+            imgsz = 640
+        elif H >= 600:
+            imgsz = 1280
+        elif H >= 360:
+            imgsz = 960
+        else:
+            imgsz = 640
 
-        boxes = out["boxes"].cpu().numpy() / scale
-        labels = out["labels"].cpu().numpy()
-        scores = out["scores"].cpu().numpy()
-        masks_np = out["masks"].cpu().numpy()[:, 0] if "masks" in out and len(out["masks"]) else None
+        dev_arg = 0 if self.device.type == "cuda" else "cpu"
+        pose_res = self.pose_model.predict(
+            inp_rgb, imgsz=imgsz, classes=[0], conf=det_thr, verbose=False, device=dev_arg
+        )[0]
+        seg_res = self.seg_model.predict(
+            inp_rgb, imgsz=imgsz, classes=[0], conf=max(0.18, det_thr), verbose=False, device=dev_arg
+        )[0]
 
-        min_bh = 0.24 * H if quality in VIDEO_FILES else max(24.0, 0.06 * H)
-        min_bw = 0.05 * W if quality in VIDEO_FILES else max(12.0, 0.015 * W)
+        has_pose = pose_res.boxes is not None and len(pose_res.boxes) > 0
+        has_seg = seg_res.boxes is not None and len(seg_res.boxes) > 0
+        if not has_pose and not has_seg:
+            return []
 
-        raw_cands: list[tuple[float, float, tuple[float, float, float, float], int]] = []
-        for idx, (box, lab, sc) in enumerate(zip(boxes, labels, scores)):
-            fsc = float(sc)
-            if int(lab) != 1 or fsc < det_thr:
-                continue
+        boxes = pose_res.boxes.xyxy.cpu().numpy() / scale if has_pose else np.zeros((0, 4))
+        scores = pose_res.boxes.conf.cpu().numpy() if has_pose else np.zeros((0,))
+        kpts_all = (
+            pose_res.keypoints.data.cpu().numpy() / np.array([scale, scale, 1.0], dtype=np.float32)
+            if has_pose and pose_res.keypoints is not None and len(pose_res.keypoints.data) == len(boxes)
+            else None
+        )
+
+        seg_boxes = seg_res.boxes.xyxy.cpu().numpy() / scale if has_seg else np.zeros((0, 4))
+        seg_scores = seg_res.boxes.conf.cpu().numpy() if has_seg else np.zeros((0,))
+        seg_polys = seg_res.masks.xy if (has_seg and seg_res.masks is not None and len(seg_res.masks.xy) == len(seg_boxes)) else None
+
+        min_bh = 0.24 * H if quality in VIDEO_FILES else max(18.0, 0.045 * H)
+        min_bw = 0.05 * W if quality in VIDEO_FILES else max(10.0, 0.012 * W)
+        min_aspect = 1.05 if quality in VIDEO_FILES else 0.90
+
+        def _valid_box(box) -> tuple[float, float, float, float] | None:
             x1, y1, x2, y2 = [float(v) for v in box]
             bw, bh = x2 - x1, y2 - y1
             if bh < min_bh or bw < min_bw:
-                continue
+                return None
             aspect = bh / max(1.0, bw)
-            if aspect < 1.15 or aspect > 4.8:
-                continue
-            if (x1 <= 3.0 or x2 >= W - 3.0) and bw < 0.045 * W:
-                continue
-            raw_cands.append((fsc * (bw * bh), fsc, (x1, y1, x2, y2), idx))
+            if aspect < min_aspect or aspect > 4.8:
+                return None
+            if (x1 <= 3.0 or x2 >= W - 3.0) and bw < 0.040 * W:
+                return None
+            return (x1, y1, x2, y2)
 
-        # Sort by det_score * area and apply IoU + containment NMS (iou >= 0.45)
+        raw_cands: list[tuple[float, float, tuple[float, float, float, float], np.ndarray | None, np.ndarray | None]] = []
+        pose_boxes_valid: list[tuple[float, float, float, float]] = []
+        for idx, (box, sc) in enumerate(zip(boxes, scores)):
+            vb = _valid_box(box)
+            if vb is None:
+                continue
+            fsc = float(sc)
+            bw, bh = vb[2] - vb[0], vb[3] - vb[1]
+            kp = kpts_all[idx] if kpts_all is not None else None
+            pose_boxes_valid.append(vb)
+            raw_cands.append((fsc * (bw * bh), fsc, vb, kp, None))
+
+        # Union non-overlapping YOLO11n-seg detections for far-field / top-down pedestrians missed by pose
+        for si, (sbox, ssc) in enumerate(zip(seg_boxes, seg_scores)):
+            vb = _valid_box(sbox)
+            if vb is None:
+                continue
+            if any(compute_box_iou(vb, pb)[0] >= 0.45 for pb in pose_boxes_valid):
+                continue
+            fsc = float(ssc)
+            bw, bh = vb[2] - vb[0], vb[3] - vb[1]
+            poly = seg_polys[si] if seg_polys is not None else None
+            raw_cands.append((fsc * (bw * bh), fsc, vb, None, poly))
+
         raw_cands.sort(key=lambda x: -x[0])
-        kept_cands: list[tuple[float, tuple[float, float, float, float], int]] = []
-        for _, fsc, cand_box, raw_idx in raw_cands:
+        kept_cands: list[tuple[float, tuple[float, float, float, float], np.ndarray | None, np.ndarray | None]] = []
+        for _, fsc, cand_box, kp, direct_poly in raw_cands:
             if any(
                 (compute_box_iou(cand_box, kb)[0] >= 0.45 or compute_box_iou(cand_box, kb)[1] >= 0.72)
-                for _, kb, _ in kept_cands
+                for _, kb, _, _ in kept_cands
             ):
                 continue
-            kept_cands.append((fsc, cand_box, raw_idx))
-            if len(kept_cands) >= 10:
+            kept_cands.append((fsc, cand_box, kp, direct_poly))
+            if len(kept_cands) >= 12:
                 break
 
         if not kept_cands:
@@ -1286,33 +1213,57 @@ class CCTVClothingIndexer:
         geoms = []
         det_scores = []
         top_boxes = []
+        top_kpts = []
         mask_crops: list[np.ndarray | None] = []
-        for fsc, (x1, y1, x2, y2), raw_idx in kept_cands:
+        for fsc, (x1, y1, x2, y2), kp, direct_poly in kept_cands:
             c = pil.crop((max(0, int(x1)), max(0, int(y1)), min(W, int(x2)), min(H, int(y2))))
             bh = y2 - y1
             crop_imgs.append(sr_upscale_fast(self.sr_model, c, self.device, force_2x=(bh < 64.0)))
+            k_vis, has_torso = pose_utils.compute_pose_stats(kp)
             geoms.append([
                 (y2 - y1) / max(1.0, x2 - x1),
                 (y2 - y1) / float(H),
                 (x2 - x1) / float(W),
                 0.5 * (y1 + y2) / float(H),
+                k_vis,
+                has_torso,
             ])
             det_scores.append(fsc)
             top_boxes.append((x1, y1, x2, y2))
-            if masks_np is not None:
-                mx1 = max(0, min(W_inp - 1, int(round(x1 * scale))))
-                mx2 = max(mx1 + 1, min(W_inp, int(round(x2 * scale))))
-                my1 = max(0, min(H_inp - 1, int(round(y1 * scale))))
-                my2 = max(my1 + 1, min(H_inp, int(round(y2 * scale))))
-                mask_crops.append(masks_np[raw_idx, my1:my2, mx1:mx2].astype(np.float32))
-            else:
-                mask_crops.append(None)
+            top_kpts.append(kp)
 
-        with torch.no_grad():
-            h_feats = trainer.encode_clip_images(self.clip_model, self.clip_proc, crop_imgs, self.device)
+            # Use direct seg polygon (or IoU >= 0.40 match), falling back to pose skeleton silhouette
+            m_patch = None
+            poly_use = direct_poly
+            if poly_use is None and seg_polys is not None and len(seg_boxes):
+                best_si = -1
+                best_iou = 0.40
+                for si, sb in enumerate(seg_boxes):
+                    iou_val, _ = compute_box_iou((x1, y1, x2, y2), tuple(float(v) for v in sb))
+                    if iou_val >= best_iou:
+                        best_iou = iou_val
+                        best_si = si
+                if best_si >= 0:
+                    poly_use = seg_polys[best_si]
+            if poly_use is not None and len(poly_use) >= 3:
+                bw_px = max(2, int(round(x2)) - int(round(x1)))
+                bh_px = max(2, int(round(y2)) - int(round(y1)))
+                cand_m = np.zeros((bh_px, bw_px), dtype=np.float32)
+                pts_local = (poly_use / scale) - np.array([x1, y1], dtype=np.float32)
+                cv2.fillPoly(cand_m, [np.round(pts_local).astype(np.int32)], 1.0)
+                if float(cand_m.mean()) >= 0.05:
+                    m_patch = cand_m
+            if m_patch is None:
+                m_patch = pose_utils.build_pose_silhouette_mask((x1, y1, x2, y2), kp)
+            mask_crops.append(m_patch)
+
+        with torch.inference_mode():
+            h_feats = vlm_backbone.encode_vlm_images(
+                self.vlm_model, self.vlm_proc, crop_imgs, self.device, batch_size=16
+            )
             sim_pos = (h_feats @ self.human_pos_tmat.T).max(dim=-1).values
             sim_neg = (h_feats @ self.human_neg_tmat.T).max(dim=-1).values
-            clip_h_probs = (torch.sigmoid(22.0 * (sim_pos - sim_neg)) * 100.0).cpu().numpy()
+            clip_h_probs = (torch.sigmoid(vlm_backbone.SIGLIP_HUMAN_TEMP * (sim_pos - sim_neg)) * 100.0).cpu().numpy()
 
             if self.trained_model is not None:
                 h_geom = torch.tensor(geoms, dtype=torch.float32, device=self.device)
@@ -1321,49 +1272,75 @@ class CCTVClothingIndexer:
                 trained_h_probs = clip_h_probs
 
         verified = []
-        for box, fsc, clip_hp, train_hp, m_crop in zip(top_boxes, det_scores, clip_h_probs, trained_h_probs, mask_crops):
-            human_conf = 0.35 * (fsc * 100.0) + 0.40 * float(clip_hp) + 0.25 * float(train_hp)
+        for box, fsc, clip_hp, train_hp, m_crop, kp in zip(
+            top_boxes, det_scores, clip_h_probs, trained_h_probs, mask_crops, top_kpts
+        ):
+            if kp is not None:
+                human_conf = 0.35 * (fsc * 100.0) + 0.35 * float(clip_hp) + 0.30 * float(train_hp)
+            else:
+                human_conf = 0.45 * (fsc * 100.0) + 0.55 * float(clip_hp)
             if human_conf >= 64.0 and float(clip_hp) >= 52.0:
-                verified.append({"box": box, "human_conf": round(float(human_conf), 1), "mask": m_crop})
+                verified.append({"box": box, "human_conf": round(float(human_conf), 1), "mask": m_crop, "keypoints": kp})
         return verified
 
     def _classify_zone_batch(self, zones_data: list[dict], quality: str) -> list[dict]:
-        """Stage 2: Score variable clothing colors & types independently across open vocabulary."""
+        """Stage 2: Score variable clothing colors & types using SigLIP-384 + PAR adapter + shadow-invariant constancy."""
         if not zones_data:
             return []
 
         sub_imgs = [zd["sub_sr"] for zd in zones_data]
         ctx_imgs = [zd["ctx_sr"] for zd in zones_data]
 
-        with torch.no_grad():
-            sub_512 = trainer.encode_clip_images(self.clip_model, self.clip_proc, sub_imgs, self.device)
-            ctx_512 = trainer.encode_clip_images(self.clip_model, self.clip_proc, ctx_imgs, self.device)
-            base_512 = torch.nn.functional.normalize(0.35 * sub_512 + 0.65 * ctx_512, dim=-1)
+        with torch.inference_mode():
+            sub_emb = vlm_backbone.encode_vlm_images(
+                self.vlm_model, self.vlm_proc, sub_imgs, self.device, batch_size=16
+            )
+            ctx_emb = vlm_backbone.encode_vlm_images(
+                self.vlm_model, self.vlm_proc, ctx_imgs, self.device, batch_size=16
+            )
+            base_emb = torch.nn.functional.normalize(0.35 * sub_emb + 0.65 * ctx_emb, dim=-1)
 
-            clip_type_sims = (base_512 @ self.var_type_tmat.T).cpu().numpy()
-            clip_color_logits = (sub_512 @ self.var_color_tmat.T) * 20.0
+            clip_type_sims = (base_emb @ self.var_type_tmat.T).cpu().numpy()
+            clip_color_logits = (sub_emb @ self.var_color_tmat.T) * vlm_backbone.SIGLIP_COLOR_TEMP
             clip_color_probs = torch.softmax(clip_color_logits, dim=-1).cpu().numpy()
 
             trained_type_probs = None
-            if quality in VIDEO_FILES and self.trained_model is not None:
+            trained_color_probs = None
+            if self.trained_model is not None:
                 struct_vecs = torch.tensor(
-                    np.array([trainer.extract_structural_vec(zd["person_sr"], zd["zone"]) for zd in zones_data]),
+                    np.array([
+                        trainer.extract_structural_vec(zd["person_sr"], zd["zone"], zd.get("zone_fracs"))
+                        for zd in zones_data
+                    ]),
                     dtype=torch.float32,
                     device=self.device,
                 )
-                t_logits_tr, _ = self.trained_model.forward_type(sub_512, ctx_512, struct_vecs)
+                col_vecs = torch.tensor(
+                    np.array([
+                        color_constancy.extract_shadow_invariant_color_vec(
+                            zd["sub_cc_sr"], zd.get("sub_mask"), zd["lab_stats"], zd.get("frame_stats"), zd["zone"]
+                        )
+                        for zd in zones_data
+                    ]),
+                    dtype=torch.float32,
+                    device=self.device,
+                )
+                t_logits_tr, _ = self.trained_model.forward_type(sub_emb, ctx_emb, struct_vecs)
+                c_logits_tr, _ = self.trained_model.forward_color(sub_emb, col_vecs)
                 trained_type_probs = torch.softmax(t_logits_tr, dim=-1).cpu().numpy()
+                trained_color_probs = torch.softmax(c_logits_tr, dim=-1).cpu().numpy()
 
         outputs = []
         for i, zd in enumerate(zones_data):
-            pc = classify_variable_color(zd["lab_stats"], zd["zone"], clip_color_probs[i])
+            tr_cp = trained_color_probs[i] if trained_color_probs is not None else None
+            pc = classify_variable_color(zd["lab_stats"], zd["zone"], clip_color_probs[i], tr_cp)
             c_idx = int(np.argmax(pc))
             c_label = COLOR_NAMES[c_idx]
 
             clues = measure_garment_visual_clues(zd["person_sr"], zd["sub_sr"], zd["zone"], zd["lab_stats"])
             pb = zd["pbox_norm"]
             pbox_h_norm = float(pb[3] - pb[1])
-            tr_p = trained_type_probs[i] if trained_type_probs is not None else None
+            tr_tp = trained_type_probs[i] if trained_type_probs is not None else None
             pt = classify_variable_type(
                 clip_type_sims[i],
                 zd["zone"],
@@ -1372,7 +1349,7 @@ class CCTVClothingIndexer:
                 clues,
                 quality,
                 pbox_h_norm,
-                tr_p,
+                tr_tp,
                 person_h_px=float(zd.get("person_h_px", 120.0)),
             )
 
@@ -1570,6 +1547,13 @@ class CCTVClothingIndexer:
             ts_str = format_timestamp(ts_sec)
 
             verified_humans = self._detect_persons(rgb, quality)
+            if not verified_humans:
+                continue
+
+            # Scene-level Shades-of-Gray white balance + shadow-safe Retinex constancy
+            frame_stats = color_constancy.compute_frame_illuminant_gains(rgb)
+            rgb_cc = color_constancy.apply_color_constancy(rgb, frame_stats)
+
             next_track_id = self._associate_tracks(
                 verified_humans, W, H, ts_sec, fidx, active_tracks, next_track_id
             )
@@ -1579,6 +1563,7 @@ class CCTVClothingIndexer:
                 pbox = h_info["box"]
                 hconf = h_info["human_conf"]
                 p_mask = h_info.get("mask")
+                kpts = h_info.get("keypoints")
                 pbox_norm = h_info["pbox_norm"]
                 bx1, by1, bx2, by2 = pbox
                 person_h_px = float(by2 - by1)
@@ -1586,12 +1571,20 @@ class CCTVClothingIndexer:
                 p_raw = tuned.crop_frac(rgb, pbox, (0.0, 1.0, 0.0, 1.0))
                 p_sr = sr_upscale_fast(self.sr_model, p_raw, self.device, force_2x=small_ped)
 
-                flank_raw = extract_flank_composite(rgb, pbox)
-                in_raw = tuned.crop_frac(rgb, pbox, (0.34, 0.66, 0.16, 0.52))
-                flank_mask = extract_flank_mask_composite(p_mask) if p_mask is not None else None
-                in_mask = crop_mask_frac(p_mask, (0.34, 0.66, 0.16, 0.52)) if p_mask is not None else None
-                flank_stats = extract_masked_core_lab(flank_raw, flank_mask, sigma=0.35)
-                in_stats = extract_masked_core_lab(in_raw, in_mask, sigma=0.32)
+                zone_fracs = pose_utils.compute_pose_zone_fracs(pbox, kpts)
+                flank_left_f = zone_fracs["outer_upper"]["left"]
+                flank_right_f = zone_fracs["outer_upper"]["right"]
+                in_sub_f = zone_fracs["inner_upper"]["sub"]
+
+                flank_raw_vlm = extract_flank_composite(rgb, pbox, flank_left_f, flank_right_f)
+                flank_raw_cc = extract_flank_composite(rgb_cc, pbox, flank_left_f, flank_right_f)
+                in_raw_vlm = tuned.crop_frac(rgb, pbox, in_sub_f)
+                in_raw_cc = tuned.crop_frac(rgb_cc, pbox, in_sub_f)
+
+                flank_mask = extract_flank_mask_composite(p_mask, flank_left_f, flank_right_f) if p_mask is not None else None
+                in_mask = crop_mask_frac(p_mask, in_sub_f) if p_mask is not None else None
+                flank_stats = extract_masked_core_lab(flank_raw_cc, flank_mask, sigma=0.35)
+                in_stats = extract_masked_core_lab(in_raw_cc, in_mask, sigma=0.32)
                 de_layers = float(np.linalg.norm([
                     flank_stats["L50"] - in_stats["L50"],
                     flank_stats["A"] - in_stats["A"],
@@ -1605,31 +1598,41 @@ class CCTVClothingIndexer:
 
                 for zone in candidate_zones:
                     if zone == "outer_upper":
-                        sub_raw = flank_raw
+                        sub_raw_vlm = flank_raw_vlm
+                        sub_raw_cc = flank_raw_cc
                         sub_mask = flank_mask
-                        ctx_raw = tuned.crop_frac(rgb, pbox, tuned.ZONE_GEOMETRY["outer_upper"]["ctx"])
+                        ctx_raw = tuned.crop_frac(rgb, pbox, zone_fracs["outer_upper"]["ctx"])
                     elif zone == "inner_upper":
-                        sub_raw = in_raw
+                        sub_raw_vlm = in_raw_vlm
+                        sub_raw_cc = in_raw_cc
                         sub_mask = in_mask
-                        ctx_raw = tuned.crop_frac(rgb, pbox, tuned.ZONE_GEOMETRY["inner_upper"]["ctx"])
+                        ctx_raw = tuned.crop_frac(rgb, pbox, zone_fracs["inner_upper"]["ctx"])
                     else:
-                        sub_raw = tuned.crop_frac(rgb, pbox, tuned.ZONE_GEOMETRY[zone]["sub"])
-                        sub_mask = crop_mask_frac(p_mask, tuned.ZONE_GEOMETRY[zone]["sub"]) if p_mask is not None else None
-                        ctx_raw = tuned.crop_frac(rgb, pbox, tuned.ZONE_GEOMETRY[zone]["ctx"])
-                    sub_sr = sr_upscale_fast(self.sr_model, sub_raw, self.device, force_2x=small_ped)
+                        sub_f = zone_fracs[zone]["sub"]
+                        ctx_f = zone_fracs[zone]["ctx"]
+                        sub_raw_vlm = tuned.crop_frac(rgb, pbox, sub_f)
+                        sub_raw_cc = tuned.crop_frac(rgb_cc, pbox, sub_f)
+                        sub_mask = crop_mask_frac(p_mask, sub_f) if p_mask is not None else None
+                        ctx_raw = tuned.crop_frac(rgb, pbox, ctx_f)
+                    sub_sr = sr_upscale_fast(self.sr_model, sub_raw_vlm, self.device, force_2x=small_ped)
+                    sub_cc_sr = sr_upscale_fast(self.sr_model, sub_raw_cc, self.device, force_2x=small_ped)
                     ctx_sr = sr_upscale_fast(self.sr_model, ctx_raw, self.device, force_2x=small_ped)
-                    lab_stats = extract_masked_core_lab(sub_sr, sub_mask, sigma=0.30 if zone == "outer_upper" else 0.28)
+                    lab_stats = extract_masked_core_lab(sub_cc_sr, sub_mask, sigma=0.30 if zone == "outer_upper" else 0.28)
                     zones_to_score.append({
                         "shopper_num": s_idx,
                         "track": h_info["track"],
                         "human_conf": hconf,
                         "zone": zone,
+                        "zone_fracs": zone_fracs,
                         "pbox": pbox,
                         "pbox_norm": pbox_norm,
                         "person_h_px": person_h_px,
-                        "sub_box_norm": extract_sub_box_norm(pbox, zone, W, H),
+                        "sub_box_norm": extract_sub_box_norm(pbox, zone, W, H, custom_fracs=zone_fracs),
                         "person_sr": p_sr,
                         "sub_sr": sub_sr,
+                        "sub_cc_sr": sub_cc_sr,
+                        "sub_mask": sub_mask,
+                        "frame_stats": frame_stats,
                         "ctx_sr": ctx_sr,
                         "lab_stats": lab_stats,
                     })
